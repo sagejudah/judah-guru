@@ -1,0 +1,264 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png"><title>Class Quiz</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#f3f4f6;color:#111827;font-family:system-ui,-apple-system,sans-serif;padding:16px}.app{max-width:500px;margin:auto;background:#fff;border-radius:28px;padding:24px 20px;box-shadow:0 18px 50px #0000001a}h1{margin:0 0 4px;font-size:28px}.sub{color:#6b7280;margin:0 0 18px}.mode{display:inline-block;padding:7px 13px;border-radius:999px;background:#e5e7eb;font-size:13px;font-weight:800;margin-bottom:12px}.number{height:170px;display:flex;align-items:center;justify-content:center;border-radius:22px;background:#111827;color:#fff;font-size:105px;font-weight:800}.name{text-align:center;font-size:22px;font-weight:800;min-height:32px;margin:8px}.timer{text-align:center;font-variant-numeric:tabular-nums;font-size:64px;font-weight:800;margin:4px 0}.status{text-align:center;min-height:24px;font-weight:800;margin-bottom:8px}button{border:0;border-radius:14px;padding:14px 16px;font-size:16px;font-weight:750;width:100%;background:#111827;color:#fff;margin-top:8px}.secondary{background:#e5e7eb;color:#111827}.success{background:#166534}.danger{background:#991b1b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.settings,.panel{margin-top:20px;padding-top:18px;border-top:1px solid #e5e7eb}.settings label{display:block;font-size:14px;font-weight:750;margin:10px 0 6px}.inputs{display:flex;gap:8px}input{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:10px;font-size:16px}.history{margin-top:16px;padding:12px;background:#f9fafb;border-radius:14px;font-size:13px;color:#6b7280}.panel{display:none}.panel.open{display:block}.panel h2{font-size:17px;margin:14px 0 8px}.roster{max-height:300px;overflow:auto;border:1px solid #e5e7eb;border-radius:12px}.row{display:grid;grid-template-columns:55px 1fr;gap:8px;padding:7px;border-bottom:1px solid #eee}.row input{padding:8px}.small{font-size:12px;color:#6b7280}
+</style>
+<style>
+.setting-row{
+  display:grid;
+  grid-template-columns:1fr 110px;
+  align-items:center;
+  gap:14px;
+  margin:10px 0;
+}
+.setting-row label{
+  margin:0;
+  font-size:14px;
+  font-weight:600;
+}
+.setting-row input{
+  width:100%;
+  box-sizing:border-box;
+  text-align:center;
+}
+</style>
+
+<style>
+.button-pair{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.button-pair button{
+  width:100%;
+  min-height:48px;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#mode{
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+#mode.recovery{
+  background:rgba(190,45,45,.14);
+  color:#b42318;
+  border-color:rgba(190,45,45,.35);
+}
+</style>
+</head><body><main class="app">
+<h1>Class Quiz</h1><p class="sub">Pick. Answer. Keep it fair.</p>
+
+<div class="mode" id="mode">INITIAL TRIAL</div>
+<div class="number" id="number">—</div>
+<div class="name" id="name"></div>
+
+<div class="timer" id="timer">00:05</div>
+<div class="status" id="status">Set the timers, then press Start.</div>
+
+<div class="grid button-pair">
+<button id="start">▶ Start</button>
+<button class="secondary" id="pause">Ⅱ Pause</button>
+</div>
+<div class="grid button-pair">
+<button class="success" id="correct">✓ Correct</button>
+<button class="danger" id="wrong">✗ Missed</button>
+</div>
+<div class="grid button-pair">
+<button class="secondary" id="resetTime">↻ Restart Time</button>
+<button class="secondary" id="reset">↺ Reset Round</button>
+</div>
+
+<section class="settings">
+<h2>Out This Round</h2>
+<div class="history"><div id="out">No one has missed yet.</div></div>
+
+<h2>Students</h2>
+<div class="history"><strong>Students:</strong> <span id="studentCount">100</span> &nbsp; <strong>Spread:</strong> <span id="spread">0</span></div>
+<button class="secondary" id="toggle">👥 Student Roster</button>
+<section class="panel" id="panel">
+<div class="small">Choose the number of students and enter names. Names are saved locally on this device.</div>
+<div class="setting-row"><label for="studentTotal">Number of students</label><input id="studentTotal" type="number" min="1" max="100" value="100" aria-label="Number of students"></div>
+<div class="setting-row"><label for="maxSpread">Maximum spread</label><input id="maxSpread" type="number" min="0" max="20" value="3" aria-label="Maximum pick spread"></div>
+<div class="grid"><button class="secondary" id="clear">Clear Names</button><button id="save">Save Roster</button></div>
+<div class="roster" id="roster"></div>
+</section>
+
+<h2>Quiz Settings</h2>
+<label>Selection countdown</label><div class="inputs"><input id="sm" type="number" min="0" max="99" value="0"><input id="ss" type="number" min="1" max="59" value="5"></div>
+<label>Answer timer</label><div class="inputs"><input id="am" type="number" min="0" max="99" value="0"><input id="as" type="number" min="1" max="59" value="30"></div>
+</section>
+</main><script>
+let selectionId=null,timerId=null,running=false,paused=false,phase="idle",remaining=5,current=null;
+let excluded=new Set(),roster={},pickCounts={},audio=null;
+const $=id=>document.getElementById(id),num=$("number"),name=$("name"),timer=$("timer"),status=$("status"),mode=$("mode"),out=$("out");
+const spreadEl=$("spread"),studentCountEl=$("studentCount"),excludedEl=null;
+const sm=$("sm"),ss=$("ss"),am=$("am"),as=$("as"),studentTotal=$("studentTotal"),maxSpread=$("maxSpread");
+
+function tone(f=880,d=.12,type="sine",gain=.07){
+  try{
+    audio=audio||new(window.AudioContext||window.webkitAudioContext)();
+    audio.resume();
+    const o=audio.createOscillator(),g=audio.createGain();
+    o.type=type;o.frequency.value=f;g.gain.value=gain;
+    o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+d);
+  }catch(e){}
+}
+function countdownBeep(){
+  tone(820,.075,"sine",.045);
+}
+function speak(x){
+  if(!speechSynthesis)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(String(x));
+  u.rate=.9; speechSynthesis.speak(u);
+}
+function dur(m,s){return Math.max(1,(+m.value||0)*60+Math.min(59,Math.max(1,+s.value||1)))}
+function fmt(x){return String(Math.floor(x/60)).padStart(2,"0")+":"+String(x%60).padStart(2,"0")}
+function upd(){timer.textContent=fmt(remaining)}
+function total(){return Math.min(100,Math.max(1,+studentTotal.value||1))}
+function fairSpread(){
+  const vals=Array.from({length:total()},(_,i)=>pickCounts[i+1]||0);
+  return vals.length ? Math.max(...vals)-Math.min(...vals) : 0;
+}
+function updateStats(){
+  studentCountEl.textContent=total();
+  spreadEl.textContent=fairSpread();
+  const a=[...excluded].sort((x,y)=>x-y);
+  out.textContent=a.length?a.map(n=>(roster[n]||"Student")+" (#"+n+")").join(" • "):"No one has missed yet.";
+}
+function clearTimers(){
+  clearInterval(selectionId); clearInterval(timerId);
+  selectionId=timerId=null; running=false;
+}
+function eligibleStudents(){
+  const n=total(), counts=Array.from({length:n},(_,i)=>pickCounts[i+1]||0);
+  let min=Math.min(...counts);
+  let maxAllowed=min+Math.max(0,+maxSpread.value||0);
+  let a=[];
+  for(let i=1;i<=n;i++){
+    if(!excluded.has(i) && (pickCounts[i]||0)<=maxAllowed) a.push(i);
+  }
+  if(!a.length){
+    a=Array.from({length:n},(_,i)=>i+1).filter(i=>!excluded.has(i));
+  }
+  if(!a.length){excluded.clear();a=Array.from({length:n},(_,i)=>i+1)}
+  return a;
+}
+function pick(){
+  const a=eligibleStudents();
+  current=a[Math.floor(Math.random()*a.length)];
+  pickCounts[current]=(pickCounts[current]||0)+1;
+  num.textContent=current;
+  name.textContent=roster[current]||"";
+  speak("Student number "+current);
+  updateStats();
+}
+function answerTimer(){
+  phase="answer"; remaining=dur(am,as); upd();
+  status.textContent=roster[current]?"Answer, "+roster[current]+".":"Answer now.";
+  timerId=setInterval(()=>{
+    if(paused)return;
+    remaining--;upd();
+    if(remaining<=5&&remaining>0) countdownBeep();
+    if(remaining<=0){
+      clearInterval(timerId);timerId=null;running=false;phase="expired";
+      tone(520,.45,"triangle",.10);
+      status.textContent="⏰ Time's up — mark Correct or Missed.";
+    }
+  },1000);
+}
+function attempt(){
+  clearTimers();running=true;paused=false;phase="selection";
+  remaining=dur(sm,ss);upd();status.textContent="Get ready...";
+  selectionId=setInterval(()=>{
+    if(paused)return;
+    remaining--;upd();
+    if(remaining<=5&&remaining>0) countdownBeep();
+    if(remaining<=0){
+      clearInterval(selectionId);selectionId=null;
+      tone(980,.22,"triangle",.09);
+      pick();answerTimer();
+    }
+  },1000);
+}
+function start(){if(!running)attempt()}
+function restartTime(){
+  clearTimers();
+  paused=false;
+  $("pause").textContent="Ⅱ Pause";
+  if(phase==="answer" || phase==="expired"){
+    remaining=dur(am,as);
+    phase="answer";
+  } else {
+    remaining=dur(sm,ss);
+    phase="selection";
+  }
+  upd();
+  status.textContent="Timer ready — press Start.";
+}
+function togglePause(){
+  if(!running && !paused)return;
+  paused=!paused;
+  $("pause").textContent=paused?"▶ Resume":"Ⅱ Pause";
+  status.textContent=paused?"Paused.":"Resumed.";
+}
+function setModeBadge(recovery){
+  mode.classList.toggle("recovery",recovery);
+}
+function correct(){
+  if(current===null)return;
+  clearTimers();current=null;excluded.clear();num.textContent="—";name.textContent="";
+  remaining=dur(sm,ss);upd();mode.textContent="INITIAL TRIAL";
+  phase="idle";status.textContent="✓ Correct — press Start for the next question.";updateStats();
+}
+function wrong(){
+  if(current===null)return;
+  excluded.add(current);updateStats();clearTimers();current=null;num.textContent="—";name.textContent="";
+  mode.textContent="RECOVERY MODE";setModeBadge(true);remaining=dur(sm,ss);upd();phase="idle";
+  status.textContent="✗ Missed — press Start for recovery.";
+}
+function reset(){
+  clearTimers();current=null;excluded.clear();pickCounts={};num.textContent="—";name.textContent="";
+  remaining=dur(sm,ss);upd();mode.textContent="INITIAL TRIAL";setModeBadge(false);phase="idle";
+  status.textContent="Set the timers, then press Start.";updateStats();
+  $("pause").textContent="Ⅱ Pause";
+}
+function build(){
+  let r=$("roster");r.innerHTML="";
+  for(let n=1;n<=total();n++){
+    let d=document.createElement("div");d.className="row";
+    let v=(roster[n]||"").replace(/"/g,"&quot;");
+    d.innerHTML="<strong>"+n+"</strong><input placeholder='Student name' data-n='"+n+"' value='"+v+"'>";
+    r.appendChild(d);
+  }
+}
+function save(){
+  let next={};
+  $("roster").querySelectorAll("input").forEach(i=>{if(i.value.trim())next[i.dataset.n]=i.value.trim()});
+  roster=next;localStorage.setItem("classQuizRoster",JSON.stringify(roster));
+  build();updateStats();if(current)name.textContent=roster[current]||"";
+  status.textContent="Roster saved on this device.";
+}
+function load(){
+  try{
+    roster=JSON.parse(localStorage.getItem("classQuizRoster")||"{}");
+    studentTotal.value=localStorage.getItem("classQuizTotal")||100;
+    maxSpread.value=localStorage.getItem("classQuizSpread")||3;
+  }catch(e){roster={}}
+  build();updateStats();reset();
+}
+$("start").onclick=start;
+$("resetTime").onclick=restartTime;
+$("pause").onclick=togglePause;
+$("correct").onclick=correct;
+$("wrong").onclick=wrong;
+$("reset").onclick=reset;
+$("toggle").onclick=()=>$("panel").classList.toggle("open");
+$("save").onclick=save;
+$("clear").onclick=()=>{roster={};localStorage.removeItem("classQuizRoster");build();updateStats();status.textContent="Roster names cleared."};
+studentTotal.onchange=()=>{studentTotal.value=total();localStorage.setItem("classQuizTotal",total());build();updateStats()};
+maxSpread.onchange=()=>{maxSpread.value=Math.max(0,Math.min(20,+maxSpread.value||0));localStorage.setItem("classQuizSpread",maxSpread.value);updateStats()};
+setModeBadge(false);
+load();
+</script><script>if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script></body></html>

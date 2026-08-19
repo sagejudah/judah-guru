@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>judah.guru</title>
+<meta name="description" content="judah.guru — still under construction.">
+<style>
+  :root {
+    --bg: #0d0d0c;
+    --ink: #f1efe9;
+    --dim: #8c8977;
+    --gold: #c9a15a;
+    --rule: #262521;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* --- animated grain, in place of a photo background --- */
+  .grain {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    padding: clamp(3rem, 14vh, 8rem) 1.5rem clamp(3rem, 8vh, 6rem);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .content { flex: 1; }
+
+  /* --- typewriter headline --- */
+  .under-construction {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    font-size: clamp(1rem, 3.6vw, 1.3rem);
+    color: var(--ink);
+    margin: 0 0 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    max-width: 100%;
+    width: 0;
+    animation: type 1.5s steps(28, end) 0.2s forwards;
+  }
+
+  .help-yourself {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    font-style: italic;
+    color: var(--dim);
+    font-size: 1rem;
+    margin: 0 0 3.25rem;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 1.8s;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0 0 2.25rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 1.95s;
+  }
+
+  /* --- /stuff --- */
+  .stuff-label {
+    display: flex;
+    align-items: center;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0 0 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 2.1s;
+  }
+
+  .stuff-label::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-right: 0.6em;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  ul.stuff {
+    list-style: none;
+    margin: 0 0 0 -0.75rem;
+    padding: 0;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 2.25s;
+  }
+
+  ul.stuff a {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0.75rem;
+    border-radius: 7px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.95rem;
+    transition: background 0.25s ease;
+  }
+
+  ul.stuff a:hover,
+  ul.stuff a:focus-visible {
+    background: rgba(201, 161, 90, 0.07);
+    color: var(--gold);
+  }
+
+  ul.stuff a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .stuff-name {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7rem;
+  }
+
+  .arrow {
+    color: var(--gold);
+    display: inline-block;
+    animation: nudge 2.6s ease-in-out infinite;
+  }
+
+  ul.stuff a:hover .arrow,
+  ul.stuff a:focus-visible .arrow {
+    animation-play-state: paused;
+    transform: translateX(4px);
+  }
+
+  .stuff-path {
+    font-size: 0.78rem;
+    color: var(--dim);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+  }
+
+  ul.stuff a:hover .stuff-path,
+  ul.stuff a:focus-visible .stuff-path {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  footer {
+    padding-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--dim);
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: 2.4s;
+  }
+
+  .mail-link {
+    position: relative;
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .mail-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -3px;
+    height: 1px;
+    background: var(--gold);
+    transition: right 0.25s ease;
+  }
+
+  .mail-link:hover,
+  .mail-link:focus-visible {
+    color: var(--gold);
+  }
+
+  .mail-link:hover::after,
+  .mail-link:focus-visible::after {
+    right: 0;
+  }
+
+  .mail-link:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+  }
+
+  @keyframes type {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .under-construction {
+      animation: none;
+      width: 100%;
+    }
+    .help-yourself, hr, .stuff-label, ul.stuff, footer {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .stuff-label::before, .arrow { animation: none !important; }
+    .grain { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <svg class="grain" aria-hidden="true">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n">
+        <animate attributeName="seed" values="1;3;5;7;2;8;4;1" dur="1.2s" repeatCount="indefinite" />
+      </feTurbulence>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.045 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise)" />
+  </svg>
+
+  <main>
+    <div class="content">
+
+      <p class="under-construction">still under construction, hey 🙃</p>
+      <p class="help-yourself">but help yourself with what you can find.</p>
+
+      <hr>
+
+      <p class="stuff-label">/stuff</p>
+      <ul class="stuff">
+        <li>
+          <a href="/stuff/quiz">
+            <span class="stuff-name"><span class="arrow">→</span> Student Quiz</span>
+            <span class="stuff-path">/stuff/quiz</span>
+          </a>
+        </li>
+        <li>
+          <a href="/randomizer">
+            <span class="stuff-name"><span class="arrow">→</span> Randomizer</span>
+            <span class="stuff-path">/randomizer</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+
+    <footer>
+      <a href="mailto:hey@judah.guru" class="mail-link">hey@judah.guru</a>
+      <span id="year">2026</span>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
