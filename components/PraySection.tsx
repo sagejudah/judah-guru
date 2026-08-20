@@ -47,8 +47,11 @@ export default function PraySection() {
           🙏
         </span>
         <span>
-          <span className="pray-title">Need a prayer?</span>
-          <span className="pray-sub">We can pray together.</span>
+          <span className="pray-title">Prayer?</span>
+          <span className="pray-sub">
+            oh, and yeah&hellip; we can pray too. He hears us when we pray. Even more when we
+            pray together. So reach out when you need a prayer companion 😜
+          </span>
         </span>
       </button>
 

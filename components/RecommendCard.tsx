@@ -9,7 +9,7 @@ export default function RecommendCard({
 }: {
   emoji: string;
   label: string;
-  content: string;
+  content: string[];
 }) {
   const [open, setOpen] = useState(false);
 
@@ -29,7 +29,15 @@ export default function RecommendCard({
           {open ? '–' : '+'}
         </span>
       </span>
-      {open && <span className="rec-content">{content}</span>}
+      {open && (
+        <span className="rec-content">
+          {content.map((para, i) => (
+            <span className="rec-para" key={i}>
+              {para}
+            </span>
+          ))}
+        </span>
+      )}
     </button>
   );
 }

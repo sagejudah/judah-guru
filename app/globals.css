@@ -161,12 +161,21 @@ hr.rule-2 {
   animation: pulse 1.8s ease-in-out infinite;
 }
 
-.section-label.vibe {
-  animation-delay: 2.35s;
-}
-
 .section-label.stuff {
   animation-delay: 2.85s;
+}
+
+/* --- lead-in line, replaces the old /vibe label --- */
+.keep-busy {
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  font-style: italic;
+  color: var(--dim);
+  font-size: 0.88rem;
+  margin: 0 0 0.9rem;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 2.35s;
 }
 
 /* --- /vibe bento --- */
@@ -264,12 +273,18 @@ hr.rule-2 {
 }
 
 .rec-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  text-align: left;
+}
+
+.rec-para {
   font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
   font-style: italic;
   color: var(--dim);
   font-size: 0.85rem;
   line-height: 1.55;
-  text-align: left;
 }
 
 /* --- pray card --- */
@@ -387,13 +402,25 @@ hr.rule-2 {
 }
 
 /* --- /stuff --- */
+.stuff-intro {
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  font-style: italic;
+  color: var(--dim);
+  font-size: 0.88rem;
+  margin: 0 0 1.1rem;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 2.9s;
+}
+
 ul.stuff {
   list-style: none;
   margin: 0 0 0 -0.75rem;
   padding: 0;
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
-  animation-delay: 2.95s;
+  animation-delay: 3.05s;
 }
 
 ul.stuff a {
@@ -455,6 +482,43 @@ ul.stuff a:focus-visible .stuff-path {
   transform: translateX(0);
 }
 
+.stuff-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.75rem;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.95rem;
+  color: var(--dim);
+}
+
+.stuff-row.is-building .arrow {
+  animation: none;
+  opacity: 0.45;
+}
+
+.status {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  line-height: 1;
+}
+
+.status-live {
+  color: var(--gold);
+  border-color: rgba(201, 161, 90, 0.4);
+}
+
+.status-building {
+  color: var(--dim);
+  border-color: var(--rule);
+}
+
 /* --- closing --- */
 .closing {
   font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
@@ -464,7 +528,7 @@ ul.stuff a:focus-visible .stuff-path {
   margin: 2.75rem 0 0;
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
-  animation-delay: 3.1s;
+  animation-delay: 3.2s;
 }
 
 /* --- footer --- */
@@ -472,7 +536,7 @@ footer {
   padding-top: 3rem;
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
-  animation-delay: 3.25s;
+  animation-delay: 3.35s;
 }
 
 .sustains {
@@ -572,10 +636,12 @@ footer {
   .help-yourself,
   .confession,
   .transition,
+  .keep-busy,
   hr,
   .section-label,
   .bento,
   .pray-card,
+  .stuff-intro,
   ul.stuff,
   .closing,
   footer {

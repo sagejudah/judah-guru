@@ -17,30 +17,28 @@ export default function Home() {
 
         <hr className="rule-1" />
 
-        <p className="section-label vibe">/vibe</p>
+        <p className="keep-busy">while I&rsquo;m still coding, you can keep busy with these</p>
         <div className="bento">
           <VibeCard />
           <div className="recommend-grid">
-            {/* EDIT ME: swap any of these four blurbs whenever you find something worth passing on. */}
+            {/* EDIT ME: swap either blurb whenever you find something worth passing on. */}
             <RecommendCard
-              emoji="🎵"
-              label="Songs"
-              content="Whatever's on the playlist above, honestly. I'll drop more here when I find something worth passing on."
+              emoji="📖"
+              label="Something to read?"
+              content={[
+                "Poetry has always found its way to me, usually when I'm madly in love or completely heartbroken. 😜",
+                'And I have a soft spot for philosophy. Existence, meaning, love, suffering, faith, the absurd... all that fun stuff.',
+                'So naturally, I find myself around Dostoevsky, Kafka, Rilke, Camus, Nietzsche, Pessoa...',
+                "And yeah, the Psalms. Probably the book I frequent the most. Nothing makes me feel the love of God quite like that book.",
+              ]}
             />
             <RecommendCard
               emoji="🎬"
-              label="Movies"
-              content="Still building this list. Ask me in person — I have opinions."
-            />
-            <RecommendCard
-              emoji="📖"
-              label="Something to read"
-              content="Nothing pinned yet. Come back later, or email me and I'll actually reply with something."
-            />
-            <RecommendCard
-              emoji="💭"
-              label="Something to think about"
-              content="Here's one: you don't have to have it figured out to keep going."
+              label="Movies?"
+              content={[
+                "I pretty much don't watch anything. My mind is quite visual already, so I usually prefer sitting with my own thoughts.",
+                "But don't leave me behind when you hit the cinema. I don't wanna miss the popcorn. 🍿",
+              ]}
             />
           </div>
         </div>
@@ -50,22 +48,32 @@ export default function Home() {
         <hr className="rule-2" />
 
         <p className="section-label stuff">/stuff</p>
+        <p className="stuff-intro">
+          a small world for my students &mdash; quizzes, tools, revision material. some of it&rsquo;s
+          already live, some of it&rsquo;s still coming together.
+        </p>
         <ul className="stuff">
-          <li>
-            <a href="/stuff/quiz">
-              <span className="stuff-name">
-                <span className="arrow">→</span> Student Quiz
-              </span>
-              <span className="stuff-path">/stuff/quiz</span>
-            </a>
-          </li>
+          {/* EDIT ME: flip is-building off once a link is real, and give it an href. */}
           <li>
             <a href="/randomizer">
               <span className="stuff-name">
                 <span className="arrow">→</span> Randomizer
+                <span className="status status-live">live</span>
               </span>
               <span className="stuff-path">/randomizer</span>
             </a>
+          </li>
+          <li className="stuff-row is-building">
+            <span className="stuff-name">
+              <span className="arrow">→</span> Student Quiz
+              <span className="status status-building">building</span>
+            </span>
+          </li>
+          <li className="stuff-row is-building">
+            <span className="stuff-name">
+              <span className="arrow">→</span> Revision Material
+              <span className="status status-building">building</span>
+            </span>
           </li>
         </ul>
 
