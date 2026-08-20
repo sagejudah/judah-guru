@@ -5,10 +5,12 @@ Next.js rebuild of the site. Same bones as the old static `index.html`
 
 - an ambient canvas animation — fragments continuously gather into an
   abstract shape and drift apart again, no visible start/stop
-- `/vibe`: a Spotify playlist embed + four click-to-open recommend cards
-  (Songs / Movies / Something to read / Something to think about)
-- a "Need a prayer?" card that opens into five short options
-- the same `/stuff` list (Student Quiz, Randomizer) and mailto footer
+- a Songs blurb, then the Spotify playlist embed, then a grid of
+  click-to-open cards (Movies / Something to read / Something to think about
+  / Prayer)
+- the same `/stuff` list (Randomizer, live) plus a small student area
+  (Student Quiz, Revision Material — both marked "building") and mailto
+  footer
 
 ## Run it locally
 
@@ -31,20 +33,16 @@ Open http://localhost:3000.
 
 ## Things to know before you push
 
-- **`/stuff/quiz` isn't in this repo.** The zip you sent only had `/randomizer`
-  in it — the quiz app lives somewhere else (a different deploy, or a route
-  you had set up separately). The homepage link still points at
-  `/stuff/quiz`, but you'll need to either drop that app into
-  `public/stuff/quiz/` here, or keep it deployed elsewhere and add a rewrite
-  in `next.config.js` pointing at it.
+- **Student Quiz / Revision Material** are placeholder rows in the
+  `/stuff` list right now (no link, marked "building"). Once either is
+  real, give it an `href` in `app/page.tsx` and drop the `is-building`
+  class + `status-building` tag so it matches Randomizer's styling.
 - **`/randomizer`** is carried over untouched — same PWA files, byte for
   byte, just moved into `public/randomizer/`.
 - **Spotify playlist ID** lives at the top of `components/VibeCard.tsx` if
   you ever swap playlists.
-- **Recommend card copy** (Songs/Movies/Read/Think) is inline in
+- **Recommend card copy** (Songs/Movies/Read/Think/Prayer) is inline in
   `app/page.tsx`, marked `// EDIT ME`.
-- **Prayer option text** lives in `components/PraySection.tsx`, also marked
-  `// EDIT ME`.
 
 ## Notes on the animation
 

@@ -165,19 +165,6 @@ hr.rule-2 {
   animation-delay: 2.85s;
 }
 
-/* --- lead-in line, replaces the old /vibe label --- */
-.keep-busy {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-style: italic;
-  color: var(--dim);
-  font-size: 0.88rem;
-  margin: 0 0 0.9rem;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: fadeUp 0.7s ease forwards;
-  animation-delay: 2.35s;
-}
-
 /* --- /vibe bento --- */
 .bento {
   display: flex;
@@ -285,120 +272,6 @@ hr.rule-2 {
   color: var(--dim);
   font-size: 0.85rem;
   line-height: 1.55;
-}
-
-/* --- pray card --- */
-.pray-card {
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  margin-bottom: 2.25rem;
-  overflow: hidden;
-  opacity: 0;
-  animation: fadeUp 0.7s ease forwards;
-  animation-delay: 2.6s;
-}
-
-.pray-trigger {
-  all: unset;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1.05rem 1.1rem;
-  transition: background 0.2s ease;
-}
-
-.pray-trigger:hover,
-.pray-trigger:focus-visible {
-  background: rgba(201, 161, 90, 0.05);
-}
-
-.pray-trigger:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: -2px;
-}
-
-.pray-icon {
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-.pray-title {
-  display: block;
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  color: var(--ink);
-  font-size: 1rem;
-}
-
-.pray-sub {
-  display: block;
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-style: italic;
-  color: var(--dim);
-  font-size: 0.85rem;
-  margin-top: 0.15rem;
-}
-
-.pray-body {
-  padding: 0 1.1rem 1.15rem;
-}
-
-.pray-prompt {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin: 0.25rem 0 0.85rem;
-}
-
-.pray-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.pray-option {
-  all: unset;
-  cursor: pointer;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 0.78rem;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid var(--rule);
-  border-radius: 20px;
-  color: var(--dim);
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-}
-
-.pray-option:hover,
-.pray-option:focus-visible {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-.pray-option:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-
-.pray-option.is-active {
-  background: rgba(201, 161, 90, 0.12);
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-.pray-answer {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-style: italic;
-  color: var(--ink);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0.9rem 0 0;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--rule);
 }
 
 /* --- /stuff --- */
@@ -539,14 +412,13 @@ footer {
   animation-delay: 3.35s;
 }
 
-.sustains {
+.reach-out {
   font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
   font-style: italic;
-  color: var(--gold);
+  color: var(--dim);
   font-size: 0.88rem;
   text-align: center;
   margin: 0 0 1.1rem;
-  opacity: 0.9;
 }
 
 .footer-row {
@@ -636,11 +508,9 @@ footer {
   .help-yourself,
   .confession,
   .transition,
-  .keep-busy,
   hr,
   .section-label,
   .bento,
-  .pray-card,
   .stuff-intro,
   ul.stuff,
   .closing,
