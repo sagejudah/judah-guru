@@ -1,4 +1,4 @@
-import BrainCanvas from '@/components/BrainCanvas';
+import HeroCanvas from '@/components/HeroCanvas';
 import VibeCard from '@/components/VibeCard';
 import RecommendCard from '@/components/RecommendCard';
 import Year from '@/components/Year';
@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main>
       <div className="content">
-        <BrainCanvas />
+        <HeroCanvas />
 
         <p className="under-construction">still under construction, hey 🙃</p>
         <p className="help-yourself">but help yourself with what you can find.</p>
@@ -65,35 +65,37 @@ export default function Home() {
 
         <hr className="rule-2" />
 
-        <p className="section-label stuff">/stuff</p>
-        <p className="stuff-intro">
-          a small world for my students &mdash; quizzes, tools, revision material. some of it&rsquo;s
-          already live, some of it&rsquo;s still coming together.
-        </p>
-        <ul className="stuff">
-          {/* EDIT ME: flip is-building off once a link is real, and give it an href. */}
-          <li>
-            <a href="/randomizer">
+        <div className="student-world">
+          <p className="section-label stuff">/stuff</p>
+          <p className="stuff-intro">
+            a small world for my students &mdash; quizzes, tools, revision material. some of it&rsquo;s
+            already live, some of it&rsquo;s still coming together.
+          </p>
+          <ul className="stuff">
+            {/* EDIT ME: flip is-building off once a link is real, and give it an href. */}
+            <li>
+              <a href="/randomizer">
+                <span className="stuff-name">
+                  <span className="arrow">→</span> Randomizer
+                  <span className="status status-live">live</span>
+                </span>
+                <span className="stuff-path">/randomizer</span>
+              </a>
+            </li>
+            <li className="stuff-row is-building">
               <span className="stuff-name">
-                <span className="arrow">→</span> Randomizer
-                <span className="status status-live">live</span>
+                <span className="arrow">→</span> Student Quiz
+                <span className="status status-building">building</span>
               </span>
-              <span className="stuff-path">/randomizer</span>
-            </a>
-          </li>
-          <li className="stuff-row is-building">
-            <span className="stuff-name">
-              <span className="arrow">→</span> Student Quiz
-              <span className="status status-building">building</span>
-            </span>
-          </li>
-          <li className="stuff-row is-building">
-            <span className="stuff-name">
-              <span className="arrow">→</span> Revision Material
-              <span className="status status-building">building</span>
-            </span>
-          </li>
-        </ul>
+            </li>
+            <li className="stuff-row is-building">
+              <span className="stuff-name">
+                <span className="arrow">→</span> Revision Material
+                <span className="status status-building">building</span>
+              </span>
+            </li>
+          </ul>
+        </div>
 
         <p className="closing">
           Anyway.

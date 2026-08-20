@@ -19,6 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <div className="ambient" aria-hidden="true">
+          <span className="blob blob-gold" />
+          <span className="blob blob-rose" />
+        </div>
+
         <svg className="grain" aria-hidden="true">
           <filter id="noise">
             <feTurbulence
