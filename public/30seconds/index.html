@@ -9,14 +9,15 @@
 <style>
 :root{--bg:#f4f5f7;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#15803d;--danger:#dc2626;--radius:22px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;height:100vh;height:100dvh;overflow:hidden}
 button,input,textarea{font:inherit} button{cursor:pointer;border:0}
-.app{max-width:520px;margin:auto;min-height:100vh;padding:18px 16px 34px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.app{max-width:520px;margin:auto;height:100vh;height:100dvh;padding:18px 16px 34px;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-shrink:0}
 .logo{font-weight:900;font-size:24px;letter-spacing:-1px}
 .logo span{color:var(--danger)}
 .icon{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--line);font-size:20px}
-.screen{display:none}.screen.active{display:block}
+.screen{display:none}.screen.active{display:block;flex:1;min-height:0;overflow-y:auto}
+#game.screen.active{display:flex;flex-direction:column}
 .hero{padding:22px 4px 18px}.hero h1{font-size:42px;line-height:.95;margin:0 0 10px;letter-spacing:-2px}.hero p{color:var(--muted);margin:0}
 .menu{display:grid;gap:12px}
 .btn{width:100%;min-height:56px;border-radius:16px;padding:14px 18px;font-weight:800;background:var(--accent);color:#fff}
@@ -32,18 +33,19 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 .list-item,.score-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .list-item:last-child,.score-item:last-child{border-bottom:0}
 .badge{font-size:12px;background:#f3f4f6;border-radius:999px;padding:6px 9px;color:var(--muted)}
-.game-top{text-align:center}
-.timer{font-size:72px;font-weight:950;line-height:1;letter-spacing:-4px;margin:8px 0 4px}
+.game-top{text-align:center;flex-shrink:0}
+.timer{font-size:clamp(44px,9vh,72px);font-weight:950;line-height:1;letter-spacing:-4px;margin:6px 0 4px}
 .timer.warn{color:var(--danger)}
 .turn{font-weight:800;color:var(--muted)}
-.progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:16px 0}
+.progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:12px 0}
 .progress>div{height:100%;background:var(--accent);width:100%;transition:width 1s linear}
-.words{display:grid;gap:10px;margin:18px 0}
-.word{min-height:72px;border-radius:18px;background:#fff;border:2px solid var(--line);font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;transition:.12s}
+.words{display:grid;grid-template-rows:repeat(5,1fr);gap:8px;margin:12px 0;flex:1;min-height:0}
+.word{min-height:0;border-radius:16px;background:#fff;border:2px solid var(--line);font-size:clamp(15px,3.4vh,22px);font-weight:900;display:flex;align-items:center;justify-content:center;padding:8px;text-align:center;transition:.12s}
 .word.correct{background:#dcfce7;border-color:#22c55e;color:#166534;text-decoration:line-through;transform:scale(.98)}
 .word.disabled{opacity:.55}
-.round-score{text-align:center;font-size:16px;font-weight:800;color:var(--muted)}
+.round-score{text-align:center;font-size:16px;font-weight:800;color:var(--muted);flex-shrink:0}
 .round-score strong{color:var(--text);font-size:24px}
+#game .btn{flex-shrink:0}
 .center{text-align:center}
 .big-number{font-size:60px;font-weight:950;letter-spacing:-3px}
 .hidden{display:none!important}
@@ -53,7 +55,7 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 .settings-line{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
 .switch{width:52px;height:30px;border-radius:99px;background:#d1d5db;padding:3px}.switch i{display:block;width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s}.switch.on{background:#111827}.switch.on i{transform:translateX(22px)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 16px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateX(-50%)}
-@media(max-width:380px){.hero h1{font-size:36px}.timer{font-size:62px}}
+@media(max-width:380px){.hero h1{font-size:36px}}
 </style>
 </head>
 <body>
