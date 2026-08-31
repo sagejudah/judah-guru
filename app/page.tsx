@@ -82,6 +82,15 @@ export default function Home() {
                 <span className="stuff-path">/randomizer</span>
               </a>
             </li>
+            <li>
+              <a href="/30seconds">
+                <span className="stuff-name">
+                  <span className="arrow">→</span> 30 Seconds
+                  <span className="status status-live">live</span>
+                </span>
+                <span className="stuff-path">/30seconds</span>
+              </a>
+            </li>
             <li className="stuff-row is-building">
               <span className="stuff-name">
                 <span className="arrow">→</span> Student Quiz
