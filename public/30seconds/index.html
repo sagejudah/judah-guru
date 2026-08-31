@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>30 Seconds — Word Game</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--good:#15803d;--danger:#dc2626;--radius:22px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input,textarea{font:inherit} button{cursor:pointer;border:0}
+.app{max-width:520px;margin:auto;min-height:100vh;padding:18px 16px 34px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.logo{font-weight:900;font-size:24px;letter-spacing:-1px}
+.logo span{color:var(--danger)}
+.icon{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--line);font-size:20px}
+.screen{display:none}.screen.active{display:block}
+.hero{padding:22px 4px 18px}.hero h1{font-size:42px;line-height:.95;margin:0 0 10px;letter-spacing:-2px}.hero p{color:var(--muted);margin:0}
+.menu{display:grid;gap:12px}
+.btn{width:100%;min-height:56px;border-radius:16px;padding:14px 18px;font-weight:800;background:var(--accent);color:#fff}
+.btn.secondary{background:var(--card);color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#fee2e2;color:#991b1b}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+label{display:block;font-weight:800;margin:0 0 7px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#fafafa;border-radius:14px;padding:13px 14px;outline:none}
+textarea{min-height:300px;resize:vertical;line-height:1.5}
+.small{font-size:13px;color:var(--muted)}
+.title{font-size:28px;font-weight:900;letter-spacing:-1px;margin:4px 0 16px}
+.list-item,.score-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.list-item:last-child,.score-item:last-child{border-bottom:0}
+.badge{font-size:12px;background:#f3f4f6;border-radius:999px;padding:6px 9px;color:var(--muted)}
+.game-top{text-align:center}
+.timer{font-size:72px;font-weight:950;line-height:1;letter-spacing:-4px;margin:8px 0 4px}
+.timer.warn{color:var(--danger)}
+.turn{font-weight:800;color:var(--muted)}
+.progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:16px 0}
+.progress>div{height:100%;background:var(--accent);width:100%;transition:width 1s linear}
+.words{display:grid;gap:10px;margin:18px 0}
+.word{min-height:72px;border-radius:18px;background:#fff;border:2px solid var(--line);font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;transition:.12s}
+.word.correct{background:#dcfce7;border-color:#22c55e;color:#166534;text-decoration:line-through;transform:scale(.98)}
+.word.disabled{opacity:.55}
+.round-score{text-align:center;font-size:16px;font-weight:800;color:var(--muted)}
+.round-score strong{color:var(--text);font-size:24px}
+.center{text-align:center}
+.big-number{font-size:60px;font-weight:950;letter-spacing:-3px}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:10}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:24px;padding:20px;width:min(520px,100%);max-height:85vh;overflow:auto}
+.settings-line{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+.switch{width:52px;height:30px;border-radius:99px;background:#d1d5db;padding:3px}.switch i{display:block;width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s}.switch.on{background:#111827}.switch.on i{transform:translateX(22px)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 16px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:380px){.hero h1{font-size:36px}.timer{font-size:62px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo">30<span>SEC</span></div>
+  <button class="icon" onclick="openSettings()">⚙️</button>
+</header>
+
+<section id="home" class="screen active">
+  <div class="hero"><h1>Guess fast.<br>Score big.</h1><p>A 30-second word game for friends, family and teams.</p></div>
+  <div class="menu">
+    <button class="btn" onclick="show('setup')">▶ Quick Game</button>
+    <button class="btn secondary" onclick="show('create')">＋ Create List</button>
+    <button class="btn secondary" onclick="show('lists')">▤ My Lists</button>
+    <button class="btn secondary" onclick="show('scores')">🏆 Scores</button>
+  </div>
+</section>
+
+<section id="create" class="screen">
+  <div class="title">Create list</div>
+  <div class="card">
+    <label>List name</label>
+    <input id="listName" placeholder="e.g. General, Movies, Botswana...">
+  </div>
+  <div class="card">
+    <label>Paste words</label>
+    <textarea id="wordInput" placeholder="One word per line&#10;&#10;apple&#10;elephant&#10;football&#10;mountain&#10;guitar"></textarea>
+    <div class="small" style="margin-top:8px"><span id="wordCount">0</span> usable words · 200+ recommended</div>
+  </div>
+  <div class="row">
+    <button class="btn secondary" onclick="show('home')">Back</button>
+    <button class="btn" onclick="saveList()">Save list</button>
+  </div>
+</section>
+
+<section id="lists" class="screen">
+  <div class="title">My lists</div>
+  <div id="listContainer" class="card"></div>
+  <button class="btn secondary" onclick="show('home')">Back</button>
+</section>
+
+<section id="setup" class="screen">
+  <div class="title">New game</div>
+  <div class="card">
+    <label>Word list</label>
+    <select id="gameList"></select>
+  </div>
+  <div class="card">
+    <label>Players / teams</label>
+    <input id="players" placeholder="e.g. John, Sarah, Team A" value="Player 1, Player 2">
+    <div class="small" style="margin-top:8px">Separate names with commas.</div>
+  </div>
+  <div class="card">
+    <label>Rounds per player</label>
+    <select id="rounds"><option>5</option><option>10</option><option selected>15</option><option>20</option></select>
+  </div>
+  <div class="row">
+    <button class="btn secondary" onclick="show('home')">Back</button>
+    <button class="btn" onclick="startGame()">Start game</button>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="game-top">
+    <div class="turn" id="turnLabel"></div>
+    <div id="timer" class="timer">30</div>
+    <div class="progress"><div id="progress"></div></div>
+  </div>
+  <div id="words" class="words"></div>
+  <div class="round-score">Round: <strong id="roundPoints">0</strong> / 5</div>
+  <button id="finishBtn" class="btn" style="margin-top:16px" onclick="finishRound()">End round</button>
+</section>
+
+<section id="roundEnd" class="screen">
+  <div class="card center">
+    <div class="small">ROUND COMPLETE</div>
+    <div class="title" id="roundPlayer"></div>
+    <div class="big-number" id="earned">+0</div>
+    <p class="small">points this round</p>
+    <div class="card" style="margin-top:18px;margin-bottom:0">
+      <div class="small" style="text-align:left;margin-bottom:4px">ALL SCORES</div>
+      <div id="roundScores"></div>
+    </div>
+  </div>
+  <button class="btn" id="nextBtn" onclick="nextRound()">Next player</button>
+</section>
+
+<section id="final" class="screen">
+  <div class="hero center"><div class="small">GAME OVER</div><h1>Final<br>scores.</h1></div>
+  <div id="finalScores" class="card"></div>
+  <button class="btn" onclick="show('setup')">Play again</button>
+  <button class="btn secondary" style="margin-top:10px" onclick="show('home')">Home</button>
+</section>
+
+<section id="scores" class="screen">
+  <div class="title">Scores</div>
+  <div id="scoresContainer" class="card"></div>
+  <button class="btn secondary" onclick="show('home')">Back</button>
+</section>
+</div>
+
+<div id="settingsModal" class="modal" onclick="if(event.target===this)closeSettings()">
+ <div class="modal-box">
+  <div class="title">Settings</div>
+  <div class="settings-line"><span>Sound effects</span><button id="soundSwitch" class="switch on" onclick="toggleSound()"><i></i></button></div>
+  <div class="settings-line"><span>Countdown ticking</span><button id="tickSwitch" class="switch on" onclick="toggleTick()"><i></i></button></div>
+  <button class="btn danger" style="margin-top:18px" onclick="abortGame()">Abort game</button>
+  <button class="btn" style="margin-top:10px" onclick="closeSettings()">Done</button>
+ </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='thirtySecondsDataV1';
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ lists:[{id:'default',name:'General',words:[
+ 'Apple','Elephant','Football','Guitar','Mountain','River','Camera','Banana','School','Doctor',
+ 'Window','Rocket','Ocean','Garden','Robot','Pencil','Castle','Dragon','Pizza','Train',
+ 'Sun','Moon','Book','Chair','Phone','Bridge','Tiger','Lion','Dolphin','Airplane',
+ 'Bottle','Rainbow','Jacket','Mirror','Bicycle','Coffee','Island','Thunder','Computer','Diamond'
+ ]}],
+ games:[],sound:true,tick:true
+};
+let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,time:30,roundNumber:0};
+
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function show(id){
+ document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ if(id==='lists')renderLists();
+ if(id==='scores')renderScores();
+ if(id==='setup')renderSetup();
+ window.scrollTo(0,0);
+}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+document.getElementById('wordInput').addEventListener('input',updateCount);
+function updateCount(){let words=document.getElementById('wordInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);document.getElementById('wordCount').textContent=words.length}
+function saveList(){
+ let name=document.getElementById('listName').value.trim()||'Untitled list';
+ let words=document.getElementById('wordInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(words.length<1){toast('Add at least one word');return}
+ let list={id:Date.now().toString(),name,words};
+ data.lists.push(list);save();
+ document.getElementById('listName').value='';document.getElementById('wordInput').value='';updateCount();
+ toast('List saved');show('lists');
+}
+function renderLists(){
+ let c=document.getElementById('listContainer');
+ c.innerHTML=data.lists.map(l=>`<div class="list-item"><div><strong>${esc(l.name)}</strong><div class="small">${l.words.length} words</div></div><button class="badge" onclick="deleteList('${l.id}')">Delete</button></div>`).join('');
+}
+function deleteList(id){if(id==='default'){toast('The default list cannot be deleted');return}if(confirm('Delete this list?')){data.lists=data.lists.filter(x=>x.id!==id);save();renderLists()}}
+function renderSetup(){
+ document.getElementById('gameList').innerHTML=data.lists.map(l=>`<option value="${l.id}">${esc(l.name)} (${l.words.length})</option>`).join('');
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function refillDeck(){
+ let words=[...game.list.words];
+ // For lists smaller than 5, repeat only as necessary so every round still has 5 slots.
+ if(words.length<5){while(words.length<5)words.push(...game.list.words)}
+ game.deck=shuffle(words);
+}
+function startGame(){
+ let names=document.getElementById('players').value.split(',').map(x=>x.trim()).filter(Boolean);
+ if(!names.length){toast('Add at least one player');return}
+ game.players=names;game.scores={};names.forEach(n=>game.scores[n]=0);
+ game.list=data.lists.find(x=>x.id===document.getElementById('gameList').value)||data.lists[0];
+ game.roundsPerPlayer=+document.getElementById('rounds').value;game.playerIndex=0;game.roundNumber=0;refillDeck();
+ beginRound();playBeep('start');
+}
+function beginRound(){
+ if(game.deck.length<5)refillDeck();
+ game.currentWords=game.deck.splice(0,5);game.correct=0;game.time=30;game.roundNumber++;
+ document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
+ document.getElementById('roundPoints').textContent='0';
+ document.getElementById('finishBtn').textContent='End round';
+ renderWords();show('game');startTimer();
+}
+function renderWords(){
+ document.getElementById('words').innerHTML=game.currentWords.map((w,i)=>`<button class="word" id="word${i}" onclick="markCorrect(${i})">${esc(w)}</button>`).join('');
+}
+function markCorrect(i){
+ let b=document.getElementById('word'+i);if(b.classList.contains('correct'))return;
+ b.classList.add('correct');game.correct++;document.getElementById('roundPoints').textContent=game.correct;playBeep('correct');
+ if(game.correct===5)setTimeout(()=>finishRound(),250);
+}
+function startTimer(){
+ clearInterval(game.timer);updateTimer();
+ game.timer=setInterval(()=>{game.time--;updateTimer();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');finishRound()}},1000);
+}
+function updateTimer(){
+ let e=document.getElementById('timer'),p=document.getElementById('progress');
+ e.textContent=game.time;e.classList.toggle('warn',game.time<=5);p.style.width=(game.time/30*100)+'%';
+}
+function finishRound(){
+ if(!document.getElementById('game').classList.contains('active'))return;
+ clearInterval(game.timer);let p=game.players[game.playerIndex];game.scores[p]+=game.correct;
+ document.getElementById('roundPlayer').textContent=p;
+ document.getElementById('earned').textContent='+'+game.correct;
+ renderRoundScores();
+ let totalRounds=game.players.length*game.roundsPerPlayer;
+ document.getElementById('nextBtn').textContent=(game.roundNumber>=totalRounds)?'See final scores':'Next player';
+ show('roundEnd');
+}
+function renderRoundScores(){
+ let sorted=Object.entries(game.scores).sort((a,b)=>b[1]-a[1]);
+ document.getElementById('roundScores').innerHTML=sorted.map((x,i)=>`<div class="score-item"><span>${i===0?'🥇 ':''}${esc(x[0])}</span><strong>${x[1]}</strong></div>`).join('');
+}
+function nextRound(){
+ let totalRounds=game.players.length*game.roundsPerPlayer;
+ if(game.roundNumber>=totalRounds){finishGame();return}
+ game.playerIndex=(game.playerIndex+1)%game.players.length;beginRound();playBeep('start');
+}
+function finishGame(){
+ data.games.push({date:new Date().toISOString(),scores:{...game.scores},list:game.list.name});
+ if(data.games.length>20)data.games.shift();save();
+ let sorted=Object.entries(game.scores).sort((a,b)=>b[1]-a[1]);
+ document.getElementById('finalScores').innerHTML=sorted.map((x,i)=>`<div class="score-item"><span>${i===0?'🥇 ':''}${esc(x[0])}</span><strong>${x[1]}</strong></div>`).join('');
+ show('final');playBeep('finish');
+}
+function renderScores(){
+ let c=document.getElementById('scoresContainer');
+ if(!data.games.length){c.innerHTML='<div class="center small">No completed games yet.</div>';return}
+ c.innerHTML=[...data.games].reverse().map(g=>`<div style="padding:12px 0;border-bottom:1px solid var(--line)"><strong>${esc(g.list)}</strong><div class="small">${new Date(g.date).toLocaleString()}</div>${Object.entries(g.scores).sort((a,b)=>b[1]-a[1]).map(x=>`<div class="score-item"><span>${esc(x[0])}</span><strong>${x[1]}</strong></div>`).join('')}</div>`).join('');
+}
+function openSettings(){document.getElementById('soundSwitch').classList.toggle('on',data.sound);document.getElementById('tickSwitch').classList.toggle('on',data.tick);document.getElementById('settingsModal').classList.add('show')}
+function closeSettings(){document.getElementById('settingsModal').classList.remove('show')}
+function abortGame(){
+ clearInterval(game.timer);
+ document.getElementById('settingsModal').classList.remove('show');
+ game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,time:30,roundNumber:0};
+ show('home'); toast('Game aborted');
+}
+function toggleSound(){data.sound=!data.sound;save();document.getElementById('soundSwitch').classList.toggle('on',data.sound)}
+function toggleTick(){data.tick=!data.tick;save();document.getElementById('tickSwitch').classList.toggle('on',data.tick)}
+let audioCtx=null;
+function playBeep(type){
+ if(!data.sound)return;
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  let now=audioCtx.currentTime;
+  if(type==='timeout'){
+    [220,165,110].forEach((f,i)=>{
+      let o=audioCtx.createOscillator(),g=audioCtx.createGain();
+      o.type='square';o.frequency.value=f;
+      let t=now+i*.11;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(.22,t+.01);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.28);
+      o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+.3);
+    });
+    return;
+  }
+  let o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=type==='correct'?740:type==='finish'?880:type==='tick'?520:620;
+  o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(type==='tick'?.035:.11,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+(type==='finish'?.35:.14));o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+.4);
+ }catch(e){}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+renderSetup();
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredInstallPrompt=e;
+  if(!document.getElementById('installBtn')){
+    let b=document.createElement('button');b.id='installBtn';b.className='btn secondary';b.textContent='＋ Install app offline';
+    b.onclick=installApp;document.querySelector('#home .menu').appendChild(b);
+  }
+});
+async function installApp(){
+ if(!deferredInstallPrompt)return;
+ deferredInstallPrompt.prompt();
+ await deferredInstallPrompt.userChoice;
+ deferredInstallPrompt=null;
+ document.getElementById('installBtn')?.remove();
+}
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>

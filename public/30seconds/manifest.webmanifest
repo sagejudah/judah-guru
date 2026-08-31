@@ -1,0 +1,9 @@
+{
+  "name": "30 Seconds \u2014 Word Game",
+  "short_name": "30 Seconds",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#111827",
+  "description": "A fast 30-second word guessing party game."
+}
