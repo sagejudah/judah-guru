@@ -169,6 +169,60 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 
 <script>
 const KEY='thirtySecondsDataV1';
+const BUILT_IN_GENERAL=`
+apple banana orange grape mango lemon lime peach pear plum cherry strawberry blueberry raspberry watermelon pineapple coconut avocado tomato potato
+onion garlic ginger carrot cabbage spinach lettuce broccoli cauliflower cucumber pumpkin pepper mushroom bean pea corn rice bread cheese butter milk
+coffee tea juice honey sugar salt pepper biscuit cake pie pizza burger sandwich sausage bacon chicken steak fish prawn egg soup noodle pasta
+lion tiger leopard cheetah elephant giraffe zebra rhino hippo monkey gorilla baboon snake lizard crocodile tortoise frog rabbit mouse squirrel
+dog cat horse donkey cow goat sheep pig camel deer fox wolf bear panda koala kangaroo dolphin whale shark octopus
+eagle hawk owl parrot pigeon flamingo ostrich penguin duck swan chicken rooster butterfly bee ant spider beetle cricket mosquito snail worm
+sun moon star planet comet cloud rainbow thunder lightning rain snow wind storm tornado volcano mountain river ocean island beach desert
+forest jungle valley waterfall lake stream bridge road tunnel airport station harbour village city town country continent map compass globe
+book pencil pen ruler eraser notebook paper scissors glue paint brush camera phone radio television computer keyboard screen speaker printer robot
+school teacher student doctor nurse dentist pilot driver farmer chef baker police soldier firefighter judge lawyer engineer artist singer dancer
+guitar piano violin drum trumpet flute microphone concert cinema theatre museum stadium library church mosque temple hotel restaurant market shop
+shirt trousers jacket dress skirt shoe sock hat scarf glove belt watch necklace ring umbrella suitcase backpack wallet coin key
+bicycle motorcycle scooter car bus taxi truck train airplane helicopter rocket boat ship submarine tractor ambulance skateboard rollerblade wheelchair
+bed chair table sofa cupboard mirror window door curtain carpet pillow blanket lamp clock fan fridge kettle toaster washingmachine vacuum
+football rugby cricket tennis hockey golf boxing wrestling swimming cycling running jumping dancing chess draughts dominoes cards dice puzzle
+king queen prince princess knight wizard pirate astronaut cowboy ninja detective spy monster dragon unicorn mermaid ghost vampire zombie
+garden flower rose tulip sunflower daisy tree leaf branch root seed grass soil stone crystal diamond gold silver bronze copper
+morning afternoon evening midnight yesterday today tomorrow weekend holiday birthday wedding picnic barbecue party festival parade carnival circus magic
+smile laugh cry shout whisper clap wave hug kiss handshake surprise anger fear courage hope dream wish secret joke story
+freedom justice peace friendship family neighbour visitor stranger champion winner captain leader hero genius inventor explorer traveller musician photographer lantern
+`;
+const BUILT_IN_SCIENCE=`
+biology chemistry physics ecology anatomy physiology genetics evolution cell tissue organ organism species habitat population community ecosystem biosphere
+microscope slide coverslip specimen magnification resolution focus objective eyepiece stage diaphragm light mirror scalpel forceps pipette beaker flask
+nucleus cytoplasm membrane cellwall chloroplast vacuole mitochondrion ribosome chromosome gene allele DNA RNA mutation protein enzyme hormone receptor
+diffusion osmosis active-transport respiration photosynthesis transpiration digestion excretion circulation ventilation reproduction fertilisation germination pollination dispersal tropism
+leaf root stem flower fruit seed pollen ovule anther stigma style filament petal sepal xylem phloem stomata guardcell
+heart artery vein capillary blood plasma platelet haemoglobin redcell whitecell pulse valve chamber atrium ventricle oxygen glucose
+brain spinalcord neuron synapse reflex sense organ eye ear skin tongue nose retina iris pupil lens cochlea
+skeleton bone joint muscle tendon ligament cartilage vertebra ribcage skull femur pelvis biceps triceps contraction antagonist posture
+carbohydrate lipid fat oil vitamin mineral fibre starch glycogen aminoacid glucose cellulose sucrose lactose nutrient balanced-diet
+atom element compound mixture molecule ion isotope proton neutron electron nucleus shell valency periodic-table metal nonmetal
+acid alkali base salt neutralisation indicator litmus pH catalyst reactant product equation formula symbol solution solvent solute
+evaporation condensation freezing melting boiling sublimation distillation filtration crystallisation chromatography precipitation combustion oxidation reduction electrolysis
+mass volume density pressure temperature heat energy power work force weight gravity friction momentum acceleration speed velocity distance
+current voltage resistance charge circuit battery cell switch fuse resistor diode transistor conductor insulator electromagnet generator motor
+wave frequency wavelength amplitude vibration sound echo ultrasound light reflection refraction diffraction spectrum prism lens mirror radiation
+magnet magnetic-field pole attraction repulsion induced-magnetism solenoid transformer relay electromagnetism static-electricity charge-earthing potential-difference
+planet satellite orbit rotation revolution galaxy universe solar-system asteroid meteor meteorite eclipse tide gravity telescope spacecraft
+foodchain foodweb producer consumer decomposer predator prey competition adaptation camouflage conservation pollution deforestation extinction biodiversity carboncycle
+greenhouse-effect climate-change renewable-energy solar-energy wind-energy hydroelectric geothermal biomass fossil-fuel coal petroleum natural-gas recycling landfill
+investigation hypothesis variable control fair-test observation measurement accuracy precision reliability data graph table conclusion evidence risk-assessment
+epidermis dermis cilium flagellum bacteria virus fungi yeast pathogen antibody antigen vaccine immunity infection disease parasite antibiotic diabetes malaria tuberculosis
+cholera measles influenza asthma cancer obesity anaemia deficiency dehydration temperature-regulation homeostasis metabolism hydrochloric-acid sulfuric-acid nitric-acid sodium-hydroxide calcium-carbonate sodium-chloride copper-sulfate ammonia
+methane ethanol ethanoic-acid polymer monomer alkane alkene alcohol ester crude-oil fraction cracking polymerisation corrosion rust galvanising alloy steel aluminium silicon
+graphite diamond half-life radioactivity alpha beta gamma fission fusion reactor uranium radon background-radiation irradiation contamination dosimeter safety convex concave
+focal-point principal-axis image object magnification ray-diagram incident-ray normal critical-angle total-internal-reflection optical-fibre kinetic-energy potential-energy elastic-energy chemical-energy electrical-energy nuclear-energy thermal-energy efficiency conservation energy-transfer power-station turbine
+`;
+function wordList(text){return [...new Set(text.trim().split(/\s+/).filter(Boolean))].slice(0,400)}
+const BUILT_IN_LISTS=[
+ {id:'default',name:'General — 400 words',words:wordList(BUILT_IN_GENERAL)},
+ {id:'bgcse-science',name:'BGCSE Science — 400 words',words:wordList(BUILT_IN_SCIENCE)}
+];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  lists:[{id:'default',name:'General',words:[
  'Apple','Elephant','Football','Guitar','Mountain','River','Camera','Banana','School','Doctor',
@@ -178,6 +232,14 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  ]}],
  games:[],sound:true,tick:true
 };
+function seedBuiltInLists(){
+ const general=BUILT_IN_LISTS[0],science=BUILT_IN_LISTS[1];
+ const oldGeneral=data.lists.find(l=>l.id==='default');
+ if(!oldGeneral||oldGeneral.words.length<400){data.lists=data.lists.filter(l=>l.id!=='default');data.lists.unshift({...general,words:[...general.words]})}
+ if(!data.lists.some(l=>l.id===science.id))data.lists.push({...science,words:[...science.words]});
+ localStorage.setItem(KEY,JSON.stringify(data));
+}
+seedBuiltInLists();
 let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,time:30,roundNumber:0};
 
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
