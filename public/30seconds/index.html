@@ -64,7 +64,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
   <div class="logo">30<span>SEC</span></div>
   <button class="icon" onclick="openSettings()">⚙️</button>
 </header>
-
 <section id="home" class="screen active">
   <div class="hero"><h1>Guess fast.<br>Score big.</h1><p>A 30-second word game for friends, family and teams.</p></div>
   <div class="menu">
@@ -74,7 +73,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
     <button class="btn secondary" onclick="show('scores')">🏆 Scores</button>
   </div>
 </section>
-
 <section id="create" class="screen">
   <div class="title">Create list</div>
   <div class="card">
@@ -91,13 +89,11 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
     <button class="btn" onclick="saveList()">Save list</button>
   </div>
 </section>
-
 <section id="lists" class="screen">
   <div class="title">My lists</div>
   <div id="listContainer" class="card"></div>
   <button class="btn secondary" onclick="show('home')">Back</button>
 </section>
-
 <section id="setup" class="screen">
   <div class="title">New game</div>
   <div class="card">
@@ -118,7 +114,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
     <button class="btn" onclick="startGame()">Start game</button>
   </div>
 </section>
-
 <section id="ready" class="screen">
   <div class="hero center">
     <p class="small">GET READY</p>
@@ -126,7 +121,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
     <div class="big-number" id="readyCount">3</div>
   </div>
 </section>
-
 <section id="game" class="screen">
   <div class="game-top">
     <div class="turn" id="turnLabel"></div>
@@ -137,7 +131,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
   <div class="round-score">Round: <strong id="roundPoints">0</strong> / 5</div>
   <button id="finishBtn" class="btn" style="margin-top:16px" onclick="finishRound()">End round</button>
 </section>
-
 <section id="roundEnd" class="screen">
   <div class="card center">
     <div class="small">ROUND COMPLETE</div>
@@ -153,21 +146,18 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
   <button class="btn" id="nextBtn" onclick="nextRound()">Next player</button>
   <p class="small center" id="nextPlayerHint" style="margin-top:12px"></p>
 </section>
-
 <section id="final" class="screen">
   <div class="hero center"><div class="small">GAME OVER</div><h1>Final<br>scores.</h1></div>
   <div id="finalScores" class="card"></div>
   <button class="btn" onclick="show('setup')">Play again</button>
   <button class="btn secondary" style="margin-top:10px" onclick="show('home')">Home</button>
 </section>
-
 <section id="scores" class="screen">
   <div class="title">Scores</div>
   <div id="scoresContainer" class="card"></div>
   <button class="btn secondary" onclick="show('home')">Back</button>
 </section>
 </div>
-
 <div id="settingsModal" class="modal" onclick="if(event.target===this)closeSettings()">
  <div class="modal-box">
   <div class="title">Settings</div>
@@ -178,7 +168,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
  </div>
 </div>
 <div id="toast" class="toast"></div>
-
 <script>
 const KEY='thirtySecondsDataV1';
 const BUILT_IN_GENERAL=`
@@ -260,7 +249,6 @@ function seedBuiltInLists(){
 }
 seedBuiltInLists();
 let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],selected:[],timer:null,readyTimer:null,time:30,roundNumber:0,locked:false,stage:null,endsAt:null};
-
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function saveGame(){
  if(!game.stage){data.activeGame=null;save();return}
@@ -338,6 +326,7 @@ function renderWords(){
 function updateRoundPoints(){document.getElementById('roundPoints').textContent=game.selected.filter(Boolean).length}
 function toggleWord(i){
  let b=document.getElementById('word'+i);if(game.locked)return;
+ let b=document.getElementById('word'+i);
  game.selected[i]=!game.selected[i];b.classList.toggle('correct',game.selected[i]);updateRoundPoints();saveGame();
  if(game.selected[i])playBeep('correct');
 }
