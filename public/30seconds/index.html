@@ -236,12 +236,13 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  games:[],sound:true,tick:true
 let storedData=null;
 try{storedData=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+if(!storedData||typeof storedData!=='object')storedData={};
 let data={
- lists:Array.isArray(storedData?.lists)?storedData.lists:[],
- games:Array.isArray(storedData?.games)?storedData.games:[],
- sound:storedData?.sound!==false,
- tick:storedData?.tick!==false,
- activeGame:storedData?.activeGame||null
+ lists:Array.isArray(storedData.lists)?storedData.lists.filter(x=>x&&typeof x==='object'&&Array.isArray(x.words)):[],
+ games:Array.isArray(storedData.games)?storedData.games:[],
+ sound:storedData.sound!==false,
+ tick:storedData.tick!==false,
+ activeGame:storedData.activeGame||null
 };
 function seedBuiltInLists(){
  // Never remove user-created lists. Only add or refresh the supplied decks.
@@ -255,10 +256,12 @@ function seedBuiltInLists(){
  const custom=data.lists.filter(l=>!BUILT_IN_LISTS.some(b=>b.id===l.id));
  data.lists=[...supplied,...custom];
  localStorage.setItem(KEY,JSON.stringify(data));
+ save();
 }
 seedBuiltInLists();
 let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],selected:[],timer:null,readyTimer:null,time:30,roundNumber:0,locked:false,stage:null,endsAt:null};
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function saveGame(){
  if(!game.stage){data.activeGame=null;save();return}
  data.activeGame={players:game.players,scores:game.scores,listId:game.list.id,deck:game.deck,playerIndex:game.playerIndex,roundsPerPlayer:game.roundsPerPlayer,currentWords:game.currentWords,selected:game.selected,time:game.time,roundNumber:game.roundNumber,locked:game.locked,stage:game.stage,endsAt:game.endsAt};
