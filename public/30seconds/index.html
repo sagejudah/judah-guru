@@ -148,6 +148,7 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
     </div>
   </div>
   <button class="btn" id="nextBtn" onclick="nextRound()">Next player</button>
+  <p class="small center" id="nextPlayerHint" style="margin-top:12px"></p>
 </section>
 
 <section id="final" class="screen">
@@ -337,7 +338,9 @@ function finishRound(){
  document.getElementById('earned').textContent='+'+game.correct;
  renderRoundScores();
  let totalRounds=game.players.length*game.roundsPerPlayer;
- document.getElementById('nextBtn').textContent=(game.roundNumber>=totalRounds)?'See final scores':'Next player';
+ let isLast=game.roundNumber>=totalRounds;
+ document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
+ document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
  show('roundEnd');
 }
 function renderRoundScores(){
