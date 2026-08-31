@@ -141,6 +141,7 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 <section id="roundEnd" class="screen">
   <div class="card center">
     <div class="small">ROUND COMPLETE</div>
+    <div class="small" id="roundEndProgress"></div>
     <div class="title" id="roundPlayer"></div>
     <div class="big-number" id="earned">+0</div>
     <p class="small">points this round</p>
@@ -231,8 +232,10 @@ focal-point principal-axis image object magnification ray-diagram incident-ray n
 `;
 function wordList(text){return [...new Set(text.trim().split(/\s+/).filter(Boolean))].slice(0,400)}
 const BUILT_IN_LISTS=[
- {id:'default',name:'General — 400 words',words:wordList(BUILT_IN_GENERAL)},
- {id:'bgcse-science',name:'BGCSE Science — 400 words',words:wordList(BUILT_IN_SCIENCE)}
+ {id:'default',name:'General 1',words:wordList(BUILT_IN_GENERAL)},
+ {id:'bgcse-science',name:'BGCSE Science 1',words:wordList(BUILT_IN_SCIENCE)},
+ {id:'general-2',name:'General 2',words:wordList(BUILT_IN_GENERAL)},
+ {id:'bgcse-science-2',name:'BGCSE Science 2',words:wordList(BUILT_IN_SCIENCE)}
 ];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  lists:[{id:'default',name:'General',words:[
@@ -244,10 +247,15 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  games:[],sound:true,tick:true
 };
 function seedBuiltInLists(){
- const general=BUILT_IN_LISTS[0],science=BUILT_IN_LISTS[1];
- const oldGeneral=data.lists.find(l=>l.id==='default');
- if(!oldGeneral||oldGeneral.words.length<400){data.lists=data.lists.filter(l=>l.id!=='default');data.lists.unshift({...general,words:[...general.words]})}
- if(!data.lists.some(l=>l.id===science.id))data.lists.push({...science,words:[...science.words]});
+ // Never remove user-created lists. Only add or refresh the supplied decks.
+ BUILT_IN_LISTS.forEach(list=>{
+   const existing=data.lists.find(l=>l.id===list.id);
+   if(existing){existing.name=list.name;existing.words=[...list.words]}
+   else data.lists.push({...list,words:[...list.words]});
+ });
+ const supplied=BUILT_IN_LISTS.map(list=>data.lists.find(l=>l.id===list.id));
+ const custom=data.lists.filter(l=>!BUILT_IN_LISTS.some(b=>b.id===l.id));
+ data.lists=[...supplied,...custom];
  localStorage.setItem(KEY,JSON.stringify(data));
 }
 seedBuiltInLists();
@@ -313,10 +321,12 @@ function showReady(){
  let n=3;document.getElementById('readyCount').textContent=n;show('ready');playBeep('tick');saveGame();
  game.readyTimer=setInterval(()=>{n--;if(n<=0){clearInterval(game.readyTimer);beginRound()}else{document.getElementById('readyCount').textContent=n;playBeep('tick')}},1000);
 }
+function roundProgress(){return `Round ${Math.ceil(game.roundNumber/game.players.length)} of ${game.roundsPerPlayer}`}
+function setTurnLabel(){document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · ${roundProgress()}`}
 function beginRound(){
  if(game.deck.length<5){toast('Not enough unused words left — the game is complete.');finishGame();return}
  game.currentWords=game.deck.splice(0,5);game.selected=[false,false,false,false,false];game.time=30;game.roundNumber++;game.locked=false;game.stage='playing';game.endsAt=Date.now()+30000;
- document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
+ setTurnLabel();
  document.getElementById('roundPoints').textContent='0';
  document.getElementById('finishBtn').textContent='End round';
  renderWords();show('game');playBeep('start');saveGame();startTimer();
@@ -335,7 +345,7 @@ function startTimer(){
  clearInterval(game.timer);updateTimer();
  game.timer=setInterval(()=>{game.time=Math.max(0,Math.ceil((game.endsAt-Date.now())/1000));updateTimer();saveGame();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');timeUp()}},250);
 }
-function timeUp(){game.time=0;game.locked=true;game.stage='timeup';game.endsAt=null;document.getElementById('turnLabel').textContent="Time's up — check the words below, then continue";document.getElementById('finishBtn').textContent='See results';saveGame()}
+function timeUp(){game.time=0;game.locked=true;game.stage='timeup';game.endsAt=null;document.getElementById('turnLabel').textContent=`${roundProgress()} · Time's up — check the words below, then continue`;document.getElementById('finishBtn').textContent='See results';saveGame()}
 function updateTimer(){
  let e=document.getElementById('timer'),p=document.getElementById('progress');
  e.textContent=game.time;e.classList.toggle('warn',game.time<=5);p.style.width=(game.time/30*100)+'%';
@@ -345,6 +355,7 @@ function finishRound(){
  clearInterval(game.timer);game.stage='roundEnd';game.endsAt=null;let p=game.players[game.playerIndex];let earned=game.selected.filter(Boolean).length;game.scores[p]+=earned;
  document.getElementById('roundPlayer').textContent=p;
  document.getElementById('earned').textContent='+'+earned;
+ document.getElementById('roundEndProgress').textContent=roundProgress();
  renderRoundScores();
  let totalRounds=game.players.length*game.roundsPerPlayer;
  let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
@@ -410,7 +421,7 @@ function playBeep(type){
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function drawRoundEnd(){
  let p=game.players[game.playerIndex],earned=game.selected.filter(Boolean).length,totalRounds=game.players.length*game.roundsPerPlayer;
- document.getElementById('roundPlayer').textContent=p;document.getElementById('earned').textContent='+'+earned;renderRoundScores();
+ document.getElementById('roundPlayer').textContent=p;document.getElementById('earned').textContent='+'+earned;document.getElementById('roundEndProgress').textContent=roundProgress();renderRoundScores();
  let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
  document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
  document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
@@ -424,7 +435,7 @@ function restoreGame(){
  if(game.stage==='ready'){showReady();return}
  if(game.stage==='playing'||game.stage==='timeup'){
    game.time=game.endsAt?Math.max(0,Math.ceil((game.endsAt-Date.now())/1000)):0;
-   document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
+   setTurnLabel();
    document.getElementById('finishBtn').textContent='End round';renderWords();show('game');updateTimer();
    if(game.time<=0){timeUp()}else{game.stage='playing';game.locked=false;startTimer()}
  }
