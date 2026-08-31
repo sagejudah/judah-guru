@@ -45,7 +45,6 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 .word.disabled{opacity:.55}
 .round-score{text-align:center;font-size:16px;font-weight:800;color:var(--muted);flex-shrink:0}
 .round-score strong{color:var(--text);font-size:24px}
-#game .btn{flex-shrink:0}
 .center{text-align:center}
 .big-number{font-size:60px;font-weight:950;letter-spacing:-3px}
 .hidden{display:none!important}
@@ -55,6 +54,7 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 .settings-line{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
 .switch{width:52px;height:30px;border-radius:99px;background:#d1d5db;padding:3px}.switch i{display:block;width:24px;height:24px;background:#fff;border-radius:50%;transition:.2s}.switch.on{background:#111827}.switch.on i{transform:translateX(22px)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 16px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateX(-50%)}
+#game .btn{flex-shrink:0}
 @media(max-width:380px){.hero h1{font-size:36px}}
 </style>
 </head>
@@ -251,9 +251,15 @@ function seedBuiltInLists(){
  localStorage.setItem(KEY,JSON.stringify(data));
 }
 seedBuiltInLists();
-let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0,locked:false};
+let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],selected:[],timer:null,readyTimer:null,time:30,roundNumber:0,locked:false,stage:null,endsAt:null};
 
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function saveGame(){
+ if(!game.stage){data.activeGame=null;save();return}
+ data.activeGame={players:game.players,scores:game.scores,listId:game.list.id,deck:game.deck,playerIndex:game.playerIndex,roundsPerPlayer:game.roundsPerPlayer,currentWords:game.currentWords,selected:game.selected,time:game.time,roundNumber:game.roundNumber,locked:game.locked,stage:game.stage,endsAt:game.endsAt};
+ save();
+}
+function clearSavedGame(){data.activeGame=null;save()}
 function show(id){
  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
  document.getElementById(id).classList.add('active');
@@ -282,11 +288,15 @@ function deleteList(id){if(id==='default'){toast('The default list cannot be del
 function renderSetup(){
  document.getElementById('gameList').innerHTML=data.lists.map(l=>`<option value="${l.id}">${esc(l.name)} (${l.words.length})</option>`).join('');
 }
-function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function shuffle(a){
+ const copy=[...a];
+ if(crypto?.getRandomValues){for(let i=copy.length-1;i>0;i--){const n=new Uint32Array(1);crypto.getRandomValues(n);const j=n[0]%(i+1);[copy[i],copy[j]]=[copy[j],copy[i]]}}
+ else{for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}}
+ return copy;
+}
 function refillDeck(){
  let words=[...game.list.words];
- // For lists smaller than 5, repeat only as necessary so every round still has 5 slots.
- if(words.length<5){while(words.length<5)words.push(...game.list.words)}
+ // A deck is shuffled once per game and never refilled during it: no repeats.
  game.deck=shuffle(words);
 }
 function startGame(){
@@ -298,57 +308,49 @@ function startGame(){
  showReady();
 }
 function showReady(){
- clearInterval(game.readyTimer);
+ clearInterval(game.readyTimer);game.stage='ready';game.endsAt=null;
  document.getElementById('readyName').textContent=game.players[game.playerIndex];
- let n=3;
- document.getElementById('readyCount').textContent=n;
- show('ready');playBeep('tick');
- game.readyTimer=setInterval(()=>{
-  n--;
-  if(n<=0){clearInterval(game.readyTimer);beginRound()}
-  else{document.getElementById('readyCount').textContent=n;playBeep('tick')}
- },1000);
+ let n=3;document.getElementById('readyCount').textContent=n;show('ready');playBeep('tick');saveGame();
+ game.readyTimer=setInterval(()=>{n--;if(n<=0){clearInterval(game.readyTimer);beginRound()}else{document.getElementById('readyCount').textContent=n;playBeep('tick')}},1000);
 }
 function beginRound(){
- if(game.deck.length<5)refillDeck();
- game.currentWords=game.deck.splice(0,5);game.correct=0;game.time=30;game.roundNumber++;game.locked=false;
+ if(game.deck.length<5){toast('Not enough unused words left — the game is complete.');finishGame();return}
+ game.currentWords=game.deck.splice(0,5);game.selected=[false,false,false,false,false];game.time=30;game.roundNumber++;game.locked=false;game.stage='playing';game.endsAt=Date.now()+30000;
  document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
  document.getElementById('roundPoints').textContent='0';
  document.getElementById('finishBtn').textContent='End round';
- renderWords();show('game');playBeep('start');startTimer();
+ renderWords();show('game');playBeep('start');saveGame();startTimer();
 }
 function renderWords(){
- document.getElementById('words').innerHTML=game.currentWords.map((w,i)=>`<button class="word" id="word${i}" onclick="markCorrect(${i})">${esc(w)}</button>`).join('');
+ document.getElementById('words').innerHTML=game.currentWords.map((w,i)=>`<button class="word ${game.selected[i]?'correct':''}" id="word${i}" onclick="toggleWord(${i})">${esc(w)}</button>`).join('');
+ updateRoundPoints();
 }
-function markCorrect(i){
- if(game.locked)return;
- let b=document.getElementById('word'+i);if(b.classList.contains('correct'))return;
- b.classList.add('correct');game.correct++;document.getElementById('roundPoints').textContent=game.correct;playBeep('correct');
- if(game.correct===5)setTimeout(()=>finishRound(),250);
+function updateRoundPoints(){document.getElementById('roundPoints').textContent=game.selected.filter(Boolean).length}
+function toggleWord(i){
+ let b=document.getElementById('word'+i);if(game.locked)return;
+ game.selected[i]=!game.selected[i];b.classList.toggle('correct',game.selected[i]);updateRoundPoints();saveGame();
+ if(game.selected[i])playBeep('correct');
 }
 function startTimer(){
  clearInterval(game.timer);updateTimer();
- game.timer=setInterval(()=>{game.time--;updateTimer();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');timeUp()}},1000);
+ game.timer=setInterval(()=>{game.time=Math.max(0,Math.ceil((game.endsAt-Date.now())/1000));updateTimer();saveGame();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');timeUp()}},250);
 }
-function timeUp(){
- game.locked=true;
- document.getElementById('turnLabel').textContent="Time's up — check the words below, then continue";
- document.getElementById('finishBtn').textContent='See results';
-}
+function timeUp(){game.time=0;game.locked=true;game.stage='timeup';game.endsAt=null;document.getElementById('turnLabel').textContent="Time's up — check the words below, then continue";document.getElementById('finishBtn').textContent='See results';saveGame()}
 function updateTimer(){
  let e=document.getElementById('timer'),p=document.getElementById('progress');
  e.textContent=game.time;e.classList.toggle('warn',game.time<=5);p.style.width=(game.time/30*100)+'%';
 }
 function finishRound(){
  if(!document.getElementById('game').classList.contains('active'))return;
- clearInterval(game.timer);let p=game.players[game.playerIndex];game.scores[p]+=game.correct;
+ clearInterval(game.timer);game.stage='roundEnd';game.endsAt=null;let p=game.players[game.playerIndex];let earned=game.selected.filter(Boolean).length;game.scores[p]+=earned;
  document.getElementById('roundPlayer').textContent=p;
- document.getElementById('earned').textContent='+'+game.correct;
+ document.getElementById('earned').textContent='+'+earned;
  renderRoundScores();
  let totalRounds=game.players.length*game.roundsPerPlayer;
- let isLast=game.roundNumber>=totalRounds;
+ let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
  document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
  document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
+ saveGame();
  show('roundEnd');
 }
 function renderRoundScores(){
@@ -357,12 +359,13 @@ function renderRoundScores(){
 }
 function nextRound(){
  let totalRounds=game.players.length*game.roundsPerPlayer;
- if(game.roundNumber>=totalRounds){finishGame();return}
+ if(game.roundNumber>=totalRounds||game.deck.length<5){finishGame();return}
  game.playerIndex=(game.playerIndex+1)%game.players.length;showReady();
 }
 function finishGame(){
  data.games.push({date:new Date().toISOString(),scores:{...game.scores},list:game.list.name});
  if(data.games.length>20)data.games.shift();save();
+ clearSavedGame();game.stage=null;
  let sorted=Object.entries(game.scores).sort((a,b)=>b[1]-a[1]);
  document.getElementById('finalScores').innerHTML=sorted.map((x,i)=>`<div class="score-item"><span>${i===0?'🥇 ':''}${esc(x[0])}</span><strong>${x[1]}</strong></div>`).join('');
  show('final');playBeep('finish');
@@ -377,7 +380,7 @@ function closeSettings(){document.getElementById('settingsModal').classList.remo
 function abortGame(){
  clearInterval(game.timer);clearInterval(game.readyTimer);
  document.getElementById('settingsModal').classList.remove('show');
- game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0,locked:false};
+ game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],selected:[],timer:null,readyTimer:null,time:30,roundNumber:0,locked:false,stage:null,endsAt:null};clearSavedGame();
  show('home'); toast('Game aborted');
 }
 function toggleSound(){data.sound=!data.sound;save();document.getElementById('soundSwitch').classList.toggle('on',data.sound)}
@@ -405,7 +408,29 @@ function playBeep(type){
  }catch(e){}
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function drawRoundEnd(){
+ let p=game.players[game.playerIndex],earned=game.selected.filter(Boolean).length,totalRounds=game.players.length*game.roundsPerPlayer;
+ document.getElementById('roundPlayer').textContent=p;document.getElementById('earned').textContent='+'+earned;renderRoundScores();
+ let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
+ document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
+ document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
+ show('roundEnd');
+}
+function restoreGame(){
+ const saved=data.activeGame;if(!saved)return;
+ const list=data.lists.find(l=>l.id===saved.listId);if(!list){clearSavedGame();return}
+ Object.assign(game,{...saved,list,timer:null,readyTimer:null,selected:saved.selected||saved.currentWords.map(()=>false)});
+ if(game.stage==='roundEnd'){drawRoundEnd();return}
+ if(game.stage==='ready'){showReady();return}
+ if(game.stage==='playing'||game.stage==='timeup'){
+   game.time=game.endsAt?Math.max(0,Math.ceil((game.endsAt-Date.now())/1000)):0;
+   document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
+   document.getElementById('finishBtn').textContent='End round';renderWords();show('game');updateTimer();
+   if(game.time<=0){timeUp()}else{game.stage='playing';game.locked=false;startTimer()}
+ }
+}
 renderSetup();
+restoreGame();
 let deferredInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault(); deferredInstallPrompt=e;
