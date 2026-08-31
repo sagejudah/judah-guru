@@ -249,7 +249,7 @@ function seedBuiltInLists(){
  localStorage.setItem(KEY,JSON.stringify(data));
 }
 seedBuiltInLists();
-let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0};
+let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0,locked:false};
 
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function show(id){
@@ -309,7 +309,7 @@ function showReady(){
 }
 function beginRound(){
  if(game.deck.length<5)refillDeck();
- game.currentWords=game.deck.splice(0,5);game.correct=0;game.time=30;game.roundNumber++;
+ game.currentWords=game.deck.splice(0,5);game.correct=0;game.time=30;game.roundNumber++;game.locked=false;
  document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
  document.getElementById('roundPoints').textContent='0';
  document.getElementById('finishBtn').textContent='End round';
@@ -319,13 +319,19 @@ function renderWords(){
  document.getElementById('words').innerHTML=game.currentWords.map((w,i)=>`<button class="word" id="word${i}" onclick="markCorrect(${i})">${esc(w)}</button>`).join('');
 }
 function markCorrect(i){
+ if(game.locked)return;
  let b=document.getElementById('word'+i);if(b.classList.contains('correct'))return;
  b.classList.add('correct');game.correct++;document.getElementById('roundPoints').textContent=game.correct;playBeep('correct');
  if(game.correct===5)setTimeout(()=>finishRound(),250);
 }
 function startTimer(){
  clearInterval(game.timer);updateTimer();
- game.timer=setInterval(()=>{game.time--;updateTimer();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');finishRound()}},1000);
+ game.timer=setInterval(()=>{game.time--;updateTimer();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');timeUp()}},1000);
+}
+function timeUp(){
+ game.locked=true;
+ document.getElementById('turnLabel').textContent="Time's up — check the words below, then continue";
+ document.getElementById('finishBtn').textContent='See results';
 }
 function updateTimer(){
  let e=document.getElementById('timer'),p=document.getElementById('progress');
@@ -369,7 +375,7 @@ function closeSettings(){document.getElementById('settingsModal').classList.remo
 function abortGame(){
  clearInterval(game.timer);clearInterval(game.readyTimer);
  document.getElementById('settingsModal').classList.remove('show');
- game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0};
+ game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0,locked:false};
  show('home'); toast('Game aborted');
 }
 function toggleSound(){data.sound=!data.sound;save();document.getElementById('soundSwitch').classList.toggle('on',data.sound)}
