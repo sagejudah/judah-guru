@@ -234,9 +234,18 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  'Bottle','Rainbow','Jacket','Mirror','Bicycle','Coffee','Island','Thunder','Computer','Diamond'
  ]}],
  games:[],sound:true,tick:true
+let storedData=null;
+try{storedData=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+let data={
+ lists:Array.isArray(storedData?.lists)?storedData.lists:[],
+ games:Array.isArray(storedData?.games)?storedData.games:[],
+ sound:storedData?.sound!==false,
+ tick:storedData?.tick!==false,
+ activeGame:storedData?.activeGame||null
 };
 function seedBuiltInLists(){
  // Never remove user-created lists. Only add or refresh the supplied decks.
+ if(!Array.isArray(data.lists))data.lists=[];
  BUILT_IN_LISTS.forEach(list=>{
    const existing=data.lists.find(l=>l.id===list.id);
    if(existing){existing.name=list.name;existing.words=[...list.words]}
@@ -287,6 +296,7 @@ function renderSetup(){
 function shuffle(a){
  const copy=[...a];
  if(crypto?.getRandomValues){for(let i=copy.length-1;i>0;i--){const n=new Uint32Array(1);crypto.getRandomValues(n);const j=n[0]%(i+1);[copy[i],copy[j]]=[copy[j],copy[i]]}}
+ if(typeof crypto!=='undefined'&&crypto.getRandomValues){for(let i=copy.length-1;i>0;i--){const n=new Uint32Array(1);crypto.getRandomValues(n);const j=n[0]%(i+1);[copy[i],copy[j]]=[copy[j],copy[i]]}}
  else{for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}}
  return copy;
 }
