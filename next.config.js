@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // /randomizer is a self-contained static PWA sitting in /public/randomizer.
-  // Its manifest.json uses scope "/randomizer/", so both the bare path and the
-  // trailing-slash path need to resolve to that folder's index.html.
+  // Static PWAs are served from /public. Keep their clean paths working.
   async rewrites() {
     return [
       { source: '/randomizer', destination: '/randomizer/index.html' },
       { source: '/randomizer/', destination: '/randomizer/index.html' },
+      { source: '/30seconds', destination: '/30seconds/index.html' },
+      { source: '/30seconds/', destination: '/30seconds/index.html' },
     ];
   },
 };
