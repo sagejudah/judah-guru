@@ -117,6 +117,14 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
   </div>
 </section>
 
+<section id="ready" class="screen">
+  <div class="hero center">
+    <p class="small">GET READY</p>
+    <h1 id="readyName" style="margin:6px 0 30px"></h1>
+    <div class="big-number" id="readyCount">3</div>
+  </div>
+</section>
+
 <section id="game" class="screen">
   <div class="game-top">
     <div class="turn" id="turnLabel"></div>
@@ -240,7 +248,7 @@ function seedBuiltInLists(){
  localStorage.setItem(KEY,JSON.stringify(data));
 }
 seedBuiltInLists();
-let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,time:30,roundNumber:0};
+let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0};
 
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function show(id){
@@ -284,7 +292,19 @@ function startGame(){
  game.players=names;game.scores={};names.forEach(n=>game.scores[n]=0);
  game.list=data.lists.find(x=>x.id===document.getElementById('gameList').value)||data.lists[0];
  game.roundsPerPlayer=+document.getElementById('rounds').value;game.playerIndex=0;game.roundNumber=0;refillDeck();
- beginRound();playBeep('start');
+ showReady();
+}
+function showReady(){
+ clearInterval(game.readyTimer);
+ document.getElementById('readyName').textContent=game.players[game.playerIndex];
+ let n=3;
+ document.getElementById('readyCount').textContent=n;
+ show('ready');playBeep('tick');
+ game.readyTimer=setInterval(()=>{
+  n--;
+  if(n<=0){clearInterval(game.readyTimer);beginRound()}
+  else{document.getElementById('readyCount').textContent=n;playBeep('tick')}
+ },1000);
 }
 function beginRound(){
  if(game.deck.length<5)refillDeck();
@@ -292,7 +312,7 @@ function beginRound(){
  document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · Round ${Math.ceil(game.roundNumber/game.players.length)}`;
  document.getElementById('roundPoints').textContent='0';
  document.getElementById('finishBtn').textContent='End round';
- renderWords();show('game');startTimer();
+ renderWords();show('game');playBeep('start');startTimer();
 }
 function renderWords(){
  document.getElementById('words').innerHTML=game.currentWords.map((w,i)=>`<button class="word" id="word${i}" onclick="markCorrect(${i})">${esc(w)}</button>`).join('');
@@ -327,7 +347,7 @@ function renderRoundScores(){
 function nextRound(){
  let totalRounds=game.players.length*game.roundsPerPlayer;
  if(game.roundNumber>=totalRounds){finishGame();return}
- game.playerIndex=(game.playerIndex+1)%game.players.length;beginRound();playBeep('start');
+ game.playerIndex=(game.playerIndex+1)%game.players.length;showReady();
 }
 function finishGame(){
  data.games.push({date:new Date().toISOString(),scores:{...game.scores},list:game.list.name});
@@ -344,9 +364,9 @@ function renderScores(){
 function openSettings(){document.getElementById('soundSwitch').classList.toggle('on',data.sound);document.getElementById('tickSwitch').classList.toggle('on',data.tick);document.getElementById('settingsModal').classList.add('show')}
 function closeSettings(){document.getElementById('settingsModal').classList.remove('show')}
 function abortGame(){
- clearInterval(game.timer);
+ clearInterval(game.timer);clearInterval(game.readyTimer);
  document.getElementById('settingsModal').classList.remove('show');
- game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,time:30,roundNumber:0};
+ game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:15,currentWords:[],correct:0,timer:null,readyTimer:null,time:30,roundNumber:0};
  show('home'); toast('Game aborted');
 }
 function toggleSound(){data.sound=!data.sound;save();document.getElementById('soundSwitch').classList.toggle('on',data.sound)}
