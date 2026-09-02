@@ -68,8 +68,8 @@ export default function Home() {
         <div className="student-world">
           <p className="section-label stuff">/stuff</p>
           <p className="stuff-intro">
-            a small world for my students &mdash; quizzes, tools, revision material. some of it&rsquo;s
-            already live, some of it&rsquo;s still coming together.
+            a small world for my students, with quizzes, tools and revision material. some of
+            it&rsquo;s already live, some of it&rsquo;s still coming together.
           </p>
           <ul className="stuff">
             {/* EDIT ME: flip is-building off once a link is real, and give it an href. */}
