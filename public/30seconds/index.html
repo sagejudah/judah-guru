@@ -34,9 +34,11 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 .list-item:last-child,.score-item:last-child{border-bottom:0}
 .badge{font-size:12px;background:#f3f4f6;border-radius:999px;padding:6px 9px;color:var(--muted)}
 .game-top{text-align:center;flex-shrink:0}
+.turn-name{font-weight:900;font-size:20px;letter-spacing:-.5px}
+.turn-progress{font-weight:700;color:var(--muted);font-size:13px;margin-top:2px}
+.turn-status{font-weight:700;color:var(--danger);font-size:13px;margin-top:2px;min-height:16px}
 .timer{font-size:clamp(44px,9vh,72px);font-weight:950;line-height:1;letter-spacing:-4px;margin:6px 0 4px}
 .timer.warn{color:var(--danger)}
-.turn{font-weight:800;color:var(--muted)}
 .progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:12px 0}
 .progress>div{height:100%;background:var(--accent);width:100%;transition:width 1s linear}
 .words{display:grid;grid-template-rows:repeat(5,1fr);gap:8px;margin:12px 0;flex:1;min-height:0}
@@ -117,13 +119,16 @@ textarea{min-height:300px;resize:vertical;line-height:1.5}
 <section id="ready" class="screen">
   <div class="hero center">
     <p class="small">GET READY</p>
-    <h1 id="readyName" style="margin:6px 0 30px"></h1>
+    <h1 id="readyName" style="margin:6px 0 10px"></h1>
+    <p class="small" id="readyProgress" style="margin:0 0 20px"></p>
     <div class="big-number" id="readyCount">3</div>
   </div>
 </section>
 <section id="game" class="screen">
   <div class="game-top">
-    <div class="turn" id="turnLabel"></div>
+    <div class="turn-name" id="turnName"></div>
+    <div class="turn-progress" id="turnProgress"></div>
+    <div class="turn-status" id="turnStatus"></div>
     <div id="timer" class="timer">30</div>
     <div class="progress"><div id="progress"></div></div>
   </div>
@@ -192,6 +197,143 @@ morning afternoon evening midnight yesterday today tomorrow weekend holiday birt
 smile laugh cry shout whisper clap wave hug kiss handshake surprise anger fear courage hope dream wish secret joke story
 freedom justice peace friendship family neighbour visitor stranger champion winner captain leader hero genius inventor explorer traveller musician photographer lantern
 `;
+const BUILT_IN_MEDIUM=`
+happiness sadness anger fear surprise disgust jealousy excitement boredom curiosity confidence nervousness gratitude sympathy pride shame guilt relief anticipation nostalgia embarrassment loneliness contentment frustration
+breakfast lunch dinner snack recipe ingredient seasoning marinade appetizer dessert beverage cutlery napkin tablecloth candle centerpiece buffet potluck picnic feast leftovers takeaway delivery reservation
+mountain-range valley plateau canyon glacier volcano peninsula archipelago delta estuary savanna rainforest tundra prairie wetland coastline cliff cave dune oasis lagoon fjord
+democracy monarchy republic parliament election ballot candidate campaign referendum constitution citizenship diplomat ambassador treaty alliance summit negotiation embassy passport visa senate governor
+carpenter electrician plumber mechanic architect surveyor accountant economist journalist editor translator interpreter librarian curator archivist historian sociologist anthropologist geologist meteorologist pharmacist optometrist
+smartphone laptop tablet router modem bluetooth wifi software hardware application download upload password username firewall antivirus bandwidth server database algorithm browser cursor
+highway motorway roundabout intersection pedestrian crosswalk pavement sidewalk overpass underpass tollbooth carpark garage workshop warehouse factory depot terminal platform runway hangar checkpoint
+festival carnival parade ceremony ritual tradition custom folklore legend myth proverb superstition heritage ancestry generation century decade era epoch millennium anniversary
+budget investment mortgage insurance pension inheritance shareholder dividend bankruptcy recession inflation currency exchange-rate interest-rate stockmarket entrepreneur startup merger acquisition franchise commission
+thunderstorm hurricane blizzard drought famine earthquake avalanche landslide tsunami wildfire heatwave frost hailstorm monsoon humidity atmosphere barometer forecast temperature climate breeze gust
+apology compliment criticism compromise negotiation confrontation reconciliation forgiveness betrayal loyalty rivalry partnership teamwork leadership mentorship guidance supervision delegation collaboration feedback
+sculpture painting portrait landscape mural mosaic pottery ceramics tapestry embroidery calligraphy engraving etching silhouette caricature exhibition gallery auction masterpiece canvas palette
+biography autobiography memoir novel fiction nonfiction anthology encyclopedia dictionary thesaurus glossary appendix footnote citation bibliography manuscript draft edition publisher chapter
+championship tournament qualifier playoff semifinal final referee umpire scoreboard stadium spectator fanbase mascot trophy medal podium record-holder underdog teammate substitute
+volunteer charity donation fundraiser sponsor scholarship internship apprenticeship graduation certificate diploma qualification curriculum syllabus assignment deadline presentation seminar workshop lecture tuition
+passport boarding-pass customs baggage layover itinerary souvenir landmark tourist backpacker hostel resort cruise excursion sightseeing currency-exchange timezone jetlag
+allergy vaccination checkup prescription symptom diagnosis surgery recovery physiotherapy nutrition hydration exercise stamina flexibility posture stretch cardio endurance
+promotion resignation interview resume cover-letter salary overtime deadline meeting conference negotiation contract client customer vendor supplier inventory logistics
+smartphone-app notification subscription streaming playlist podcast livestream influencer hashtag trending viral algorithm feed profile avatar emoji thumbnail
+warranty refund exchange complaint questionnaire petition protest strike lockout wage bonus royalty patent trademark copyright license permit inspection audit compliance regulation
+guideline handbook orientation onboarding probation appraisal evaluation punctuality attendance overtime timesheet payroll paycheck taxrefund receipt invoice quotation estimate proposal
+skyscraper elevator escalator revolvingdoor lobby reception concierge doorman valet chauffeur limousine motorcade convoy caravan expedition safari trek hike campsite
+lighthouse harbor pier dock anchor sail mast rudder compass lifeboat buoy tide current wave surfboard snorkel scuba wetsuit flipper
+orchestra symphony ensemble chorus soloist conductor rehearsal encore intermission matinee premiere audition casting rehearsal costume backstage soundcheck spotlight curtain-call
+`;
+const BUILT_IN_HARD=`
+philosophy ethics morality metaphysics epistemology logic rhetoric paradox hypothesis theory postulate axiom premise inference deduction induction analogy metaphor allegory syllogism dialectic
+bureaucracy hierarchy autonomy sovereignty jurisdiction legislation litigation arbitration mediation prosecution defendant plaintiff verdict testimony evidence witness jury tribunal appeal precedent injunction
+psychology cognition perception subconscious instinct temperament personality introvert extrovert empathy apathy resilience trauma anxiety therapy counseling rehabilitation diagnosis prognosis conditioning
+globalization capitalism socialism communism feudalism colonialism imperialism nationalism patriotism propaganda censorship surveillance espionage sabotage insurgency rebellion revolution coup dictatorship autocracy
+biodiversity sustainability conservation deforestation desertification overpopulation urbanization industrialization automation robotics nanotechnology biotechnology genome cybersecurity encryption blockchain cryptocurrency algorithm bandwidth
+architecture infrastructure skyline skyscraper foundation blueprint renovation demolition excavation construction scaffolding cornerstone facade balcony veranda courtyard mezzanine basement attic rafter
+diplomacy negotiation ceasefire armistice sanctions embargo tariff quota subsidy monopoly oligopoly cartel deficit surplus austerity stimulus depression stagflation devaluation
+linguistics syntax grammar phonetics semantics dialect vernacular etymology idiom colloquialism jargon eloquence articulate ambiguous coherent concise verbose redundant lexicon
+astronomy astrophysics cosmology nebula supernova quasar pulsar constellation asteroid-belt exoplanet wormhole singularity spacetime relativity quantum trajectory orbit gravity
+anatomy physiology pathology immunology virology epidemiology pharmacology toxicology genetics mutation chromosome enzyme hormone metabolism homeostasis remission relapse antibody
+archaeology excavation artifact relic fossil sediment stratum carbon-dating civilization dynasty empire feudal-system aristocracy peasantry serfdom guild pilgrimage crusade conquest
+theology scripture doctrine sermon congregation monastery sanctuary reverence devotion faith ritual sacrifice covenant prophecy salvation redemption enlightenment meditation pilgrimage
+economics macroeconomics microeconomics supply demand equilibrium elasticity externality incentive opportunity-cost scarcity commodity protectionism free-trade outsourcing offshoring
+literature symbolism foreshadowing irony satire tragedy comedy protagonist antagonist narrative perspective monologue soliloquy dialogue characterization climax denouement
+mathematics calculus algebra geometry trigonometry probability statistics variable coefficient derivative integral matrix vector function exponential logarithm
+neurology cardiology dermatology gastroenterology endocrinology nephrology oncology radiology anesthesiology orthopedics psychiatry rheumatology
+ideology hegemony sovereignty autarky federalism unitarianism secularism theocracy plutocracy meritocracy technocracy
+geopolitics realpolitik multilateralism unilateralism protectionism isolationism interventionism appeasement containment deterrence proliferation disarmament
+cryptography steganography authentication credential biometric malware ransomware phishing spyware botnet exploit vulnerability patch firmware kernel
+jurisprudence statute ordinance codification amendment ratification impeachment filibuster gerrymander incumbent electorate constituency plebiscite mandate coalition
+anthropology ethnography taxonomy nomenclature morphology cladistics phylogeny biogeography paleontology stratigraphy geomorphology seismology volcanology hydrology
+metallurgy alloying smelting forging annealing tempering electroplating oxidation corrosion crystallography spectroscopy chromatography titration calibration
+cartography topography meridian latitude longitude projection contour isobar isotherm precipitation aridity fertility irrigation aquifer watershed
+choreography dramaturgy cinematography scenography orchestration counterpoint harmony dissonance cadence tempo crescendo decrescendo staccato legato
+oncologist cardiologist neurosurgeon anesthetist phlebotomist radiographer sonographer paramedic orthodontist podiatrist chiropractor osteopath
+`;
+const BUILT_IN_EXPERT=`
+esoteric arcane enigmatic ephemeral ubiquitous serendipity juxtaposition dichotomy paradigm quintessential cacophony euphemism oxymoron hyperbole understatement anachronism vernacular
+ostentatious pretentious pragmatic idiosyncratic ambivalent apathetic vindictive malicious benevolent altruistic pernicious insidious nefarious duplicitous sycophant charlatan demagogue
+obfuscate ameliorate exacerbate perpetuate proliferate capitulate acquiesce vacillate procrastinate scrutinize substantiate corroborate refute reiterate paraphrase elaborate extrapolate
+recalcitrant obstinate tenacious resilient indefatigable dogmatic meticulous fastidious punctilious scrupulous conscientious diligent industrious lethargic languid listless torpid
+ephemeral transient fleeting perennial perpetual sporadic intermittent incessant relentless ceaseless unremitting unwavering steadfast resolute unyielding intransigent
+anomaly aberration discrepancy inconsistency contradiction fallacy misconception delusion illusion hallucination apparition phenomenon paradox conundrum quandary
+metamorphosis transformation transfiguration transcendence epiphany catharsis revelation awakening introspection existentialism nihilism solipsism determinism fatalism
+bureaucratic autocratic technocratic plutocratic theocratic oligarchic meritocratic egalitarian utilitarian libertarian authoritarian totalitarian anarchistic
+verbose loquacious taciturn laconic garrulous reticent circumlocution tautology redundancy malapropism spoonerism portmanteau neologism euphemism
+sanguine phlegmatic choleric melancholic stoic cynical skeptical pessimistic idealistic fatalistic dogmatic pragmatic
+clandestine surreptitious covert overt brazen audacious flagrant blatant conspicuous inconspicuous nondescript unassuming
+gregarious convivial affable amiable congenial cordial genial hospitable inhospitable churlish curmudgeonly irascible
+prodigious formidable colossal monumental negligible infinitesimal minuscule diminutive substantial voluminous copious
+vindicate exonerate incriminate implicate insinuate allude elucidate clarify obscure convolute simplify
+ubiquitous omnipresent transcendent immanent innate intrinsic extrinsic inherent latent dormant vestigial rudimentary
+antithesis synthesis thesis premise corollary conjecture inference presumption assumption stipulation caveat proviso
+euphoric despondent morose disconsolate distraught anguished forlorn woebegone crestfallen dejected downcast dispirited
+belie corroborate discredit vindicate exculpate absolve condone condemn denounce castigate admonish reprimand
+munificent parsimonious profligate prodigal thrifty frugal austere lavish extravagant ostentatious modest unpretentious
+disparate homogeneous heterogeneous convergent divergent congruent incongruous consonant dissonant harmonious discordant
+palpable intangible tangible ethereal corporeal incorporeal visceral cerebral esoteric mundane profound superficial
+inveterate habitual chronic sporadic incidental coincidental deliberate premeditated inadvertent unintentional spontaneous impulsive
+propitiate placate appease mollify assuage alleviate exacerbate aggravate provoke incite instigate foment
+credulous incredulous gullible skeptical dubious wary circumspect vigilant complacent apathetic indifferent nonchalant
+abnegate abrogate arrogate derogate subrogate delegate relegate variegate propagate promulgate
+bifurcate trifurcate demarcate desiccate obfuscate excoriate exacerbate remonstrate perpetrate machinate
+cursory perfunctory desultory haphazard arbitrary capricious whimsical fickle erratic mercurial
+ineffable inexpressible indescribable unfathomable incomprehensible inscrutable impenetrable enigmatic cryptic obscure
+magnanimous grandiose pompous bombastic pretentious pedantic didactic dogmatic sanctimonious self-righteous
+diffident timorous trepidatious apprehensive circumspect wary chary leery skittish squeamish
+placate mollify appease conciliate propitiate ingratiate cajole wheedle beguile inveigle
+paucity dearth scarcity plethora surfeit superfluity superabundance glut excess deficiency
+callous obtuse insensate impassive stolid unfeeling unsympathetic unmoved indifferent apathetic
+cogent compelling persuasive convincing plausible tenable specious fallacious untenable dubious
+fortuitous propitious opportune felicitous auspicious inauspicious ill-fated ill-starred unlucky doomed
+inimical antipathetic hostile bellicose truculent pugnacious contentious fractious querulous peevish
+adroit dexterous deft nimble agile facile proficient adept skillful masterful
+`;
+const BUILT_IN_GODMODE=`
+sesquipedalian perspicacious pellucid mellifluous grandiloquent bombastic vituperative apoplectic lugubrious saturnine phlegmatic mercurial capricious splenetic
+antediluvian anachronistic apocryphal apotheosis quintessence epistemological ontological teleological deontological consequentialist solipsistic
+perfunctory desultory peripatetic itinerant vagabond nomadic sedentary indigenous autochthonous cosmopolitan parochial insular xenophobic ethnocentric
+obsequious sycophantic unctuous ingratiating fawning servile subservient deferential imperious peremptory supercilious condescending patronizing haughty disdainful
+inexorable implacable intransigent obdurate obstreperous truculent bellicose pugnacious belligerent contentious cantankerous irascible
+esoteric hermetic occult arcane cryptic inscrutable impenetrable opaque abstruse recondite recherche rarefied
+ephemera marginalia paratext palimpsest apocrypha hagiography historiography hermeneutics exegesis eschatology soteriology theodicy
+serendipitous fortuitous providential auspicious propitious inauspicious ominous portentous foreboding presage harbinger premonition augury
+ambivalence equanimity insouciance sangfroid nonchalance imperturbability stoicism forbearance fortitude equipoise
+sardonic acerbic caustic vitriolic scathing trenchant incisive mordant vituperative
+apocryphal spurious specious tendentious disingenuous mendacious prevaricating equivocating dissembling
+cacophonous discordant dissonant euphonious mellifluous stentorian sonorous strident raucous
+salubrious deleterious noxious innocuous benign malignant efficacious palliative soporific
+parsimonious profligate frugal miserly munificent lavish extravagant austere ascetic
+verisimilitude vicissitude tribulation adversity travail exigency contingency stipulation
+pusillanimous mendicant vagrant recidivist malefactor miscreant reprobate reprehensible egregious flagitious
+apophatic cataphatic gnostic agnostic henotheistic pantheistic panentheistic deistic animistic totemic
+lachrymose plangent elegiac threnodic doleful rueful contrite penitent remorseful compunctious
+irenic bellicist pacifistic militaristic jingoistic chauvinistic xenophilic isolationist expansionist revanchist
+euphuistic ornate baroque byzantine labyrinthine convoluted circuitous tortuous serpentine sinuous
+pellucid limpid crystalline diaphanous translucent opalescent iridescent effulgent incandescent luminescent
+adumbrate foreshadow prefigure presage vaticinate prognosticate divine augur soothsay bode
+gainsay refute rebut contravene contradict disavow repudiate abjure recant retract
+imprecation malediction anathema execration invective calumny defamation slander libel obloquy
+philistine bourgeois plebeian patrician aristocrat oligarch plutocrat demagogue rabble-rouser firebrand
+apostate heretic iconoclast schismatic dissenter nonconformist maverick renegade insurgent malcontent
+tergiversate obfuscate equivocate prevaricate dissemble dissimulate obnubilate occlude adumbrate obtenebrate
+epicaricacy schadenfreude weltschmerz zeitgeist ennui angst hubris nemesis catharsis anagnorisis
+peripeteia deus-ex-machina bathos pathos ethos logos kairos chronos telos entelechy
+apophenia pareidolia synesthesia agnosia aphasia dyslexia dyscalculia amnesia anhedonia dysphoria
+autotelic heteronomous heuristic axiomatic tautological syllogistic sophistical casuistic apodictic
+Pyrrhic Sisyphean Herculean Machiavellian Byronic Kafkaesque Orwellian Faustian quixotic draconian
+subaltern hegemon comprador compradore vassal suzerain fiefdom demesne bailiwick purview
+lapidary vitreous crystalline adamantine obdurate flinty granitic basaltic igneous metamorphic
+noetic gnomic apothegmatic aphoristic epigrammatic laconic terse pithy trenchant incisive
+oleaginous saponaceous unctuous viscid glutinous mucilaginous gelatinous colloidal emulsified turbid
+ratiocination cogitation deliberation contemplation rumination introspection self-examination self-scrutiny navel-gazing woolgathering
+concupiscence lasciviousness prurience salaciousness licentiousness debauchery dissipation profligacy hedonism epicureanism
+anhedonia alexithymia derealization depersonalization dissociation disorientation bewilderment perplexity befuddlement stupefaction
+gerontocracy kleptocracy kakistocracy stratocracy timocracy ergatocracy noocracy corporatocracy bureaucracy nomocracy
+sempiternal perdurable everlasting evanescent fugacious impermanent transitory momentary instantaneous fleeting
+apotropaic talismanic amuletic votive numinous sacrosanct inviolable inviolate untouchable hallowed
+epigone acolyte disciple protege votary devotee adherent partisan zealot fanatic
+`;
 const BUILT_IN_SCIENCE=`
 biology chemistry physics ecology anatomy physiology genetics evolution cell tissue organ organism species habitat population community ecosystem biosphere
 microscope slide coverslip specimen magnification resolution focus objective eyepiece stage diaphragm light mirror scalpel forceps pipette beaker flask
@@ -221,19 +363,13 @@ focal-point principal-axis image object magnification ray-diagram incident-ray n
 `;
 function wordList(text){return [...new Set(text.trim().split(/\s+/).filter(Boolean))].slice(0,400)}
 const BUILT_IN_LISTS=[
- {id:'default',name:'General 1',words:wordList(BUILT_IN_GENERAL)},
- {id:'bgcse-science',name:'BGCSE Science 1',words:wordList(BUILT_IN_SCIENCE)},
- {id:'general-2',name:'General 2',words:wordList(BUILT_IN_GENERAL)},
- {id:'bgcse-science-2',name:'BGCSE Science 2',words:wordList(BUILT_IN_SCIENCE)}
+ {id:'easy',name:'Easy Mode',words:wordList(BUILT_IN_GENERAL)},
+ {id:'medium',name:'Medium Mode',words:wordList(BUILT_IN_MEDIUM)},
+ {id:'hard',name:'Hard Mode',words:wordList(BUILT_IN_HARD)},
+ {id:'expert',name:'Expert Mode',words:wordList(BUILT_IN_EXPERT)},
+ {id:'godmode',name:'God Mode',words:wordList(BUILT_IN_GODMODE)},
+ {id:'bgcse-science',name:'BGCSE Science',words:wordList(BUILT_IN_SCIENCE)}
 ];
-let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
- lists:[{id:'default',name:'General',words:[
- 'Apple','Elephant','Football','Guitar','Mountain','River','Camera','Banana','School','Doctor',
- 'Window','Rocket','Ocean','Garden','Robot','Pencil','Castle','Dragon','Pizza','Train',
- 'Sun','Moon','Book','Chair','Phone','Bridge','Tiger','Lion','Dolphin','Airplane',
- 'Bottle','Rainbow','Jacket','Mirror','Bicycle','Coffee','Island','Thunder','Computer','Diamond'
- ]}],
- games:[],sound:true,tick:true
 let storedData=null;
 try{storedData=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
 if(!storedData||typeof storedData!=='object')storedData={};
@@ -247,6 +383,9 @@ let data={
 function seedBuiltInLists(){
  // Never remove user-created lists. Only add or refresh the supplied decks.
  if(!Array.isArray(data.lists))data.lists=[];
+ // Drop legacy duplicate built-ins from earlier versions (general-2 / bgcse-science-2)
+ // and the old un-prefixed 'default' id, now replaced by 'easy'.
+ data.lists=data.lists.filter(l=>!['general-2','bgcse-science-2','default'].includes(l.id));
  BUILT_IN_LISTS.forEach(list=>{
    const existing=data.lists.find(l=>l.id===list.id);
    if(existing){existing.name=list.name;existing.words=[...list.words]}
@@ -255,12 +394,10 @@ function seedBuiltInLists(){
  const supplied=BUILT_IN_LISTS.map(list=>data.lists.find(l=>l.id===list.id));
  const custom=data.lists.filter(l=>!BUILT_IN_LISTS.some(b=>b.id===l.id));
  data.lists=[...supplied,...custom];
- localStorage.setItem(KEY,JSON.stringify(data));
  save();
 }
 seedBuiltInLists();
 let game={players:[],scores:{},list:null,deck:[],playerIndex:0,roundsPerPlayer:2,currentWords:[],selected:[],timer:null,readyTimer:null,time:30,roundNumber:0,locked:false,stage:null,endsAt:null};
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function saveGame(){
  if(!game.stage){data.activeGame=null;save();return}
@@ -292,21 +429,38 @@ function renderLists(){
  let c=document.getElementById('listContainer');
  c.innerHTML=data.lists.map(l=>`<div class="list-item"><div><strong>${esc(l.name)}</strong><div class="small">${l.words.length} words</div></div><button class="badge" onclick="deleteList('${l.id}')">Delete</button></div>`).join('');
 }
-function deleteList(id){if(id==='default'){toast('The default list cannot be deleted');return}if(confirm('Delete this list?')){data.lists=data.lists.filter(x=>x.id!==id);save();renderLists()}}
+function deleteList(id){if(BUILT_IN_LISTS.some(l=>l.id===id)){toast('Built-in lists cannot be deleted');return}if(confirm('Delete this list?')){data.lists=data.lists.filter(x=>x.id!==id);save();renderLists()}}
 function renderSetup(){
  document.getElementById('gameList').innerHTML=data.lists.map(l=>`<option value="${l.id}">${esc(l.name)} (${l.words.length})</option>`).join('');
 }
+// Fisher–Yates shuffle using a cryptographically strong random source when
+// available (falls back to Math.random only if crypto is unsupported).
+// Every position has an equal, unbiased chance of ending up anywhere else —
+// there is no pattern to the resulting order.
 function shuffle(a){
  const copy=[...a];
- if(crypto?.getRandomValues){for(let i=copy.length-1;i>0;i--){const n=new Uint32Array(1);crypto.getRandomValues(n);const j=n[0]%(i+1);[copy[i],copy[j]]=[copy[j],copy[i]]}}
- if(typeof crypto!=='undefined'&&crypto.getRandomValues){for(let i=copy.length-1;i>0;i--){const n=new Uint32Array(1);crypto.getRandomValues(n);const j=n[0]%(i+1);[copy[i],copy[j]]=[copy[j],copy[i]]}}
- else{for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}}
+ const cryptoObj=(typeof crypto!=='undefined')?crypto:null;
+ for(let i=copy.length-1;i>0;i--){
+   let j;
+   if(cryptoObj&&cryptoObj.getRandomValues){
+     const range=i+1;
+     const maxUint=4294967296;
+     const limit=maxUint-(maxUint%range);
+     let n;
+     do{n=cryptoObj.getRandomValues(new Uint32Array(1))[0]}while(n>=limit);
+     j=n%range;
+   }else{
+     j=Math.floor(Math.random()*(i+1));
+   }
+   [copy[i],copy[j]]=[copy[j],copy[i]];
+ }
  return copy;
 }
 function refillDeck(){
- let words=[...game.list.words];
- // A deck is shuffled once per game and never refilled during it: no repeats.
- game.deck=shuffle(words);
+ // The deck is shuffled once per game and words are drawn from it without
+ // replacement — every word appears once before any word repeats, and the
+ // order itself is fully randomized (no recurring pattern between games).
+ game.deck=shuffle(game.list.words);
 }
 function startGame(){
  let names=document.getElementById('players').value.split(',').map(x=>x.trim()).filter(Boolean);
@@ -319,11 +473,22 @@ function startGame(){
 function showReady(){
  clearInterval(game.readyTimer);game.stage='ready';game.endsAt=null;
  document.getElementById('readyName').textContent=game.players[game.playerIndex];
+ document.getElementById('readyProgress').textContent=roundStatusText();
  let n=3;document.getElementById('readyCount').textContent=n;show('ready');playBeep('tick');saveGame();
  game.readyTimer=setInterval(()=>{n--;if(n<=0){clearInterval(game.readyTimer);beginRound()}else{document.getElementById('readyCount').textContent=n;playBeep('tick')}},1000);
 }
-function roundProgress(){return `Round ${Math.ceil(game.roundNumber/game.players.length)} of ${game.roundsPerPlayer}`}
-function setTurnLabel(){document.getElementById('turnLabel').textContent=`${game.players[game.playerIndex]} · ${roundProgress()}`}
+function totalRounds(){return game.players.length*game.roundsPerPlayer}
+function roundsRemaining(){return Math.max(0,totalRounds()-game.roundNumber)}
+function roundStatusText(){
+ // roundNumber counts rounds already completed; the round about to be
+ // played is roundNumber+1, and roundsRemaining includes that round.
+ return `Round ${Math.min(game.roundNumber+1,totalRounds())} of ${totalRounds()} · ${roundsRemaining()} left`;
+}
+function setTurnLabel(){
+ document.getElementById('turnName').textContent=game.players[game.playerIndex];
+ document.getElementById('turnProgress').textContent=roundStatusText();
+ document.getElementById('turnStatus').textContent='';
+}
 function beginRound(){
  if(game.deck.length<5){toast('Not enough unused words left — the game is complete.');finishGame();return}
  game.currentWords=game.deck.splice(0,5);game.selected=[false,false,false,false,false];game.time=30;game.roundNumber++;game.locked=false;game.stage='playing';game.endsAt=Date.now()+30000;
@@ -338,7 +503,7 @@ function renderWords(){
 }
 function updateRoundPoints(){document.getElementById('roundPoints').textContent=game.selected.filter(Boolean).length}
 function toggleWord(i){
- let b=document.getElementById('word'+i);if(game.locked)return;
+ if(game.locked)return;
  let b=document.getElementById('word'+i);
  game.selected[i]=!game.selected[i];b.classList.toggle('correct',game.selected[i]);updateRoundPoints();saveGame();
  if(game.selected[i])playBeep('correct');
@@ -347,7 +512,12 @@ function startTimer(){
  clearInterval(game.timer);updateTimer();
  game.timer=setInterval(()=>{game.time=Math.max(0,Math.ceil((game.endsAt-Date.now())/1000));updateTimer();saveGame();if(game.time<=5&&game.time>0&&data.tick)playBeep('tick');if(game.time<=0){clearInterval(game.timer);playBeep('timeout');timeUp()}},250);
 }
-function timeUp(){game.time=0;game.locked=true;game.stage='timeup';game.endsAt=null;document.getElementById('turnLabel').textContent=`${roundProgress()} · Time's up — check the words below, then continue`;document.getElementById('finishBtn').textContent='See results';saveGame()}
+function timeUp(){
+ game.time=0;game.locked=true;game.stage='timeup';game.endsAt=null;
+ // Player name and round progress stay put — only the status line changes.
+ document.getElementById('turnStatus').textContent="Time's up — check the words below, then continue";
+ document.getElementById('finishBtn').textContent='See results';saveGame();
+}
 function updateTimer(){
  let e=document.getElementById('timer'),p=document.getElementById('progress');
  e.textContent=game.time;e.classList.toggle('warn',game.time<=5);p.style.width=(game.time/30*100)+'%';
@@ -355,14 +525,7 @@ function updateTimer(){
 function finishRound(){
  if(!document.getElementById('game').classList.contains('active'))return;
  clearInterval(game.timer);game.stage='roundEnd';game.endsAt=null;let p=game.players[game.playerIndex];let earned=game.selected.filter(Boolean).length;game.scores[p]+=earned;
- document.getElementById('roundPlayer').textContent=p;
- document.getElementById('earned').textContent='+'+earned;
- document.getElementById('roundEndProgress').textContent=roundProgress();
- renderRoundScores();
- let totalRounds=game.players.length*game.roundsPerPlayer;
- let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
- document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
- document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
+ drawRoundEnd();
  saveGame();
  show('roundEnd');
 }
@@ -371,8 +534,7 @@ function renderRoundScores(){
  document.getElementById('roundScores').innerHTML=sorted.map((x,i)=>`<div class="score-item"><span>${i===0?'🥇 ':''}${esc(x[0])}</span><strong>${x[1]}</strong></div>`).join('');
 }
 function nextRound(){
- let totalRounds=game.players.length*game.roundsPerPlayer;
- if(game.roundNumber>=totalRounds||game.deck.length<5){finishGame();return}
+ if(game.roundNumber>=totalRounds()||game.deck.length<5){finishGame();return}
  game.playerIndex=(game.playerIndex+1)%game.players.length;showReady();
 }
 function finishGame(){
@@ -422,9 +584,9 @@ function playBeep(type){
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function drawRoundEnd(){
- let p=game.players[game.playerIndex],earned=game.selected.filter(Boolean).length,totalRounds=game.players.length*game.roundsPerPlayer;
- document.getElementById('roundPlayer').textContent=p;document.getElementById('earned').textContent='+'+earned;document.getElementById('roundEndProgress').textContent=roundProgress();renderRoundScores();
- let isLast=game.roundNumber>=totalRounds||game.deck.length<5;
+ let p=game.players[game.playerIndex],earned=game.selected.filter(Boolean).length;
+ document.getElementById('roundPlayer').textContent=p;document.getElementById('earned').textContent='+'+earned;document.getElementById('roundEndProgress').textContent=roundStatusText();renderRoundScores();
+ let isLast=game.roundNumber>=totalRounds()||game.deck.length<5;
  document.getElementById('nextBtn').textContent=isLast?'See final scores':'Next player';
  document.getElementById('nextPlayerHint').textContent=isLast?'':`Up next: ${game.players[(game.playerIndex+1)%game.players.length]}`;
  show('roundEnd');
