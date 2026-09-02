@@ -25,8 +25,9 @@ export default function RecommendCard({
           {emoji}
         </span>
         <span className="rec-label">{label}</span>
-        <span className="rec-chevron" aria-hidden="true">
-          {open ? '–' : '+'}
+        <span className={`rec-toggle${open ? ' is-open' : ''}`} aria-hidden="true">
+          <span className="rec-toggle-bar" />
+          <span className="rec-toggle-bar" />
         </span>
       </span>
       {open && (
