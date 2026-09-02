@@ -25,10 +25,22 @@ export default function RecommendCard({
           {emoji}
         </span>
         <span className="rec-label">{label}</span>
-        <span className={`rec-toggle${open ? ' is-open' : ''}`} aria-hidden="true">
-          <span className="rec-toggle-bar" />
-          <span className="rec-toggle-bar" />
-        </span>
+        <svg
+          className={`rec-chevron${open ? ' is-open' : ''}`}
+          aria-hidden="true"
+          width="11"
+          height="11"
+          viewBox="0 0 12 12"
+          fill="none"
+        >
+          <path
+            d="M2.5 4.5L6 8L9.5 4.5"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </span>
       {open && (
         <span className="rec-content">
