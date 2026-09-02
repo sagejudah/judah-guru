@@ -10,8 +10,8 @@ export default function VibeCard() {
           title="Spotify playlist"
           src={`https://open.spotify.com/embed/playlist/${PLAYLIST_ID}?utm_source=generator&theme=0`}
           width="100%"
-          height="352"
-          style={{ borderRadius: 12, border: 0, display: 'block' }}
+          height="152"
+          style={{ borderRadius: 10, border: 0, display: 'block' }}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
         />
