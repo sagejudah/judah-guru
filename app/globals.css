@@ -323,11 +323,37 @@ hr.rule-2 {
   flex: 1;
 }
 
-.rec-chevron {
-  color: var(--gold);
-  font-size: 0.95rem;
-  width: 1em;
-  text-align: center;
+.rec-toggle {
+  position: relative;
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+
+.rec-toggle-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.rec-toggle-bar:first-child {
+  width: 0.85em;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.rec-toggle-bar:last-child {
+  width: 2px;
+  height: 0.85em;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.rec-toggle.is-open .rec-toggle-bar:last-child {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
 }
 
 .rec-content {
