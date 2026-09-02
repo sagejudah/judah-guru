@@ -246,7 +246,7 @@ hr.rule-2 {
 .vibe-card {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 14px;
-  padding: 1.1rem 1.1rem 0.4rem;
+  padding: 1.1rem;
   background: rgba(255, 255, 255, 0.045);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -261,8 +261,9 @@ hr.rule-2 {
 }
 
 .vibe-embed {
-  margin: 0 -1px -1px;
   line-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .recommend-grid {
@@ -323,37 +324,14 @@ hr.rule-2 {
   flex: 1;
 }
 
-.rec-toggle {
-  position: relative;
-  width: 0.95rem;
-  height: 0.95rem;
+.rec-chevron {
+  color: var(--gold);
   flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
-.rec-toggle-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background: var(--gold);
-  border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.2s ease;
-}
-
-.rec-toggle-bar:first-child {
-  width: 0.85em;
-  height: 2px;
-  transform: translate(-50%, -50%);
-}
-
-.rec-toggle-bar:last-child {
-  width: 2px;
-  height: 0.85em;
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.rec-toggle.is-open .rec-toggle-bar:last-child {
-  transform: translate(-50%, -50%) rotate(90deg);
-  opacity: 0;
+.rec-chevron.is-open {
+  transform: rotate(180deg);
 }
 
 .rec-content {
