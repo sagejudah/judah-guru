@@ -125,7 +125,7 @@ export default function Home() {
           >
             TikTok
           </a>
-          .
+          . yes, click it.
         </p>
         <div className="footer-row">
           <a href="mailto:hey@judah.guru" className="mail-link">
