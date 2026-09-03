@@ -509,11 +509,11 @@ footer {
   content: '';
   position: absolute;
   left: 0;
-  right: 100%;
+  right: 0;
   bottom: -3px;
   height: 1px;
-  background: var(--gold);
-  transition: right 0.25s ease;
+  background: rgba(255, 255, 255, 0.28);
+  transition: background 0.25s ease;
 }
 
 .mail-link:hover,
@@ -523,7 +523,7 @@ footer {
 
 .mail-link:hover::after,
 .mail-link:focus-visible::after {
-  right: 0;
+  background: var(--gold);
 }
 
 .mail-link:focus-visible {
