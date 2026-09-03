@@ -115,6 +115,18 @@ export default function Home() {
 
       <footer>
         <p className="reach-out">Do reach out.</p>
+        <p className="reach-out">
+          Got a request, a fix or a new tool idea? Email works best, or catch me on{' '}
+          <a
+            href="https://www.tiktok.com/@mbongeni_judah"
+            className="mail-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            TikTok
+          </a>
+          .
+        </p>
         <div className="footer-row">
           <a href="mailto:hey@judah.guru" className="mail-link">
             hey@judah.guru
