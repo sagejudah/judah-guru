@@ -55,7 +55,6 @@ function showQuestion(){
   currentQ=quizQuestions[turnIndex];
   const player=turns[turnIndex];
   $("playerName").textContent=player;
-  $("topicLabel").textContent=currentQ.topic;
   $("turnNumber").textContent=turnIndex+1;
   $("questionNumber").textContent=`QUESTION ${turnIndex+1} OF ${quizQuestions.length}`;
   $("questionText").textContent=currentQ.question;
