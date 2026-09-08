@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BGCSE Quiz — Turn Mode</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <section id="setup" class="screen">
+    <div class="hero">
+      <div class="eyebrow">BGCSE PRACTICE</div>
+      <h1>Quiz Battle</h1>
+      <p>Take turns. Answer questions. Build your score.</p>
+    </div>
+    <div class="card">
+      <h2>Game Setup</h2>
+      <label>Number of participants</label>
+      <input id="participantCount" type="number" min="1" max="20" value="2">
+      <div id="names"></div>
+
+      <label class="settingsLabel">Time per question (seconds)</label>
+      <input id="timeLimit" type="number" min="5" max="600" value="45">
+
+      <button id="startBtn" class="primary">Start Game</button>
+    </div>
+  </section>
+
+  <section id="turnChange" class="screen hidden">
+    <div class="hero center">
+      <p class="eyebrow" id="turnPhaseLabel">NEXT PERSON IN</p>
+      <h1 id="turnRevealName" class="turnName hidden"></h1>
+      <div class="bigCountdown" id="turnCountdown">3</div>
+    </div>
+  </section>
+
+  <section id="game" class="screen hidden">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">QUIZ BATTLE</div>
+        <h1 id="playerName"></h1>
+        <p id="topicLabel"></p>
+      </div>
+      <div class="scoreMini">
+        <div>Turn <span id="turnNumber">1</span></div>
+        <strong id="timer">45</strong>
+        <small>seconds</small>
+      </div>
+    </header>
+
+    <div class="scoresBar" id="scoresBar"></div>
+
+    <article class="card">
+      <div class="questionNumber" id="questionNumber"></div>
+      <h2 id="questionText"></h2>
+      <div id="questionImageWrap" class="imageWrap hidden">
+        <img id="questionImage" alt="Question diagram">
+      </div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <button id="nextBtn" class="primary" disabled>Choose an answer</button>
+    </article>
+  </section>
+
+  <section id="results" class="screen hidden">
+    <div class="card final">
+      <div class="eyebrow">GAME OVER</div>
+      <h1>Final Scores</h1>
+      <div id="finalScores"></div>
+      <button id="playAgain" class="primary">Play Again</button>
+    </div>
+  </section>
+</main>
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
