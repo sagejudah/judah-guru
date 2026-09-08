@@ -7,6 +7,8 @@ const nextConfig = {
       { source: '/randomizer/', destination: '/randomizer/index.html' },
       { source: '/30seconds', destination: '/30seconds/index.html' },
       { source: '/30seconds/', destination: '/30seconds/index.html' },
+      { source: '/quiz', destination: '/quiz/index.html' },
+      { source: '/quiz/', destination: '/quiz/index.html' },
     ];
   },
 };
