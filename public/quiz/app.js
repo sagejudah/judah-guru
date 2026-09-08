@@ -1,5 +1,9 @@
 let players=[],scores={},turns=[],turnIndex=0,quizQuestions=[],currentQ=null,selected=null,timerId=null,timeLeft=45,turnTimerId=null;
+let roomCode=null,isSpectator=false,pollTimerId=null;
 const $=id=>document.getElementById(id);
+
+const __params=new URLSearchParams(location.search);
+const __spectateCode=(__params.get("spectate")||"").toUpperCase();
 
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 
@@ -12,8 +16,6 @@ function renderNameInputs(){
     box.appendChild(row);
   }
 }
-$("participantCount").addEventListener("input",renderNameInputs);
-renderNameInputs();
 
 function buildTurns(){
   // Shuffle participants, then deal turn slots round-robin.
@@ -25,7 +27,7 @@ function buildTurns(){
   quizQuestions=shuffle(questions);
 }
 
-function startGame(){
+async function startGame(){
   const count=Math.max(1,Math.min(20,Number($("participantCount").value)||1));
   players=[];
   for(let i=0;i<count;i++){
@@ -46,6 +48,8 @@ function startGame(){
   $("turnChange").classList.add("hidden");
   $("game").classList.remove("hidden");
   renderScores();
+  roomCode=await createRoom({phase:"setup",players,scores});
+  showRoomBadge();
   showQuestion();
 }
 
@@ -76,6 +80,7 @@ function showQuestion(){
   $("nextBtn").disabled=true;
   $("nextBtn").textContent=turnIndex===quizQuestions.length-1?"Finish Game":"Next Person";
   startTimer();
+  pushState("question");
 }
 
 function startTimer(){
@@ -84,6 +89,7 @@ function startTimer(){
   timerId=setInterval(()=>{
     timeLeft--;
     updateTimer();
+    pushState("question");
     if(timeLeft<=0){
       clearInterval(timerId);
       timeout();
@@ -107,6 +113,7 @@ function answer(index){
   else{$("feedback").textContent=`✗ Not quite. Correct answer: ${currentQ.options[currentQ.answer]}`;$("feedback").className="feedback bad"}
   $("nextBtn").disabled=false;
   renderScores();
+  pushState("question");
 }
 
 function timeout(){
@@ -118,6 +125,7 @@ function timeout(){
   $("feedback").textContent=`⏰ Time! Correct answer: ${currentQ.options[currentQ.answer]}`;
   $("feedback").className="feedback timeout";
   $("nextBtn").disabled=false;
+  pushState("question");
 }
 
 // --- Turn-change sequence ---
@@ -141,7 +149,7 @@ function showTurnChange(){
   $("turnRevealName").classList.add("hidden");
   $("turnPhaseLabel").textContent="NEXT PERSON IN";
   $("turnCountdown").classList.remove("hidden");
-  runCountdown(3, revealPlayer);
+  runCountdown(3, revealPlayer, "turnChange");
 }
 
 function revealPlayer(){
@@ -155,20 +163,23 @@ function revealPlayer(){
     $("turnChange").classList.add("hidden");
     $("game").classList.remove("hidden");
     showQuestion();
-  });
+  }, "turnChange");
 }
 
 // Counts a number down to zero, beeping each tick, then calls onDone.
 // (Never displays "0" itself — matches the 30 Seconds ready-screen feel.)
-function runCountdown(from, onDone){
+// pushPhase, if given, syncs the visible state to spectators on every tick.
+function runCountdown(from, onDone, pushPhase){
   let n=from;
   $("turnCountdown").textContent=n;
   playBeep("tick");
+  if(pushPhase)pushState(pushPhase);
   turnTimerId=setInterval(()=>{
     n--;
     if(n>0){
       $("turnCountdown").textContent=n;
       playBeep("tick");
+      if(pushPhase)pushState(pushPhase);
     } else {
       clearInterval(turnTimerId);
       onDone();
@@ -205,10 +216,170 @@ function finishGame(){
   $("results").classList.remove("hidden");
   const sorted=[...players].sort((a,b)=>scores[b]-scores[a]);
   $("finalScores").innerHTML=sorted.map((p,i)=>`<div class="finalRow"><span>${i===0?"🏆 ":""}${escapeHtml(p)}</span><strong>${scores[p]}</strong></div>`).join("");
+  pushState("results");
 }
 
 function escapeHtml(v){const d=document.createElement("div");d.textContent=v;return d.innerHTML}
 
-$("startBtn").onclick=startGame;
-$("nextBtn").onclick=nextTurn;
-$("playAgain").onclick=()=>{$("results").classList.add("hidden");$("setup").classList.remove("hidden")};
+// --- Spectator sync (host side) ---
+// One device (this one, if a game was started normally) is "live" — it can
+// answer and drive the game. Any other device that opens the same page with
+// ?spectate=CODE only ever reads this room's state; it has no way to answer.
+
+async function createRoom(initialState){
+  try{
+    const res=await fetch("/api/quiz/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(initialState)});
+    if(!res.ok)return null;
+    const data=await res.json();
+    return data.code||null;
+  }catch(e){return null}
+}
+
+function buildState(phase){
+  return {
+    phase,
+    players,
+    scores,
+    turnIndex,
+    totalQuestions:quizQuestions.length,
+    currentPlayer:turns[turnIndex],
+    turnPhaseLabel:$("turnPhaseLabel").textContent,
+    turnRevealName:$("turnRevealName").textContent,
+    turnRevealVisible:!$("turnRevealName").classList.contains("hidden"),
+    turnCountdown:$("turnCountdown").textContent,
+    question:currentQ?{text:currentQ.question,options:currentQ.options,image:currentQ.image||null}:null,
+    selected,
+    correctAnswer:(selected!==null&&currentQ)?currentQ.answer:null,
+    timeLeft,
+    updatedAt:Date.now()
+  };
+}
+
+function pushState(phase){
+  if(!roomCode)return;
+  fetch(`/api/quiz/${roomCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(buildState(phase))}).catch(()=>{});
+}
+
+function showRoomBadge(){
+  const badge=$("roomBadge");
+  if(!roomCode){badge.classList.add("hidden");return}
+  $("roomCodeText").textContent=roomCode;
+  badge.classList.remove("hidden");
+}
+
+// --- Spectator rendering (viewer side) ---
+// Same page, same HTML — driven entirely by polling instead of local game
+// logic. Option buttons are disabled and carry no click handler.
+
+function initSpectator(code){
+  isSpectator=true;
+  roomCode=code;
+  document.body.classList.add("spectatorMode");
+  renderSpectatorWaiting();
+  pollRoom();
+  pollTimerId=setInterval(pollRoom,1200);
+}
+
+async function pollRoom(){
+  try{
+    const res=await fetch(`/api/quiz/${roomCode}`,{cache:"no-store"});
+    if(!res.ok)return;
+    const state=await res.json();
+    renderSpectatorState(state);
+  }catch(e){/* keep showing the last known state on a transient error */}
+}
+
+function hideAllScreens(){
+  $("setup").classList.add("hidden");
+  $("game").classList.add("hidden");
+  $("turnChange").classList.add("hidden");
+  $("results").classList.add("hidden");
+}
+
+function renderSpectatorWaiting(){
+  hideAllScreens();
+  $("setup").classList.remove("hidden");
+  $("setup").innerHTML='<div class="hero center"><p class="eyebrow">SPECTATING</p><h1>Waiting for the host to start&hellip;</h1></div>';
+}
+
+function renderSpectatorState(state){
+  if(!state||state.phase==="setup"){renderSpectatorWaiting();return}
+
+  if(state.phase==="turnChange"){
+    hideAllScreens();
+    $("turnChange").classList.remove("hidden");
+    $("turnPhaseLabel").textContent=state.turnPhaseLabel;
+    $("turnCountdown").textContent=state.turnCountdown;
+    if(state.turnRevealVisible){
+      $("turnRevealName").textContent=state.turnRevealName;
+      $("turnRevealName").classList.remove("hidden");
+    }else{
+      $("turnRevealName").classList.add("hidden");
+    }
+    return;
+  }
+
+  if(state.phase==="question"){
+    hideAllScreens();
+    $("game").classList.remove("hidden");
+    $("playerName").textContent=state.currentPlayer;
+    $("turnNumber").textContent=state.turnIndex+1;
+    $("questionNumber").textContent=`QUESTION ${state.turnIndex+1} OF ${state.totalQuestions}`;
+    $("timer").textContent=state.timeLeft;
+    $("scoresBar").innerHTML=state.players.map(p=>`<div class="scoreChip ${p===state.currentPlayer?"active":""}">${escapeHtml(p)}: <strong>${state.scores[p]}</strong></div>`).join("");
+
+    if(state.question){
+      $("questionText").textContent=state.question.text;
+      const wrap=$("questionImageWrap"),img=$("questionImage");
+      if(state.question.image){img.src=state.question.image;wrap.classList.remove("hidden")}
+      else{img.removeAttribute("src");wrap.classList.add("hidden")}
+
+      const box=$("options"); box.innerHTML="";
+      state.question.options.forEach((text,i)=>{
+        const b=document.createElement("button");
+        b.className="option";
+        b.disabled=true;
+        b.textContent=`${String.fromCharCode(65+i)}. ${text}`;
+        if(state.selected!==null&&state.selected!==undefined){
+          if(i===state.correctAnswer)b.classList.add("correct");
+          else if(i===state.selected)b.classList.add("wrong");
+        }
+        box.appendChild(b);
+      });
+    }
+
+    const answered=state.selected!==null&&state.selected!==undefined;
+    if(!answered){$("feedback").textContent="";$("feedback").className="feedback"}
+    else if(state.selected===-1){$("feedback").textContent="⏰ Time's up";$("feedback").className="feedback timeout"}
+    else if(state.selected===state.correctAnswer){$("feedback").textContent="✓ Correct!";$("feedback").className="feedback good"}
+    else{$("feedback").textContent="✗ Not quite";$("feedback").className="feedback bad"}
+    return;
+  }
+
+  if(state.phase==="results"){
+    hideAllScreens();
+    $("results").classList.remove("hidden");
+    const sorted=[...state.players].sort((a,b)=>state.scores[b]-state.scores[a]);
+    $("finalScores").innerHTML=sorted.map((p,i)=>`<div class="finalRow"><span>${i===0?"🏆 ":""}${escapeHtml(p)}</span><strong>${state.scores[p]}</strong></div>`).join("");
+    return;
+  }
+}
+
+if(__spectateCode){
+  initSpectator(__spectateCode);
+}else{
+  $("participantCount").addEventListener("input",renderNameInputs);
+  renderNameInputs();
+  $("startBtn").onclick=startGame;
+  $("nextBtn").onclick=nextTurn;
+  $("playAgain").onclick=()=>{$("results").classList.add("hidden");$("setup").classList.remove("hidden");$("roomBadge").classList.add("hidden");roomCode=null};
+  $("copyLinkBtn").onclick=()=>{
+    if(!roomCode)return;
+    const url=`${location.origin}${location.pathname}?spectate=${roomCode}`;
+    navigator.clipboard.writeText(url).then(()=>{
+      const btn=$("copyLinkBtn"),prev=btn.textContent;
+      btn.textContent="Copied!";
+      setTimeout(()=>{btn.textContent=prev},1500);
+    }).catch(()=>{});
+  };
+}
