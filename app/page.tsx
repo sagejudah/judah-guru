@@ -91,11 +91,14 @@ export default function Home() {
                 <span className="stuff-path">/30seconds</span>
               </a>
             </li>
-            <li className="stuff-row is-building">
-              <span className="stuff-name">
-                <span className="arrow">→</span> Student Quiz
-                <span className="status status-building">building</span>
-              </span>
+            <li>
+              <a href="/quiz">
+                <span className="stuff-name">
+                  <span className="arrow">→</span> Student Quiz
+                  <span className="status status-live">live</span>
+                </span>
+                <span className="stuff-path">/quiz</span>
+              </a>
             </li>
             <li className="stuff-row is-building">
               <span className="stuff-name">
