@@ -12,6 +12,29 @@
     Room <strong id="roomCodeText"></strong>
     <button id="copyLinkBtn" type="button">Copy spectator link</button>
   </div>
+
+  <button id="hamburgerBtn" class="hamburgerBtn hidden" type="button" aria-label="Menu">☰</button>
+  <div id="hamburgerPanel" class="hamburgerPanel hidden">
+    <div class="panelInner">
+      <h3>Game Menu</h3>
+      <div class="panelSection">
+        <label>Time per question (next round)</label>
+        <div class="panelRow">
+          <input id="menuTimeLimit" type="number" min="5" max="600">
+          <button id="applyTimeBtn" class="secondaryBtn" type="button">Apply</button>
+        </div>
+      </div>
+      <div class="panelSection">
+        <label>Add participant</label>
+        <div class="panelRow">
+          <input id="menuNewName" placeholder="Name" maxlength="30">
+          <button id="addParticipantBtn" class="secondaryBtn" type="button">Add</button>
+        </div>
+      </div>
+      <button id="endGameBtn" class="dangerBtn" type="button">End Game</button>
+      <button id="closeMenuBtn" class="secondaryBtn" type="button" style="width:100%;margin-top:10px">Close</button>
+    </div>
+  </div>
   <section id="setup" class="screen">
     <div class="hero">
       <div class="eyebrow">BGCSE PRACTICE</div>
