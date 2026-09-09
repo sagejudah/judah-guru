@@ -52,7 +52,7 @@ async function startGame(){
   renderScores();
   roomCode=await createRoom({phase:"setup",players,scores,attempts});
   showRoomBadge();
-  showQuestion();
+  showTurnChange();
 }
 
 function showQuestion(){
@@ -106,7 +106,7 @@ function startTimer(startAt){
 function updateTimer(){$("timer").textContent=timeLeft}
 
 function answer(index){
-  if(selected!==null)return;
+  if(selected!==null||stage!=="question"||timeLeft<=0)return;
   clearInterval(timerId);
   selected=index;
   const buttons=[...document.querySelectorAll(".option")];
@@ -312,14 +312,15 @@ function saveLocal(){
 
 function restoreLocal(){
   let data;
-  try{data=JSON.parse(localStorage.getItem(LOCAL_KEY)||"null")}catch(e){return}
-  if(!data||!data.stage)return;
+  try{data=JSON.parse(localStorage.getItem(LOCAL_KEY)||"null")}catch(e){return false}
+  if(!data||!data.stage)return false;
 
   players=data.players||[]; scores=data.scores||{}; attempts=data.attempts||{};
   turns=data.turns||[]; quizQuestions=data.quizQuestions||[]; turnIndex=data.turnIndex||0;
   selected=(data.selected===undefined)?null:data.selected;
   timeLimit=data.timeLimit||45; roomCode=data.roomCode||null;
 
+  $("landing").classList.add("hidden");
   $("setup").classList.add("hidden");
   $("hamburgerBtn").classList.remove("hidden");
   renderScores();
@@ -377,6 +378,7 @@ function restoreLocal(){
   }else if(data.stage==="results"){
     finishGame();
   }
+  return true;
 }
 
 // --- Spectator sync (host side) ---
@@ -449,6 +451,7 @@ async function pollRoom(){
 }
 
 function hideAllScreens(){
+  $("landing").classList.add("hidden");
   $("setup").classList.add("hidden");
   $("game").classList.add("hidden");
   $("turnChange").classList.add("hidden");
@@ -556,5 +559,28 @@ if(__spectateCode){
   $("applyTimeBtn").onclick=applyTimeLimit;
   $("addParticipantBtn").onclick=addParticipant;
   $("endGameBtn").onclick=endGame;
-  restoreLocal();
+
+  $("landingStartBtn").onclick=()=>{
+    $("landing").classList.add("hidden");
+    $("setup").classList.remove("hidden");
+  };
+  $("landingSpectateBtn").onclick=()=>{$("spectateEntry").classList.remove("hidden")};
+  $("spectateJoinBtn").onclick=()=>{
+    const code=($("spectateCodeInput").value||"").trim().toUpperCase();
+    if(!code)return;
+    location.href=`${location.pathname}?spectate=${code}`;
+  };
+
+  // Hide the room badge / hamburger while scrolling down (they'd otherwise
+  // sit on top of question content on a long page); reappear on scroll up.
+  let __lastScrollY=window.scrollY||0;
+  window.addEventListener("scroll",()=>{
+    const y=window.scrollY||0;
+    const hide=y>__lastScrollY&&y>40;
+    $("roomBadge").classList.toggle("scrolled",hide);
+    $("hamburgerBtn").classList.toggle("scrolled",hide);
+    __lastScrollY=y;
+  });
+
+  if(restoreLocal())$("landing").classList.add("hidden");
 }
