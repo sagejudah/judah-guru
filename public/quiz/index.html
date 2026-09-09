@@ -35,7 +35,24 @@
       <button id="closeMenuBtn" class="secondaryBtn" type="button" style="width:100%;margin-top:10px">Close</button>
     </div>
   </div>
-  <section id="setup" class="screen">
+  <section id="landing" class="screen">
+    <div class="hero">
+      <div class="eyebrow">BGCSE PRACTICE</div>
+      <h1>Quiz Battle</h1>
+      <p>Take turns. Answer questions. Build your score.</p>
+    </div>
+    <div class="card">
+      <button id="landingStartBtn" class="primary">Start New Quiz</button>
+      <button id="landingSpectateBtn" class="primary secondary" style="margin-top:12px">Spectate a Game</button>
+      <div id="spectateEntry" class="hidden" style="margin-top:18px">
+        <label>Room code</label>
+        <input id="spectateCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
+        <button id="spectateJoinBtn" class="primary" style="margin-top:12px">Join</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="setup" class="screen hidden">
     <div class="hero">
       <div class="eyebrow">BGCSE PRACTICE</div>
       <h1>Quiz Battle</h1>
