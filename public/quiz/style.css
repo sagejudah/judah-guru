@@ -42,8 +42,18 @@ input{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px;fo
 .finalRow:first-child{font-weight:850;font-size:22px}
 .turnName{font-size:clamp(32px,9vw,56px);margin:8px 0 30px;letter-spacing:-1px}
 .bigCountdown{font-size:clamp(64px,20vw,110px);font-weight:900;line-height:1;color:var(--accent);letter-spacing:-3px}
-.roomBadge{position:fixed;top:12px;right:12px;z-index:50;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.08);display:flex;align-items:center;gap:8px}
+.roomBadge{position:fixed;top:12px;left:12px;z-index:50;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.08);display:flex;align-items:center;gap:8px}
 .roomBadge strong{color:var(--accent);letter-spacing:.04em}
 .roomBadge button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;font:inherit;font-size:12px;cursor:pointer}
-.spectatorMode #nextBtn,.spectatorMode #playAgain,.spectatorMode #roomBadge{display:none!important}
+.hamburgerBtn{position:fixed;top:12px;right:12px;z-index:60;width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:17px;box-shadow:0 6px 20px rgba(0,0,0,.08);cursor:pointer}
+.hamburgerPanel{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:70;display:flex;justify-content:flex-end}
+.hamburgerPanel .panelInner{width:min(300px,86vw);background:#fff;height:100%;padding:20px;overflow-y:auto}
+.panelInner h3{margin:0 0 16px}
+.panelSection{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.panelSection label{margin-top:0}
+.panelRow{display:flex;gap:8px}
+.panelRow input{flex:1}
+.secondaryBtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.dangerBtn{background:var(--wrong);color:#fff;border:0;border-radius:10px;padding:12px;width:100%;font:inherit;font-weight:800;cursor:pointer}
+.spectatorMode #nextBtn,.spectatorMode #playAgain,.spectatorMode #hamburgerBtn{display:none!important}
 @media(max-width:650px){.topbar{align-items:flex-start}.scoreMini{min-width:84px}.topbar h1{font-size:28px}}
