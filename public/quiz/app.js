@@ -456,6 +456,7 @@ function hideAllScreens(){
   $("game").classList.add("hidden");
   $("turnChange").classList.add("hidden");
   $("results").classList.add("hidden");
+  $("battle").classList.add("hidden");
 }
 
 function renderSpectatorWaiting(){
@@ -530,6 +531,128 @@ function renderSpectatorState(state){
   }
 }
 
+// --- Battle Mode ---
+// Independent players hitting the same shared question set at their own
+// pace. No timer, no turns — each device just answers, hits Next, repeats,
+// and pushes its own progress to a shared leaderboard.
+
+let battleCode=null,battleName=null,battleQuestions=[],battleIndex=0,battleScore=0,battleAttempts=0,battleSelected=null,battlePollId=null;
+
+async function startBattle(){
+  const name=($("battleNameInput").value||"").trim();
+  const code=($("battleCodeInput").value||"").trim().toUpperCase();
+  if(!name){alert("Enter your name.");return}
+
+  if(code){
+    // Join an existing battle.
+    try{
+      const res=await fetch(`/api/battle/${code}`);
+      if(!res.ok){alert("Room not found.");return}
+      const data=await res.json();
+      battleQuestions=data.meta.questions;
+      battleCode=code; battleName=name;
+      battleIndex=0; battleScore=0; battleAttempts=0;
+      await pushBattleProgress();
+      enterBattleScreen();
+    }catch(e){alert("Couldn't join — check your connection.")}
+  }else{
+    // Create a new battle.
+    const rounds=Math.max(1,Math.min(40,Number($("battleRoundsInput").value)||10));
+    const set=shuffle(questions).slice(0,Math.min(rounds,questions.length));
+    try{
+      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name})});
+      if(!res.ok){alert("Couldn't create a battle — try again.");return}
+      const data=await res.json();
+      battleCode=data.code; battleName=name; battleQuestions=set;
+      battleIndex=0; battleScore=0; battleAttempts=0;
+      enterBattleScreen();
+    }catch(e){alert("Couldn't create a battle — check your connection.")}
+  }
+}
+
+function enterBattleScreen(){
+  $("landing").classList.add("hidden");
+  $("battle").classList.remove("hidden");
+  $("battlePlayerName").textContent=battleName;
+  $("battleQTotal").textContent=battleQuestions.length;
+  renderBattleQuestion();
+  pollBattleLeaderboard();
+  battlePollId=setInterval(pollBattleLeaderboard,2000);
+}
+
+function renderBattleQuestion(){
+  if(battleIndex>=battleQuestions.length){
+    $("battleQuestionCard").style.display="none";
+    $("battleDoneCard").style.display="block";
+    return;
+  }
+  const q=battleQuestions[battleIndex];
+  battleSelected=null;
+  $("battleQNum").textContent=battleIndex+1;
+  $("battleQuestionText").textContent=q.question;
+  const wrap=$("battleImageWrap"),img=$("battleImage");
+  if(q.image){img.src=q.image;wrap.classList.remove("hidden")}
+  else{img.removeAttribute("src");wrap.classList.add("hidden")}
+  const box=$("battleOptions"); box.innerHTML="";
+  q.options.forEach((text,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.textContent=`${String.fromCharCode(65+i)}. ${text}`;
+    b.onclick=()=>answerBattle(i);
+    box.appendChild(b);
+  });
+  $("battleFeedback").textContent=""; $("battleFeedback").className="feedback";
+  $("battleNextBtn").disabled=true;
+  $("battleNextBtn").textContent=battleIndex===battleQuestions.length-1?"Finish":"Next Question";
+}
+
+function answerBattle(index){
+  if(battleSelected!==null)return;
+  battleSelected=index;
+  const q=battleQuestions[battleIndex];
+  const buttons=[...document.querySelectorAll("#battleOptions .option")];
+  buttons.forEach(b=>b.disabled=true);
+  const correct=index===q.answer;
+  buttons[index].classList.add(correct?"correct":"wrong");
+  if(!correct)buttons[q.answer].classList.add("correct");
+  battleAttempts++;
+  if(correct){battleScore++;$("battleFeedback").textContent="✓ Correct! +1 point";$("battleFeedback").className="feedback good"}
+  else{$("battleFeedback").textContent=`✗ Not quite. Correct answer: ${q.options[q.answer]}`;$("battleFeedback").className="feedback bad"}
+  $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
+  $("battleNextBtn").disabled=false;
+  pushBattleProgress();
+}
+
+function battleNext(){
+  if(battleSelected===null)return;
+  battleIndex++;
+  if(battleIndex>=battleQuestions.length)pushBattleProgress();
+  renderBattleQuestion();
+}
+
+async function pushBattleProgress(){
+  if(!battleCode||!battleName)return;
+  try{
+    await fetch(`/api/battle/${battleCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:battleName,score:battleScore,attempts:battleAttempts,currentIndex:battleIndex})});
+  }catch(e){}
+}
+
+async function pollBattleLeaderboard(){
+  if(!battleCode)return;
+  try{
+    const res=await fetch(`/api/battle/${battleCode}`,{cache:"no-store"});
+    if(!res.ok)return;
+    const data=await res.json();
+    const names=Object.keys(data.players||{});
+    const sorted=names.sort((a,b)=>(data.players[b].score||0)-(data.players[a].score||0));
+    $("battleLeaderboard").innerHTML=sorted.map((n,i)=>{
+      const p=data.players[n];
+      const total=data.meta&&data.meta.questions?data.meta.questions.length:battleQuestions.length;
+      return `<div class="finalRow"><span>${i===0?"🏆 ":""}${escapeHtml(n)} <small>(${p.currentIndex}/${total})</small></span><strong>${p.score||0}/${p.attempts||0}</strong></div>`;
+    }).join("");
+  }catch(e){}
+}
+
 if(__spectateCode){
   initSpectator(__spectateCode);
 }else{
@@ -570,6 +693,9 @@ if(__spectateCode){
     if(!code)return;
     location.href=`${location.pathname}?spectate=${code}`;
   };
+  $("landingBattleBtn").onclick=()=>{$("battleEntry").classList.remove("hidden")};
+  $("battleGoBtn").onclick=startBattle;
+  $("battleNextBtn").onclick=battleNext;
 
   // Hide the room badge / hamburger while scrolling down (they'd otherwise
   // sit on top of question content on a long page); reappear on scroll up.
