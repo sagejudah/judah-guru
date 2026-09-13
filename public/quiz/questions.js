@@ -4,32 +4,34 @@
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
 
 const questions = [
+{question:"A cyclist travels 100 m east and then 60 m west. What are the total distance travelled and the magnitude of the displacement?",options:["40 m, 160 m","160 m, 40 m","160 m, 160 m","40 m, 40 m"],answer:1},
 
-{question:"A stone is thrown horizontally from the top of a cliff. Air resistance is negligible. Which statement about the stone's acceleration is correct?",options:["It is zero because the stone is moving horizontally.","It is horizontal because the stone is moving horizontally.","It is vertically downward and remains constant.","It decreases as the stone moves further from the cliff."],answer:2},
+{question:"A car starts from rest and accelerates uniformly at 4 m/s2 for 5 s. What is its final velocity?",options:["0.8 m/s","9 m/s","20 m/s","25 m/s"],answer:2},
 
-{question:"A 3 kg object is moving at 4 m/s. What is its kinetic energy?",options:["6 J","12 J","24 J","48 J"],answer:2},
+{question:"A 6 kg box is pulled horizontally with a force of 30 N. Friction opposing the motion is 12 N. What is the acceleration of the box?",options:["2 m/s2","3 m/s2","5 m/s2","7 m/s2"],answer:1},
 
-{question:"A 2 kg object is lifted vertically through 5 m. Take g = 10 N/kg. What is the work done against gravity?",options:["4 J","10 J","50 J","100 J"],answer:3},
+{question:"A moving object experiences a resultant force in the direction opposite to its velocity. What happens to its speed?",options:["It must increase.","It must decrease.","It remains constant.","It immediately becomes zero."],answer:1},
 
-{question:"A force acts on an object but the object does not move. How much work is done by the force?",options:["Zero","Equal to the force","Equal to the mass of the object","Cannot be determined because the force is unknown"],answer:0},
+{question:"A person stands on a platform. The platform exerts an upward force of 700 N on the person, while the person's weight is 700 N. Which statement is correct?",options:["The person must be accelerating upwards.","The person must be accelerating downwards.","The resultant force on the person is zero.","There is no gravitational force acting on the person."],answer:2},
 
-{question:"A passenger in a car moves forward when the driver suddenly applies the brakes. Which principle best explains this?",options:["Conservation of energy","Inertia","Upthrust","Pressure"],answer:1},
+{question:"A 2 kg object falls from a height of 10 m. Ignore air resistance and take g = 10 N/kg. What is its speed just before reaching the ground?",options:["10 m/s","14 m/s","20 m/s","100 m/s"],answer:1},
 
-{question:"A nail is driven into wood using a hammer. The hammer exerts a force on the nail. Which statement about the force exerted by the nail on the hammer is correct?",options:["It is smaller because the nail has less mass.","It is larger because the nail is stationary.","It is equal in magnitude and opposite in direction.","It is zero because the hammer is moving towards the nail."],answer:2},
+{question:"A force of 40 N acts on a piston with an area of 0.020 m2. What pressure does the force produce?",options:["0.8 Pa","2 Pa","800 Pa","2000 Pa"],answer:3},
 
-{question:"Equal masses of water and oil receive equal amounts of thermal energy. The temperature of the water increases less than that of the oil. What does this show?",options:["Water has a lower density than oil.","Water has a higher specific heat capacity than oil.","Water has a lower boiling point than oil.","Water conducts thermal energy less effectively than oil."],answer:1},
+{question:"A gas is compressed while its temperature remains constant. Which statement about the gas is correct?",options:["The particles become larger.","The average kinetic energy of the particles increases.","The particles are forced closer together.","The number of particles decreases."],answer:2},
 
-{question:"A wet shirt dries faster on a windy day than on a still day. What is the main reason?",options:["Wind increases the temperature of the water to its boiling point.","Wind increases the surface area of the shirt.","Moving air removes water vapour from near the shirt's surface.","Wind increases the mass of the water molecules."],answer:2},
+{question:"A liquid is evaporating from an open container. Which change would increase the rate of evaporation?",options:["Decreasing the temperature","Decreasing the exposed surface area","Increasing the humidity of the surrounding air","Increasing the temperature"],answer:3},
 
-{question:"A thermos flask has a shiny inner surface. What is the main purpose of this surface?",options:["To reduce conduction by trapping air.","To reduce convection by preventing liquid movement.","To reduce infrared radiation by reflecting it.","To increase evaporation from the liquid."],answer:2},
+{question:"A student heats a solid and records its temperature every minute. The temperature remains constant for several minutes before rising again. What is most likely happening during the constant-temperature interval?",options:["The heater has stopped supplying energy.","The solid is changing state.","The particles have stopped moving.","The mass of the solid is increasing."],answer:1},
 
-{question:"A wave has a period of 0.25 s. What is its frequency?",options:["0.04 Hz","0.25 Hz","4 Hz","25 Hz"],answer:2},
+{question:"A light ray passes from air into a transparent material and bends towards the normal. What can be concluded about the speed of light in the material?",options:["It is greater than in air.","It is less than in air.","It is exactly the same as in air.","It becomes zero inside the material."],answer:1},
 
-{question:"A sound wave travels through air at 340 m/s and has a frequency of 680 Hz. What is its wavelength?",options:["0.25 m","0.50 m","2.0 m","1020 m"],answer:1},
+{question:"A plane mirror produces an image of an object. Which statement about the image is correct?",options:["It is real and inverted.","It is real and upright.","It is virtual and upright.","It is virtual and inverted."],answer:2},
 
-{question:"An object is placed at 2F in front of a converging lens. Which description of the image is correct?",options:["Real, inverted and same size as the object","Real, upright and same size as the object","Virtual, upright and magnified","Virtual, inverted and diminished"],answer:0},
+{question:"A wave travels at 24 m/s and has a wavelength of 0.80 m. What is its frequency?",options:["0.033 Hz","19.2 Hz","30 Hz","192 Hz"],answer:2},
 
-{question:"Two resistors of 4 Ω and 8 Ω are connected in series to a 24 V supply. What is the current in the circuit?",options:["1 A","2 A","3 A","6 A"],answer:1},
+{question:"A 3 Ω resistor and a 6 Ω resistor are connected in parallel. Which resistor carries the greater current when connected to the same battery?",options:["The 3 Ω resistor","The 6 Ω resistor","They carry the same current.","Neither carries current because they are in parallel."],answer:0},
 
-{question:"A 60 W lamp operates from a 12 V supply. What current flows through the lamp?",options:["0.2 A","5 A","48 A","720 A"],answer:1}
+{question:"A radioactive sample has a half-life of 10 days. After 30 days, what fraction of the original undecayed nuclei remains?",options:["1/2","1/3","1/8","1/30"],answer:2}
+  
 ];
