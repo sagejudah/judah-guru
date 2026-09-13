@@ -44,10 +44,20 @@
     <div class="card">
       <button id="landingStartBtn" class="primary">Start New Quiz</button>
       <button id="landingSpectateBtn" class="primary secondary" style="margin-top:12px">Spectate a Game</button>
+      <button id="landingBattleBtn" class="primary secondary" style="margin-top:12px">Battle Mode</button>
       <div id="spectateEntry" class="hidden" style="margin-top:18px">
         <label>Room code</label>
         <input id="spectateCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
         <button id="spectateJoinBtn" class="primary" style="margin-top:12px">Join</button>
+      </div>
+      <div id="battleEntry" class="hidden" style="margin-top:18px">
+        <label>Your name</label>
+        <input id="battleNameInput" maxlength="30" placeholder="Name">
+        <label style="margin-top:14px">Room code (leave blank to start a new battle)</label>
+        <input id="battleCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
+        <label id="battleRoundsLabel" style="margin-top:14px">Number of questions</label>
+        <input id="battleRoundsInput" type="number" min="1" max="40" value="10">
+        <button id="battleGoBtn" class="primary" style="margin-top:12px">Start Battling</button>
       </div>
     </div>
   </section>
@@ -112,6 +122,39 @@
       <h1>Final Scores</h1>
       <div id="finalScores"></div>
       <button id="playAgain" class="primary">Play Again</button>
+    </div>
+  </section>
+
+  <section id="battle" class="screen hidden">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">BATTLE MODE</div>
+        <h1 id="battlePlayerName"></h1>
+      </div>
+      <div class="scoreMini">
+        <div>Q<span id="battleQNum">1</span>/<span id="battleQTotal"></span></div>
+        <strong id="battleScore">0/0</strong>
+      </div>
+    </header>
+
+    <article class="card" id="battleQuestionCard">
+      <h2 id="battleQuestionText"></h2>
+      <div id="battleImageWrap" class="imageWrap hidden">
+        <img id="battleImage" alt="Question diagram">
+      </div>
+      <div id="battleOptions" class="options"></div>
+      <div id="battleFeedback" class="feedback"></div>
+      <button id="battleNextBtn" class="primary" disabled>Choose an answer</button>
+    </article>
+
+    <div class="card" id="battleDoneCard" style="display:none">
+      <div class="eyebrow">YOU'RE DONE</div>
+      <h2>Waiting on the others&hellip;</h2>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">LEADERBOARD</div>
+      <div id="battleLeaderboard"></div>
     </div>
   </section>
 </main>
