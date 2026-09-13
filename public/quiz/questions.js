@@ -4,34 +4,32 @@
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
 
 const questions = [
-{question:"A train increases its velocity from 12 m/s to 30 m/s in 6 s. What is its acceleration?",options:["3 m/s2","5 m/s2","7 m/s2","42 m/s2"],answer:0},
 
-{question:"A car is travelling at constant velocity on a straight road. Which statement is correct?",options:["There is a resultant force in the direction of motion.","There is a resultant force opposite to the direction of motion.","The resultant force on the car is zero.","The acceleration of the car is increasing."],answer:2},
+{question:"A stone is thrown horizontally from the top of a cliff. Air resistance is negligible. Which statement about the stone's acceleration is correct?",options:["It is zero because the stone is moving horizontally.","It is horizontal because the stone is moving horizontally.","It is vertically downward and remains constant.","It decreases as the stone moves further from the cliff."],answer:2},
 
-{question:"A 2 kg object is acted on by a resultant force of 10 N. What is the change in velocity of the object after 4 s?",options:["5 m/s","10 m/s","20 m/s","40 m/s"],answer:2},
+{question:"A 3 kg object is moving at 4 m/s. What is its kinetic energy?",options:["6 J","12 J","24 J","48 J"],answer:2},
 
-{question:"A skydiver falls through air and eventually reaches terminal velocity. Which statement correctly describes the forces at this point?",options:["Weight is greater than air resistance.","Air resistance is greater than weight.","Weight is equal to air resistance.","There are no forces acting on the skydiver."],answer:2},
+{question:"A 2 kg object is lifted vertically through 5 m. Take g = 10 N/kg. What is the work done against gravity?",options:["4 J","10 J","50 J","100 J"],answer:3},
 
-{question:"A ball is thrown vertically upwards. Ignoring air resistance, what happens to its kinetic energy as it rises?",options:["It increases continuously.","It decreases continuously until the ball reaches its highest point.","It remains constant because the mass is constant.","It becomes negative at the highest point."],answer:1},
+{question:"A force acts on an object but the object does not move. How much work is done by the force?",options:["Zero","Equal to the force","Equal to the mass of the object","Cannot be determined because the force is unknown"],answer:0},
 
-{question:"A 500 N force acts on an object and does 2000 J of work. How far does the object move in the direction of the force?",options:["0.25 m","4 m","2500 m","10000 m"],answer:1},
+{question:"A passenger in a car moves forward when the driver suddenly applies the brakes. Which principle best explains this?",options:["Conservation of energy","Inertia","Upthrust","Pressure"],answer:1},
 
-{question:"A machine has an efficiency of 80%. If 500 J of energy is supplied to the machine, how much useful energy does it produce?",options:["100 J","400 J","500 J","625 J"],answer:1},
+{question:"A nail is driven into wood using a hammer. The hammer exerts a force on the nail. Which statement about the force exerted by the nail on the hammer is correct?",options:["It is smaller because the nail has less mass.","It is larger because the nail is stationary.","It is equal in magnitude and opposite in direction.","It is zero because the hammer is moving towards the nail."],answer:2},
 
-{question:"A large dam has water stored at a considerable height above a hydroelectric turbine. Which energy conversion occurs mainly as the water passes through the turbine?",options:["Kinetic energy to gravitational potential energy","Gravitational potential energy to kinetic energy and then electrical energy","Chemical energy to kinetic energy and then thermal energy","Electrical energy to gravitational potential energy"],answer:1},
+{question:"Equal masses of water and oil receive equal amounts of thermal energy. The temperature of the water increases less than that of the oil. What does this show?",options:["Water has a lower density than oil.","Water has a higher specific heat capacity than oil.","Water has a lower boiling point than oil.","Water conducts thermal energy less effectively than oil."],answer:1},
 
-{question:"Two objects have the same temperature but different masses. Which statement is necessarily true?",options:["They contain the same amount of thermal energy.","Their particles have the same average kinetic energy.","The heavier object has particles moving faster.","The lighter object must have a higher temperature."],answer:1},
+{question:"A wet shirt dries faster on a windy day than on a still day. What is the main reason?",options:["Wind increases the temperature of the water to its boiling point.","Wind increases the surface area of the shirt.","Moving air removes water vapour from near the shirt's surface.","Wind increases the mass of the water molecules."],answer:2},
 
-{question:"A block of ice is heated at a constant rate. During the time when the ice is melting, what happens to its temperature?",options:["It increases steadily.","It decreases steadily.","It remains approximately constant.","It immediately reaches 100°C."],answer:2},
+{question:"A thermos flask has a shiny inner surface. What is the main purpose of this surface?",options:["To reduce conduction by trapping air.","To reduce convection by preventing liquid movement.","To reduce infrared radiation by reflecting it.","To increase evaporation from the liquid."],answer:2},
 
-{question:"Which method of heat transfer involves the bulk movement of a fluid?",options:["Conduction","Convection","Radiation","Absorption"],answer:1},
+{question:"A wave has a period of 0.25 s. What is its frequency?",options:["0.04 Hz","0.25 Hz","4 Hz","25 Hz"],answer:2},
 
-{question:"A student observes that a metal can becomes hot when placed in boiling water. Which process transfers thermal energy through the metal can itself?",options:["Conduction","Convection","Evaporation","Radiation only"],answer:0},
+{question:"A sound wave travels through air at 340 m/s and has a frequency of 680 Hz. What is its wavelength?",options:["0.25 m","0.50 m","2.0 m","1020 m"],answer:1},
 
-{question:"A light ray strikes a plane mirror at an angle of 40° to the normal. What is the angle between the incident ray and the reflected ray?",options:["40°","50°","80°","100°"],answer:2},
+{question:"An object is placed at 2F in front of a converging lens. Which description of the image is correct?",options:["Real, inverted and same size as the object","Real, upright and same size as the object","Virtual, upright and magnified","Virtual, inverted and diminished"],answer:0},
 
-{question:"An object is placed between a converging lens and its principal focus. Which statement is correct?",options:["The image is real, inverted and smaller.","The image is real, inverted and larger.","The image is virtual, upright and larger.","The image is virtual, inverted and smaller."],answer:2},
+{question:"Two resistors of 4 Ω and 8 Ω are connected in series to a 24 V supply. What is the current in the circuit?",options:["1 A","2 A","3 A","6 A"],answer:1},
 
-{question:"A circuit contains a 6 Ω resistor connected to a 12 V supply. How much electrical energy is transferred by the resistor in 10 s?",options:["20 J","120 J","240 J","720 J"],answer:2}
-
+{question:"A 60 W lamp operates from a 12 V supply. What current flows through the lamp?",options:["0.2 A","5 A","48 A","720 A"],answer:1}
 ];
