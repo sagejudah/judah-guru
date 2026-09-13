@@ -4,34 +4,34 @@
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
 
 const questions = [
-{question:"A cyclist travels 120 m in 20 s and then 180 m in 30 s. What is the average speed for the whole journey?",options:["4.0 m/s","5.0 m/s","6.0 m/s","7.5 m/s"],answer:1},
+{question:"A runner increases their speed from 4 m/s to 10 m/s in 3 s. What is the acceleration?",options:["2 m/s2","3 m/s2","6 m/s2","14 m/s2"],answer:0},
 
-{question:"A parachutist jumps from an aircraft. After some time, the parachutist reaches terminal velocity. Which statement is correct at terminal velocity?",options:["The weight is zero.","The air resistance is zero.","The resultant force is zero.","The acceleration is at its maximum."],answer:2},
+{question:"A car travels at a constant speed around a circular track. Which statement is correct?",options:["There is no resultant force because the speed is constant.","There is a resultant force directed towards the centre of the circle.","The resultant force is directed in the direction of motion.","The acceleration is zero because the speed is constant."],answer:1},
 
-{question:"A 4 kg object has a momentum of 20 kg m/s. What is its velocity?",options:["0.2 m/s","5 m/s","16 m/s","80 m/s"],answer:1},
+{question:"A 5 kg object is lifted vertically through a height of 4 m. Take gravitational field strength as 10 N/kg. What is the increase in gravitational potential energy?",options:["20 J","50 J","200 J","400 J"],answer:3},
 
-{question:"A force of 30 N acts on an object for 0.20 s. What is the impulse produced?",options:["0.006 Ns","6 Ns","30.2 Ns","150 Ns"],answer:1},
+{question:"A student pushes a box with a force of 80 N for 5 m. The frictional force opposing the motion is 30 N. What is the useful work done in moving the box?",options:["150 J","250 J","400 J","550 J"],answer:1},
 
-{question:"A person carries a suitcase horizontally at constant height while walking at constant speed. What is the work done by the person's upward force on the suitcase?",options:["Zero","Equal to the weight of the suitcase","Greater than the kinetic energy of the suitcase","Equal to the distance travelled"],answer:0},
+{question:"A moving object has its velocity doubled. What happens to its kinetic energy?",options:["It doubles.","It becomes four times as large.","It becomes half as large.","It remains unchanged."],answer:1},
 
-{question:"A ball is thrown horizontally from the top of a cliff. Air resistance is negligible. Which statement about the horizontal component of its velocity is correct?",options:["It increases as the ball falls.","It decreases as the ball falls.","It remains constant as the ball falls.","It becomes zero at the highest point."],answer:2},
+{question:"A metal ball and a wooden ball have the same mass. They are dropped from the same height at the same time. Air resistance is negligible. Which statement is correct?",options:["The metal ball reaches the ground first because it is heavier.","The wooden ball reaches the ground first because it is lighter.","Both balls reach the ground at the same time.","The balls have different accelerations because their masses are different."],answer:2},
 
-{question:"A metal spoon and a wooden spoon are left in the same room for several hours. Both reach room temperature. Which statement is correct?",options:["The metal spoon must contain more thermal energy.","The wooden spoon must contain more thermal energy.","Both spoons must have identical thermal energies.","Their temperatures are the same, but their thermal energies need not be the same."],answer:3},
+{question:"A liquid is heated from 20°C to 80°C. Which statement about the average kinetic energy of its particles is correct?",options:["It decreases.","It remains unchanged.","It increases.","It becomes zero at 80°C."],answer:2},
 
-{question:"Water is boiling vigorously in an open container. What happens to the temperature of the water while it continues to boil at atmospheric pressure?",options:["It continues to increase rapidly.","It remains approximately constant.","It decreases because energy is lost.","It becomes equal to the temperature of the room."],answer:1},
+{question:"A solid is heated until it melts. During the melting process, the temperature remains constant. What is the main reason for this?",options:["No energy is supplied to the solid.","The supplied energy increases the mass of the solid.","The supplied energy is used to overcome forces between particles.","The particles stop moving while the solid melts."],answer:2},
 
-{question:"A student wants to reduce heat loss from a house through the roof. Which change would be most effective?",options:["Replace the roof with a thin metal sheet.","Add a layer of trapped air beneath the roof.","Paint the roof with a dull black surface.","Increase the number of metal supports through the roof."],answer:1},
+{question:"A student wants to investigate how the length of a pendulum affects its period. Which variable should be kept constant?",options:["The length of the pendulum","The period of the pendulum","The mass of the bob","The number of oscillations per second"],answer:2},
 
-{question:"A ray of light strikes a plane mirror at an angle of 30° to the mirror surface. What is the angle of reflection?",options:["30°","60°","90°","120°"],answer:1},
+{question:"A ray of light passes from air into glass at an angle to the normal. Which quantity does not change when the light enters the glass?",options:["Speed","Wavelength","Frequency","Direction"],answer:2},
 
-{question:"An object is placed between a converging lens and its principal focus. Which statement describes the image formed?",options:["Real, inverted and smaller","Real, inverted and larger","Virtual, upright and larger","Virtual, inverted and smaller"],answer:2},
+{question:"An object is placed exactly at the principal focus of a converging lens. Where is the image formed?",options:["At the principal focus","Between the lens and the focus","At 2F","At infinity"],answer:3},
 
-{question:"A wave travels at 300 m/s and has a frequency of 150 Hz. What is its wavelength?",options:["0.5 m","2 m","45 000 m","450 m"],answer:0},
+{question:"A sound wave travels through air. Which statement is correct?",options:["The air particles travel with the sound from the source to the listener.","The air particles vibrate parallel to the direction of wave travel.","The air particles vibrate perpendicular to the direction of wave travel.","The sound wave can travel through a vacuum."],answer:1},
 
-{question:"Two lamps are connected in series to a battery. One lamp is removed from the circuit. What happens to the other lamp?",options:["It becomes brighter.","It remains at the same brightness.","It goes out.","Its resistance becomes zero."],answer:2},
+{question:"A 12 V supply is connected to two identical 6 Ω resistors in series. What is the current in the circuit?",options:["0.5 A","1.0 A","2.0 A","4.0 A"],answer:1},
 
-{question:"A 6 V battery supplies a current of 2 A to a motor for 10 s. How much electrical energy is transferred to the motor?",options:["3 J","12 J","60 J","120 J"],answer:3},
+{question:"Two identical resistors are connected in parallel across a 12 V battery. What is the potential difference across each resistor?",options:["3 V","6 V","12 V","24 V"],answer:2},
 
-{question:"A radioactive nucleus emits one alpha-particle followed by one beta-particle. Compared with the original nucleus, what happens to its proton number and nucleon number?",options:["Proton number decreases by 2; nucleon number decreases by 4.","Proton number decreases by 1; nucleon number decreases by 4.","Proton number increases by 1; nucleon number decreases by 4.","Proton number decreases by 3; nucleon number decreases by 2."],answer:2}
+{question:"A radioactive isotope has a half-life of 4 hours. A sample initially contains 80 000 radioactive nuclei. How many radioactive nuclei remain after 12 hours?",options:["40 000","20 000","10 000","5 000"],answer:2}
 
 ];
