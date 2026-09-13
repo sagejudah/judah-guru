@@ -4,33 +4,34 @@
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
 
 const questions = [
-{question:"A car travels around a circular track at constant speed. Which statement about the car's velocity is correct?",options:["Its velocity is constant because its speed is constant.","Its velocity changes because its direction changes.","Its velocity changes only when its speed changes.","Its velocity is zero because the car returns to its starting point."],answer:1},
+{question:"A cyclist travels 120 m in 20 s and then 180 m in 30 s. What is the average speed for the whole journey?",options:["4.0 m/s","5.0 m/s","6.0 m/s","7.5 m/s"],answer:1},
 
-{question:"A stone is thrown vertically upwards. At the highest point of its motion, which statement is correct?",options:["Its velocity and acceleration are both zero.","Its velocity is zero but its acceleration is downward.","Its velocity is upward and its acceleration is zero.","Its velocity is downward and its acceleration is downward."],answer:1},
+{question:"A parachutist jumps from an aircraft. After some time, the parachutist reaches terminal velocity. Which statement is correct at terminal velocity?",options:["The weight is zero.","The air resistance is zero.","The resultant force is zero.","The acceleration is at its maximum."],answer:2},
 
-{question:"A 2.0 kg object accelerates from rest to 6.0 m/s in 3.0 s. What is the resultant force acting on the object?",options:["2 N","4 N","6 N","12 N"],answer:2},
+{question:"A 4 kg object has a momentum of 20 kg m/s. What is its velocity?",options:["0.2 m/s","5 m/s","16 m/s","80 m/s"],answer:1},
 
-{question:"Two forces act on an object. One force is 8 N east and the other is 5 N west. What is the resultant force?",options:["13 N east","13 N west","3 N east","3 N west"],answer:2},
+{question:"A force of 30 N acts on an object for 0.20 s. What is the impulse produced?",options:["0.006 Ns","6 Ns","30.2 Ns","150 Ns"],answer:1},
 
-{question:"A student pushes a box across a horizontal floor at constant velocity. Which statement about the forces acting on the box is correct?",options:["The pushing force is greater than the frictional force.","The frictional force is greater than the pushing force.","The pushing force is equal to the frictional force.","There is no frictional force because the box is moving."],answer:2},
+{question:"A person carries a suitcase horizontally at constant height while walking at constant speed. What is the work done by the person's upward force on the suitcase?",options:["Zero","Equal to the weight of the suitcase","Greater than the kinetic energy of the suitcase","Equal to the distance travelled"],answer:0},
 
-{question:"A ball is dropped from rest and falls freely. Ignoring air resistance, which quantity remains constant during the fall?",options:["Its velocity","Its kinetic energy","Its gravitational potential energy","Its acceleration"],answer:3},
+{question:"A ball is thrown horizontally from the top of a cliff. Air resistance is negligible. Which statement about the horizontal component of its velocity is correct?",options:["It increases as the ball falls.","It decreases as the ball falls.","It remains constant as the ball falls.","It becomes zero at the highest point."],answer:2},
 
-{question:"A force of 50 N acts on an object and moves it 4 m in the direction of the force. How much work is done?",options:["12.5 J","46 J","54 J","200 J"],answer:3},
+{question:"A metal spoon and a wooden spoon are left in the same room for several hours. Both reach room temperature. Which statement is correct?",options:["The metal spoon must contain more thermal energy.","The wooden spoon must contain more thermal energy.","Both spoons must have identical thermal energies.","Their temperatures are the same, but their thermal energies need not be the same."],answer:3},
 
-{question:"A machine takes 500 J of energy from a power supply and produces 350 J of useful energy. What is the efficiency of the machine?",options:["30%","70%","143%","850%"],answer:1},
+{question:"Water is boiling vigorously in an open container. What happens to the temperature of the water while it continues to boil at atmospheric pressure?",options:["It continues to increase rapidly.","It remains approximately constant.","It decreases because energy is lost.","It becomes equal to the temperature of the room."],answer:1},
 
-{question:"A metal wire is stretched by a force. The force is increased but the wire remains within its elastic limit. What happens when the force is removed?",options:["The wire remains permanently longer.","The wire returns to its original length.","The wire becomes shorter than its original length.","The wire breaks immediately."],answer:1},
+{question:"A student wants to reduce heat loss from a house through the roof. Which change would be most effective?",options:["Replace the roof with a thin metal sheet.","Add a layer of trapped air beneath the roof.","Paint the roof with a dull black surface.","Increase the number of metal supports through the roof."],answer:1},
 
-{question:"Two objects are at the same temperature. Object A is made of copper and object B is made of wood. Which statement is correct?",options:["A has more thermal energy because copper is a better conductor.","B has more thermal energy because wood is a poor conductor.","They must have the same average kinetic energy of their particles.","The particles in A are moving faster because copper conducts heat better."],answer:2},
+{question:"A ray of light strikes a plane mirror at an angle of 30° to the mirror surface. What is the angle of reflection?",options:["30°","60°","90°","120°"],answer:1},
 
-{question:"A ray of light travels from glass into air. Which statement about the ray is correct when it is incident at an angle to the normal?",options:["It bends towards the normal because its speed decreases.","It bends away from the normal because its speed increases.","It bends towards the normal because its frequency increases.","It bends away from the normal because its frequency decreases."],answer:1},
+{question:"An object is placed between a converging lens and its principal focus. Which statement describes the image formed?",options:["Real, inverted and smaller","Real, inverted and larger","Virtual, upright and larger","Virtual, inverted and smaller"],answer:2},
 
-{question:"A student places an object beyond 2F in front of a converging lens. Which description of the image is correct?",options:["Virtual, upright and magnified","Real, inverted and diminished","Real, upright and magnified","Virtual, inverted and diminished"],answer:1},
+{question:"A wave travels at 300 m/s and has a frequency of 150 Hz. What is its wavelength?",options:["0.5 m","2 m","45 000 m","450 m"],answer:0},
 
-{question:"A wave has a frequency of 5 Hz and a wavelength of 2 m. What is its speed?",options:["0.4 m/s","2.5 m/s","7 m/s","10 m/s"],answer:3},
+{question:"Two lamps are connected in series to a battery. One lamp is removed from the circuit. What happens to the other lamp?",options:["It becomes brighter.","It remains at the same brightness.","It goes out.","Its resistance becomes zero."],answer:2},
 
-{question:"Three identical resistors are connected in parallel to a battery. Compared with the resistance of one resistor, the total resistance of the combination is:",options:["greater","equal","smaller","zero"],answer:2},
+{question:"A 6 V battery supplies a current of 2 A to a motor for 10 s. How much electrical energy is transferred to the motor?",options:["3 J","12 J","60 J","120 J"],answer:3},
 
-{question:"A radioactive source has a half-life of 6 hours. Its activity is initially 800 counts per minute. What will its activity be after 18 hours?",options:["400 counts per minute","200 counts per minute","100 counts per minute","50 counts per minute"],answer:2}
+{question:"A radioactive nucleus emits one alpha-particle followed by one beta-particle. Compared with the original nucleus, what happens to its proton number and nucleon number?",options:["Proton number decreases by 2; nucleon number decreases by 4.","Proton number decreases by 1; nucleon number decreases by 4.","Proton number increases by 1; nucleon number decreases by 4.","Proton number decreases by 3; nucleon number decreases by 2."],answer:2}
+
 ];
