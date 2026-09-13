@@ -574,6 +574,7 @@ function enterBattleScreen(){
   $("landing").classList.add("hidden");
   $("battle").classList.remove("hidden");
   $("battlePlayerName").textContent=battleName;
+  $("battleCodeText").textContent=battleCode;
   $("battleQTotal").textContent=battleQuestions.length;
   renderBattleQuestion();
   pollBattleLeaderboard();
@@ -696,6 +697,14 @@ if(__spectateCode){
   $("landingBattleBtn").onclick=()=>{$("battleEntry").classList.remove("hidden")};
   $("battleGoBtn").onclick=startBattle;
   $("battleNextBtn").onclick=battleNext;
+  $("battleCopyBtn").onclick=()=>{
+    if(!battleCode)return;
+    navigator.clipboard.writeText(battleCode).then(()=>{
+      const btn=$("battleCopyBtn"),prev=btn.textContent;
+      btn.textContent="Copied!";
+      setTimeout(()=>{btn.textContent=prev},1500);
+    }).catch(()=>{});
+  };
 
   // Hide the room badge / hamburger while scrolling down (they'd otherwise
   // sit on top of question content on a long page); reappear on scroll up.
