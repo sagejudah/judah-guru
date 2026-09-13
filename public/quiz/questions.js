@@ -4,31 +4,31 @@
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
 
 const questions = [
-{question:"A bus accelerates uniformly from 5 m/s to 17 m/s in 4 s. What distance does it travel during this time?",options:["22 m","44 m","48 m","68 m"],answer:1},
+{question:"A car travels at 20 m/s for 15 s and then stops. What distance does it travel during the first 15 s?",options:["1.3 m","35 m","300 m","600 m"],answer:2},
 
-{question:"A stone is thrown vertically upwards. At the instant it reaches its highest point, which statement is correct?",options:["Its acceleration is zero and its velocity is zero.","Its acceleration is downward and its velocity is zero.","Its acceleration is upward and its velocity is zero.","Its acceleration is downward and its velocity is upward."],answer:1},
+{question:"A cyclist moving at 8 m/s accelerates uniformly at 2 m/s2 for 5 s. What is the cyclist's final speed?",options:["10 m/s","16 m/s","18 m/s","40 m/s"],answer:2},
 
-{question:"A force of 12 N acts on a 3 kg object. What is the acceleration of the object if this is the resultant force?",options:["0.25 m/s2","4 m/s2","9 m/s2","36 m/s2"],answer:1},
+{question:"A 10 N force acts on an object at an angle of 60° to the direction in which the object moves. The object moves 4 m. How much work is done by the force?",options:["20 J","40 J","80 J","120 J"],answer:1},
 
-{question:"A 60 kg person stands on a weighing scale in a lift. The scale reading becomes greater than 60 kg. What is happening to the lift?",options:["It is moving upwards at constant speed.","It is moving downwards at constant speed.","It is accelerating upwards.","It is accelerating downwards."],answer:2},
+{question:"A metal ball and a plastic ball have the same volume but different masses. Both are completely submerged in the same liquid. Which statement about the upthrust on the balls is correct?",options:["The metal ball experiences greater upthrust because it has greater mass.","The plastic ball experiences greater upthrust because it has smaller mass.","Both balls experience the same upthrust.","Neither ball experiences upthrust because both are completely submerged."],answer:2},
 
-{question:"A student holds a book stationary above a table. Which statement about the forces acting on the book is correct?",options:["The gravitational force is greater than the upward force from the student's hand.","The upward force from the student's hand is greater than the gravitational force.","The gravitational force and the upward force from the student's hand are equal.","There are no forces acting because the book is stationary."],answer:2},
+{question:"A sharp knife cuts more easily than a blunt knife when the same force is applied. Which quantity is responsible for this difference?",options:["The sharp knife has a smaller area of contact, producing greater pressure.","The sharp knife has a larger area of contact, producing greater pressure.","The sharp knife has a greater mass, producing greater pressure.","The sharp knife has a smaller mass, producing greater pressure."],answer:0},
 
-{question:"A ball rolls down a slope and speeds up. Which energy change occurs mainly as the ball moves down the slope?",options:["Kinetic energy changes into gravitational potential energy.","Gravitational potential energy changes into kinetic energy.","Thermal energy changes into gravitational potential energy.","Kinetic energy changes into chemical energy."],answer:1},
+{question:"A liquid is heated in a closed container. Which statement best explains why its pressure increases?",options:["The particles become larger and occupy more space.","The particles move faster and collide with the container walls more frequently and with greater force.","The number of particles increases as the temperature increases.","The particles stop attracting one another."],answer:1},
 
-{question:"A metal block is heated but its temperature does not increase while it is changing state. What happens to the energy supplied?",options:["It is completely lost to the surroundings.","It increases the mass of the block.","It is used to change the arrangement and separation of particles.","It decreases the kinetic energy of the particles."],answer:2},
+{question:"A substance changes directly from a solid to a gas without becoming a liquid. What is this process called?",options:["Condensation","Evaporation","Sublimation","Freezing"],answer:2},
 
-{question:"Three identical containers contain equal masses of water. Container P has a small exposed surface, Q has a medium exposed surface and R has a large exposed surface. All are at the same temperature and placed in identical conditions. Which water evaporates fastest?",options:["P","Q","R","All evaporate at the same rate"],answer:2},
+{question:"A student places equal masses of hot water into identical cups. Cup A is covered with a lid and Cup B is left uncovered. Which cup loses heat more slowly, and why?",options:["A, because the lid reduces evaporation.","A, because the lid increases convection.","B, because evaporation is faster from an uncovered surface.","B, because the lid increases radiation."],answer:0},
 
-{question:"A shiny silver surface and a dull black surface are both at the same temperature. Which surface is the better emitter of infrared radiation?",options:["The shiny silver surface","The dull black surface","Both emit at exactly the same rate","Neither emits infrared radiation"],answer:1},
+{question:"A ray of light travels from glass into air. Compared with its speed in glass, what happens to its speed and wavelength in air?",options:["Both decrease.","Speed increases and wavelength increases.","Speed increases and wavelength decreases.","Speed decreases and wavelength increases."],answer:1},
 
-{question:"A ray of light passes from water into air. The angle of incidence is increased beyond the critical angle. What happens?",options:["The ray is refracted towards the normal.","The ray is refracted away from the normal.","The ray is totally internally reflected.","The ray passes straight through without changing direction."],answer:2},
+{question:"An object is placed beyond 2F from a converging lens. The image formed is:",options:["real, inverted and smaller than the object","real, upright and larger than the object","virtual, upright and smaller than the object","virtual, inverted and larger than the object"],answer:0},
 
-{question:"An object is placed between F and 2F of a converging lens. Which image is formed?",options:["Real, inverted and magnified","Real, upright and diminished","Virtual, upright and diminished","Virtual, inverted and magnified"],answer:0},
+{question:"Two waves have the same speed. Wave P has a frequency of 100 Hz and wave Q has a frequency of 200 Hz. Which statement is correct?",options:["P has twice the wavelength of Q.","Q has twice the wavelength of P.","Both waves have the same wavelength.","P has a smaller wavelength than Q."],answer:0},
 
-{question:"A wave has a frequency of 250 Hz and a wavelength of 1.2 m. What is its speed?",options:["208 m/s","251 m/s","300 m/s","301.2 m/s"],answer:2},
+{question:"A student connects three identical bulbs in parallel to a battery. One bulb is removed. What happens to the other two bulbs?",options:["They both go out.","They become dimmer because the total resistance increases.","They remain approximately at the same brightness.","They both become permanently damaged."],answer:2},
 
-{question:"A 4 Ω resistor carries a current of 3 A. What is the electrical power dissipated by the resistor?",options:["12 W","24 W","36 W","48 W"],answer:2},
+{question:"A 24 V heater has a power rating of 120 W. What current does it draw when operating normally?",options:["0.2 A","5 A","24 A","2880 A"],answer:1},
 
-{question:"A transformer has 500 turns on its primary coil and 2000 turns on its secondary coil. The primary voltage is 12 V. What is the secondary voltage?",options:["3 V","24 V","48 V","120 V"],answer:2}
+{question:"A radioactive nucleus emits an alpha-particle. What happens to its proton number and nucleon number?",options:["Proton number decreases by 2 and nucleon number decreases by 4.","Proton number decreases by 4 and nucleon number decreases by 2.","Proton number increases by 2 and nucleon number decreases by 4.","Proton number decreases by 2 and nucleon number remains unchanged."],answer:0}
 ];
