@@ -16,7 +16,7 @@ const MAX_BODY_BYTES = 40000;
 export async function POST(req: Request) {
   const text = await req.text();
   if (text.length > MAX_BODY_BYTES) return NextResponse.json({ error: 'payload too large' }, { status: 413 });
-  let body: { questions?: unknown[]; rounds?: number; hostName?: string };
+  let body: { questions?: unknown[]; rounds?: number; hostName?: string; timePerQuestion?: number; deadTimerSeconds?: number };
   try {
     body = JSON.parse(text);
   } catch {
@@ -26,6 +26,9 @@ export async function POST(req: Request) {
   if (!hostName || !Array.isArray(body.questions) || !body.questions.length) {
     return NextResponse.json({ error: 'missing hostName or questions' }, { status: 400 });
   }
+  const timePerQuestion = Math.max(5, Math.min(600, Number(body.timePerQuestion) || 40));
+  const rounds = body.rounds || body.questions.length;
+  const deadTimerSeconds = Math.max(10, Math.min(36000, Number(body.deadTimerSeconds) || Math.round(rounds * timePerQuestion * 1.25)));
 
   const redis = await getRedis();
   let code = '';
@@ -35,8 +38,19 @@ export async function POST(req: Request) {
     if (!exists) break;
   }
   const key = `quiz:battle:${code}`;
-  await redis.hSet(key, '__meta', JSON.stringify({ questions: body.questions, rounds: body.rounds || body.questions.length, createdAt: Date.now() }));
+  // deadTimerEndsAt is a fixed shared timestamp — every device computes its
+  // own remaining time from the same target instant, so no per-device sync
+  // is needed for everyone to end at exactly the same moment.
+  const meta = {
+    questions: body.questions,
+    rounds,
+    timePerQuestion,
+    deadTimerSeconds,
+    deadTimerEndsAt: Date.now() + deadTimerSeconds * 1000,
+    createdAt: Date.now(),
+  };
+  await redis.hSet(key, '__meta', JSON.stringify(meta));
   await redis.hSet(key, hostName, JSON.stringify({ score: 0, attempts: 0, currentIndex: 0, updatedAt: Date.now() }));
   await redis.expire(key, ROOM_TTL_SECONDS);
-  return NextResponse.json({ code });
+  return NextResponse.json({ code, meta });
 }
