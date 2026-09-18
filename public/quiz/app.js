@@ -532,11 +532,21 @@ function renderSpectatorState(state){
 }
 
 // --- Battle Mode ---
-// Independent players hitting the same shared question set at their own
-// pace. No timer, no turns — each device just answers, hits Next, repeats,
-// and pushes its own progress to a shared leaderboard.
+// Independent players work through the same shared question set at their
+// own pace (each device tracks its own current question), but two timers
+// are shared: every question gets the same number of seconds to answer,
+// and one overall "dead timer" — a single fixed end timestamp handed out
+// at room creation — ends the whole battle for every device at once.
 
 let battleCode=null,battleName=null,battleQuestions=[],battleIndex=0,battleScore=0,battleAttempts=0,battleSelected=null,battlePollId=null;
+let battleTimePerQ=40,battleQuestionEndsAt=null,battleQuestionTimerId=null;
+let battleDeadTimerEndsAt=null,battleDeadTimerId=null,battleDeadTimerExpired=false;
+
+function updateDeadTimerDefault(){
+  const rounds=Math.max(1,Number($("battleRoundsInput").value)||10);
+  const tpq=Math.max(5,Number($("battleTimePerQInput").value)||40);
+  $("battleDeadTimerInput").value=Math.round(rounds*tpq*1.25);
+}
 
 async function startBattle(){
   const name=($("battleNameInput").value||"").trim();
@@ -544,26 +554,33 @@ async function startBattle(){
   if(!name){alert("Enter your name.");return}
 
   if(code){
-    // Join an existing battle.
+    // Join an existing battle — inherit its shared timers from the room.
     try{
       const res=await fetch(`/api/battle/${code}`);
       if(!res.ok){alert("Room not found.");return}
       const data=await res.json();
       battleQuestions=data.meta.questions;
+      battleTimePerQ=data.meta.timePerQuestion||40;
+      battleDeadTimerEndsAt=data.meta.deadTimerEndsAt;
       battleCode=code; battleName=name;
       battleIndex=0; battleScore=0; battleAttempts=0;
       await pushBattleProgress();
       enterBattleScreen();
     }catch(e){alert("Couldn't join — check your connection.")}
   }else{
-    // Create a new battle.
+    // Create a new battle — this device's chosen settings become shared.
     const rounds=Math.max(1,Math.min(40,Number($("battleRoundsInput").value)||10));
+    const timePerQ=Math.max(5,Math.min(600,Number($("battleTimePerQInput").value)||40));
+    const deadTimerInputVal=Number($("battleDeadTimerInput").value);
+    const deadTimerSeconds=deadTimerInputVal>0?deadTimerInputVal:Math.round(rounds*timePerQ*1.25);
     const set=shuffle(questions).slice(0,Math.min(rounds,questions.length));
     try{
-      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name})});
+      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,timePerQuestion:timePerQ,deadTimerSeconds})});
       if(!res.ok){alert("Couldn't create a battle — try again.");return}
       const data=await res.json();
       battleCode=data.code; battleName=name; battleQuestions=set;
+      battleTimePerQ=data.meta.timePerQuestion;
+      battleDeadTimerEndsAt=data.meta.deadTimerEndsAt;
       battleIndex=0; battleScore=0; battleAttempts=0;
       enterBattleScreen();
     }catch(e){alert("Couldn't create a battle — check your connection.")}
@@ -576,17 +593,85 @@ function enterBattleScreen(){
   $("battlePlayerName").textContent=battleName;
   $("battleCodeText").textContent=battleCode;
   $("battleQTotal").textContent=battleQuestions.length;
+  battleDeadTimerExpired=false;
+  startDeadTimer();
   renderBattleQuestion();
   pollBattleLeaderboard();
   battlePollId=setInterval(pollBattleLeaderboard,2000);
 }
 
+function formatClock(sec){
+  const m=Math.floor(sec/60),s=sec%60;
+  return `${m}:${s<10?"0":""}${s}`;
+}
+
+function startDeadTimer(){
+  clearInterval(battleDeadTimerId);
+  tickDeadTimer();
+  battleDeadTimerId=setInterval(tickDeadTimer,500);
+}
+
+function tickDeadTimer(){
+  const remaining=Math.max(0,Math.ceil((battleDeadTimerEndsAt-Date.now())/1000));
+  $("battleDeadTimer").textContent=formatClock(remaining);
+  if(remaining<=0)endBattleByDeadTimer();
+}
+
+function endBattleByDeadTimer(){
+  if(battleDeadTimerExpired)return;
+  battleDeadTimerExpired=true;
+  clearInterval(battleDeadTimerId);
+  clearInterval(battleQuestionTimerId);
+  $("battleQuestionCard").style.display="none";
+  $("battleDoneEyebrow").textContent="TIME'S UP";
+  $("battleDoneHeading").textContent="The battle has ended for everyone.";
+  $("battleDoneCard").style.display="block";
+  pushBattleProgress();
+}
+
+function startQuestionTimer(){
+  clearInterval(battleQuestionTimerId);
+  battleQuestionEndsAt=Date.now()+battleTimePerQ*1000;
+  tickQuestionTimer();
+  battleQuestionTimerId=setInterval(tickQuestionTimer,500);
+}
+
+function tickQuestionTimer(){
+  const remaining=Math.max(0,Math.ceil((battleQuestionEndsAt-Date.now())/1000));
+  $("battleQTimer").textContent=remaining;
+  if(remaining<=0){
+    clearInterval(battleQuestionTimerId);
+    battleQuestionTimeout();
+  }
+}
+
+function battleQuestionTimeout(){
+  if(battleSelected!==null||battleDeadTimerExpired)return;
+  battleSelected=-1;
+  const q=battleQuestions[battleIndex];
+  const buttons=[...document.querySelectorAll("#battleOptions .option")];
+  buttons.forEach(b=>b.disabled=true);
+  buttons[q.answer].classList.add("correct");
+  battleAttempts++;
+  $("battleFeedback").textContent=`⏰ Time! Correct answer: ${q.options[q.answer]}`;
+  $("battleFeedback").className="feedback timeout";
+  $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
+  pushBattleProgress();
+  setTimeout(advanceBattleQuestion,1200);
+}
+
 function renderBattleQuestion(){
+  if(battleDeadTimerExpired)return;
   if(battleIndex>=battleQuestions.length){
+    clearInterval(battleQuestionTimerId);
     $("battleQuestionCard").style.display="none";
+    $("battleDoneEyebrow").textContent="YOU'RE DONE";
+    $("battleDoneHeading").textContent="Waiting on the others\u2026";
     $("battleDoneCard").style.display="block";
     return;
   }
+  $("battleQuestionCard").style.display="";
+  $("battleDoneCard").style.display="none";
   const q=battleQuestions[battleIndex];
   battleSelected=null;
   $("battleQNum").textContent=battleIndex+1;
@@ -605,10 +690,12 @@ function renderBattleQuestion(){
   $("battleFeedback").textContent=""; $("battleFeedback").className="feedback";
   $("battleNextBtn").disabled=true;
   $("battleNextBtn").textContent=battleIndex===battleQuestions.length-1?"Finish":"Next Question";
+  startQuestionTimer();
 }
 
 function answerBattle(index){
-  if(battleSelected!==null)return;
+  if(battleSelected!==null||battleDeadTimerExpired)return;
+  clearInterval(battleQuestionTimerId);
   battleSelected=index;
   const q=battleQuestions[battleIndex];
   const buttons=[...document.querySelectorAll("#battleOptions .option")];
@@ -624,11 +711,16 @@ function answerBattle(index){
   pushBattleProgress();
 }
 
-function battleNext(){
-  if(battleSelected===null)return;
+function advanceBattleQuestion(){
+  clearInterval(battleQuestionTimerId);
   battleIndex++;
   if(battleIndex>=battleQuestions.length)pushBattleProgress();
   renderBattleQuestion();
+}
+
+function battleNext(){
+  if(battleSelected===null||battleDeadTimerExpired)return;
+  advanceBattleQuestion();
 }
 
 async function pushBattleProgress(){
@@ -694,7 +786,12 @@ if(__spectateCode){
     if(!code)return;
     location.href=`${location.pathname}?spectate=${code}`;
   };
-  $("landingBattleBtn").onclick=()=>{$("battleEntry").classList.remove("hidden")};
+  $("landingBattleBtn").onclick=()=>{
+    $("battleEntry").classList.remove("hidden");
+    updateDeadTimerDefault();
+  };
+  $("battleRoundsInput").addEventListener("input",updateDeadTimerDefault);
+  $("battleTimePerQInput").addEventListener("input",updateDeadTimerDefault);
   $("battleGoBtn").onclick=startBattle;
   $("battleNextBtn").onclick=battleNext;
   $("battleCopyBtn").onclick=()=>{
