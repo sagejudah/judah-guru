@@ -661,8 +661,8 @@ function battleQuestionTimeout(){
   $("battleFeedback").textContent=`⏰ Time! Correct answer: ${q.options[q.answer]}`;
   $("battleFeedback").className="feedback timeout";
   $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
+  $("battleNextBtn").disabled=false;
   pushBattleProgress();
-  setTimeout(advanceBattleQuestion,1200);
 }
 
 function renderBattleQuestion(){
