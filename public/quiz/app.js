@@ -543,9 +543,10 @@ let battleTimePerQ=40,battleQuestionEndsAt=null,battleQuestionTimerId=null;
 let battleDeadTimerEndsAt=null,battleDeadTimerId=null,battleDeadTimerExpired=false;
 
 function updateDeadTimerDefault(){
+  if(!$("battleUseQTimer").checked)return;
   const rounds=Math.max(1,Number($("battleRoundsInput").value)||10);
   const tpq=Math.max(5,Number($("battleTimePerQInput").value)||40);
-  $("battleDeadTimerInput").value=Math.round(rounds*tpq*1.25);
+  $("battleDeadTimerInput").value=Math.max(1,Math.round(rounds*tpq*1.25/60));
 }
 
 async function startBattle(){
@@ -560,7 +561,7 @@ async function startBattle(){
       if(!res.ok){alert("Room not found.");return}
       const data=await res.json();
       battleQuestions=data.meta.questions;
-      battleTimePerQ=data.meta.timePerQuestion||40;
+      battleTimePerQ=data.meta.timePerQuestion;
       battleDeadTimerEndsAt=data.meta.deadTimerEndsAt;
       battleCode=code; battleName=name;
       battleIndex=0; battleScore=0; battleAttempts=0;
@@ -570,12 +571,14 @@ async function startBattle(){
   }else{
     // Create a new battle — this device's chosen settings become shared.
     const rounds=Math.max(1,Math.min(40,Number($("battleRoundsInput").value)||10));
-    const timePerQ=Math.max(5,Math.min(600,Number($("battleTimePerQInput").value)||40));
-    const deadTimerInputVal=Number($("battleDeadTimerInput").value);
-    const deadTimerSeconds=deadTimerInputVal>0?deadTimerInputVal:Math.round(rounds*timePerQ*1.25);
+    const useQTimer=$("battleUseQTimer").checked;
+    const useDeadTimer=$("battleUseDeadTimer").checked;
+    const timePerQ=useQTimer?Math.max(5,Math.min(600,Number($("battleTimePerQInput").value)||40)):null;
+    const deadTimerMinutes=useDeadTimer?Math.max(1,Math.min(600,Number($("battleDeadTimerInput").value)||10)):null;
+    const deadTimerSeconds=deadTimerMinutes?deadTimerMinutes*60:null;
     const set=shuffle(questions).slice(0,Math.min(rounds,questions.length));
     try{
-      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,timePerQuestion:timePerQ,deadTimerSeconds})});
+      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,useQuestionTimer:useQTimer,timePerQuestion:timePerQ,useDeadTimer,deadTimerSeconds})});
       if(!res.ok){alert("Couldn't create a battle — try again.");return}
       const data=await res.json();
       battleCode=data.code; battleName=name; battleQuestions=set;
@@ -606,6 +609,7 @@ function formatClock(sec){
 }
 
 function startDeadTimer(){
+  if(!battleDeadTimerEndsAt){$("battleDeadTimer").textContent="No limit";return}
   clearInterval(battleDeadTimerId);
   tickDeadTimer();
   battleDeadTimerId=setInterval(tickDeadTimer,500);
@@ -630,6 +634,7 @@ function endBattleByDeadTimer(){
 }
 
 function startQuestionTimer(){
+  if(!battleTimePerQ){$("battleQTimer").textContent="\u221e";return}
   clearInterval(battleQuestionTimerId);
   battleQuestionEndsAt=Date.now()+battleTimePerQ*1000;
   tickQuestionTimer();
@@ -792,6 +797,13 @@ if(__spectateCode){
   };
   $("battleRoundsInput").addEventListener("input",updateDeadTimerDefault);
   $("battleTimePerQInput").addEventListener("input",updateDeadTimerDefault);
+  $("battleUseQTimer").addEventListener("change",()=>{
+    $("battleTimePerQInput").classList.toggle("hidden",!$("battleUseQTimer").checked);
+    updateDeadTimerDefault();
+  });
+  $("battleUseDeadTimer").addEventListener("change",()=>{
+    $("battleDeadTimerInput").classList.toggle("hidden",!$("battleUseDeadTimer").checked);
+  });
   $("battleGoBtn").onclick=startBattle;
   $("battleNextBtn").onclick=battleNext;
   $("battleCopyBtn").onclick=()=>{
