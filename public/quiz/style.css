@@ -42,6 +42,7 @@ input{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px;fo
 .finalRow{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--line);font-size:18px}
 .finalRow:first-child{font-weight:850;font-size:22px}
 #battleDoneCard{text-align:center}
+.deadTimerBar{text-align:center;font-weight:800}
 .turnName{font-size:clamp(32px,9vw,56px);margin:8px 0 30px;letter-spacing:-1px}
 .bigCountdown{font-size:clamp(64px,20vw,110px);font-weight:900;line-height:1;color:var(--accent);letter-spacing:-3px}
 .roomBadge{position:fixed;top:12px;left:12px;z-index:50;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.08);display:flex;align-items:center;gap:8px;transition:transform .2s ease,opacity .2s ease}
