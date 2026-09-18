@@ -57,11 +57,19 @@
         <input id="battleCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
         <label id="battleRoundsLabel" style="margin-top:14px">Number of questions</label>
         <input id="battleRoundsInput" type="number" min="1" max="40" value="10">
-        <label style="margin-top:14px">Seconds per question</label>
-        <input id="battleTimePerQInput" type="number" min="5" max="600" value="40">
-        <label style="margin-top:14px">Total battle time (seconds)</label>
-        <input id="battleDeadTimerInput" type="number" min="10" max="36000">
-        <div class="small" style="margin-top:4px;color:var(--muted)">Only used when starting a new battle — defaults to questions &times; seconds each, plus 25%. Everyone's battle ends together when this runs out.</div>
+
+        <label class="toggleRow" style="margin-top:14px">
+          <input type="checkbox" id="battleUseQTimer" checked>
+          Timer per question
+        </label>
+        <input id="battleTimePerQInput" type="number" min="5" max="600" value="40" placeholder="Seconds per question" style="margin-top:6px">
+
+        <label class="toggleRow" style="margin-top:14px">
+          <input type="checkbox" id="battleUseDeadTimer" checked>
+          Overall battle timer
+        </label>
+        <input id="battleDeadTimerInput" type="number" min="1" max="600" placeholder="Minutes" style="margin-top:6px">
+
         <button id="battleGoBtn" class="primary" style="margin-top:12px">Start Battling</button>
       </div>
     </div>
