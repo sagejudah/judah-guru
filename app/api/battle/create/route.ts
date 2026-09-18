@@ -16,7 +16,11 @@ const MAX_BODY_BYTES = 40000;
 export async function POST(req: Request) {
   const text = await req.text();
   if (text.length > MAX_BODY_BYTES) return NextResponse.json({ error: 'payload too large' }, { status: 413 });
-  let body: { questions?: unknown[]; rounds?: number; hostName?: string; timePerQuestion?: number; deadTimerSeconds?: number };
+  let body: {
+    questions?: unknown[]; rounds?: number; hostName?: string;
+    useQuestionTimer?: boolean; timePerQuestion?: number | null;
+    useDeadTimer?: boolean; deadTimerSeconds?: number | null;
+  };
   try {
     body = JSON.parse(text);
   } catch {
@@ -26,9 +30,11 @@ export async function POST(req: Request) {
   if (!hostName || !Array.isArray(body.questions) || !body.questions.length) {
     return NextResponse.json({ error: 'missing hostName or questions' }, { status: 400 });
   }
-  const timePerQuestion = Math.max(5, Math.min(600, Number(body.timePerQuestion) || 40));
-  const rounds = body.rounds || body.questions.length;
-  const deadTimerSeconds = Math.max(10, Math.min(36000, Number(body.deadTimerSeconds) || Math.round(rounds * timePerQuestion * 1.25)));
+  const useQuestionTimer = body.useQuestionTimer !== false;
+  const timePerQuestion = useQuestionTimer ? Math.max(5, Math.min(600, Number(body.timePerQuestion) || 40)) : null;
+
+  const useDeadTimer = body.useDeadTimer !== false;
+  const deadTimerSeconds = useDeadTimer ? Math.max(60, Math.min(36000, Number(body.deadTimerSeconds) || 600)) : null;
 
   const redis = await getRedis();
   let code = '';
@@ -40,13 +46,14 @@ export async function POST(req: Request) {
   const key = `quiz:battle:${code}`;
   // deadTimerEndsAt is a fixed shared timestamp — every device computes its
   // own remaining time from the same target instant, so no per-device sync
-  // is needed for everyone to end at exactly the same moment.
+  // is needed for everyone to end at exactly the same moment. Either timer
+  // can be null, meaning that limit is switched off for this battle.
   const meta = {
     questions: body.questions,
-    rounds,
+    rounds: body.rounds || body.questions.length,
     timePerQuestion,
     deadTimerSeconds,
-    deadTimerEndsAt: Date.now() + deadTimerSeconds * 1000,
+    deadTimerEndsAt: deadTimerSeconds ? Date.now() + deadTimerSeconds * 1000 : null,
     createdAt: Date.now(),
   };
   await redis.hSet(key, '__meta', JSON.stringify(meta));
