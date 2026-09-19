@@ -11,6 +11,8 @@ p{color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,5vw,36px);box-shadow:0 8px 28px rgba(0,0,0,.05)}
 label{display:block;font-weight:700;margin:18px 0 7px}
 input{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px;font:inherit}
+select{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+textarea{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px;font:inherit;min-height:140px;resize:vertical}
 .nameRow{margin-top:12px}
 .primary{width:100%;margin-top:22px;border:0;border-radius:11px;padding:15px 20px;background:var(--accent);color:#fff;font:inherit;font-weight:800;cursor:pointer}
 .primary:disabled{opacity:.45;cursor:not-allowed}
