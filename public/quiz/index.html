@@ -45,6 +45,7 @@
       <button id="landingStartBtn" class="primary">Start New Quiz</button>
       <button id="landingSpectateBtn" class="primary secondary" style="margin-top:12px">Spectate a Game</button>
       <button id="landingBattleBtn" class="primary secondary" style="margin-top:12px">Battle Mode</button>
+      <button id="landingImportBtn" class="primary secondary" style="margin-top:12px">Import Questions</button>
       <div id="spectateEntry" class="hidden" style="margin-top:18px">
         <label>Room code</label>
         <input id="spectateCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
@@ -55,6 +56,8 @@
         <input id="battleNameInput" maxlength="30" placeholder="Name">
         <label style="margin-top:14px">Room code (leave blank to start a new battle)</label>
         <input id="battleCodeInput" maxlength="4" placeholder="ABCD" style="text-transform:uppercase">
+        <label style="margin-top:14px">Topic</label>
+        <select id="battleTopicSelect"></select>
         <label id="battleRoundsLabel" style="margin-top:14px">Number of questions</label>
         <input id="battleRoundsInput" type="number" min="1" max="40" value="10">
 
@@ -83,6 +86,8 @@
     </div>
     <div class="card">
       <h2>Game Setup</h2>
+      <label>Topic</label>
+      <select id="soloTopicSelect"></select>
       <label>Number of participants</label>
       <input id="participantCount" type="number" min="1" max="20" value="2">
       <div id="names"></div>
@@ -180,6 +185,22 @@
     <div class="card">
       <div class="eyebrow">LEADERBOARD</div>
       <div id="battleLeaderboard"></div>
+    </div>
+  </section>
+  <section id="importQuestions" class="screen hidden">
+    <div class="hero">
+      <div class="eyebrow">ADD QUESTIONS</div>
+      <h1>Import a Topic</h1>
+      <p>Paste already-formatted questions below, or copy the prompt and hand it to an AI first.</p>
+    </div>
+    <div class="card">
+      <label>Topic name</label>
+      <input id="importTopicName" placeholder="e.g. Chemistry Term 2">
+      <label style="margin-top:14px">Questions (JSON)</label>
+      <textarea id="importTextarea" placeholder='[{"question":"...","options":["A","B","C","D"],"answer":0}]'></textarea>
+      <button id="copyAiPromptBtn" class="primary secondary" style="margin-top:12px">Copy AI Formatting Prompt</button>
+      <button id="saveImportBtn" class="primary" style="margin-top:12px">Save Topic</button>
+      <button id="backFromImportBtn" class="primary secondary" style="margin-top:12px">Back</button>
     </div>
   </section>
 </main>
