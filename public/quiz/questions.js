@@ -120,3 +120,8 @@ const questions = [
 
 {question:"A circuit contains a 6 Ω resistor connected to a 12 V supply. How much electrical energy is transferred by the resistor in 10 s?",options:["20 J","120 J","240 J","720 J"],answer:2}
 ];
+
+// Built-in topic bank. "Physics General" is this file's original question
+// set; imported topics (via the Import Questions screen) get added here at
+// runtime alongside it.
+const BUILT_IN_TOPICS = {"Physics General": questions};
