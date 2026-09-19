@@ -203,7 +203,89 @@ const biologyQuestions = [
 {question:"Which organisms are called decomposers in an ecosystem?",options:["green plants and algae","herbivores and carnivores","bacteria and fungi that break down dead material","predators that kill weak animals"],answer:2}
 ];
 
+const questionss = [
+{question:"A micrometer screw gauge reads +0.03 mm when its jaws are closed. When it is used to measure the diameter of a wire it reads 1.27 mm. What is the true diameter of the wire?",options:["1.30 mm","1.27 mm","1.24 mm","1.03 mm"],answer:2},
+
+{question:"A pendulum bob takes 0.75 s to swing from its extreme left position to its extreme right position. What is the frequency of the pendulum?",options:["1.3 Hz","0.67 Hz","0.75 Hz","1.5 Hz"],answer:1},
+
+{question:"A ball is thrown vertically upwards. Take g = 10 m/s² and ignore air resistance. At the instant the ball is at its highest point, which statement is correct?",options:["Its velocity is zero and its acceleration is zero, because the forces on it are balanced.","Its velocity is zero and its acceleration is 10 m/s² upwards.","Its velocity is 10 m/s downwards and its acceleration is zero.","Its velocity is zero and its acceleration is 10 m/s² downwards."],answer:3},
+
+{question:"A car travelling at 20 m/s has a driver reaction time of 0.80 s before the brakes are applied. The brakes then give a constant deceleration of 5.0 m/s². What is the total stopping distance from the moment the driver sees the hazard?",options:["56 m","40 m","80 m","96 m"],answer:0},
+
+{question:"A stone is dropped from rest and falls freely. Take g = 10 m/s² and ignore air resistance. How far does it fall during the first second and during the second second of its fall?",options:["5 m and 10 m","5 m and 15 m","5 m and 20 m","10 m and 10 m"],answer:1},
+
+{question:"An astronaut has a mass of 60 kg on Earth (g = 10 N/kg). On the Moon, g = 1.6 N/kg. Which statement is correct on the Moon?",options:["Mass 9.6 kg, weight 96 N; she needs 9.6 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 96 N; she needs 9.6 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 96 N; she needs 60 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 600 N; she needs 60 N to accelerate horizontally at 1 m/s² on a smooth surface."],answer:2},
+
+{question:"A uniform beam of weight 60 N and length 4.0 m rests on two supports, one at each end. A 60 N load sits on the beam 1.0 m from the left-hand end. What upward force does the right-hand support exert?",options:["30 N","60 N","75 N","45 N"],answer:3},
+
+{question:"A spring has an unstretched length of 10.0 cm. A load of 4.0 N makes its length 14.0 cm. The limit of proportionality is not exceeded. What load makes the length of the spring 16.0 cm?",options:["6.0 N","4.6 N","6.4 N","8.0 N"],answer:0},
+
+{question:"Two trolleys of mass 2.0 kg and 3.0 kg touch each other on a smooth horizontal table. A horizontal force of 10 N pushes the 2.0 kg trolley, which pushes the 3.0 kg trolley. What force does the 2.0 kg trolley exert on the 3.0 kg trolley?",options:["4 N","5 N","6 N","10 N"],answer:2},
+
+{question:"A 500 g ball is dropped from a height of 2.0 m and bounces back up to 1.2 m. Take g = 10 N/kg. How much mechanical energy does the ball lose in the bounce?",options:["6.0 J","4.0 J","10 J","4 000 J"],answer:1},
+
+{question:"A car travelling at 15 m/s is brought to rest in 20 m by a constant braking force. The same car, with the same braking force, is now travelling at 30 m/s. What is its stopping distance?",options:["40 m","60 m","120 m","80 m"],answer:3},
+
+{question:"A 0.50 kg pendulum bob is released from rest at a point 20 cm above its lowest position. Take g = 10 N/kg and ignore air resistance. What is the speed of the bob at its lowest point?",options:["2.0 m/s","1.4 m/s","4.0 m/s","20 m/s"],answer:0},
+
+{question:"The distance–time graph of a cyclist is a straight line from 0 m at 0 s to 40 m at 10 s, then a horizontal line until 20 s, then a straight line back to 0 m at 30 s. What is the cyclist's average speed for the whole 30 s?",options:["0 m/s","1.3 m/s","2.7 m/s","4.0 m/s"],answer:2},
+
+{question:"A liquid-in-glass thermometer is quickly moved from cold water into hot water. The liquid level in the stem first falls slightly and then rises. Why does it fall at first?",options:["The glass bulb warms and expands before the liquid does, so the volume of the bulb increases.","The liquid contracts when it first meets the hot water.","The air in the stem is compressed by the hot water.","The glass bulb contracts when it is heated."],answer:0},
+
+{question:"A bimetallic strip is made of brass joined to iron. Brass expands more than iron for the same temperature rise. The strip is heated evenly. What happens?",options:["It stays straight but becomes longer.","It bends with the brass on the inside of the curve.","It bends with the brass on the outside of the curve.","It bends only if the iron is heated more than the brass."],answer:2},
+
+{question:"Steam at 100 °C causes a more severe burn than the same mass of boiling water at 100 °C. Why?",options:["Steam is at a higher temperature than boiling water.","Steam releases extra energy when it condenses on the skin.","Steam particles have a greater average kinetic energy than water particles at 100 °C.","Steam is a much better conductor of thermal energy than water."],answer:1},
+
+{question:"A metal spoon and a wooden spoon have been in the same room overnight. The metal spoon feels much colder to touch. What is the reason?",options:["The metal spoon is at a lower temperature than the wooden spoon.","Cold flows from the metal into the hand faster than from the wood.","The wooden spoon radiates more energy to the hand than the metal spoon does.","The metal spoon conducts thermal energy away from the hand faster."],answer:3},
+
+{question:"Which statement correctly describes how a vacuum flask keeps a hot drink hot?",options:["The vacuum stops conduction and convection; the silvered surfaces reduce radiation.","The vacuum stops radiation; the silvered surfaces stop conduction.","The vacuum stops convection only; the silvered surfaces stop conduction.","The vacuum reduces radiation and convection; the silvered surfaces prevent conduction."],answer:0},
+
+{question:"A radio station broadcasts at a frequency of 100 MHz. The speed of electromagnetic waves is 3.0 × 10⁸ m/s. What is the wavelength of the radio waves?",options:["0.33 m","3.0 × 10⁶ m","30 m","3.0 m"],answer:3},
+
+{question:"A displacement–distance graph of a wave has crests at 0 cm, 8.0 cm and 16 cm. The vertical distance from a crest to the next trough is 4.0 cm. What are the wavelength and the amplitude of the wave?",options:["Wavelength 8.0 cm, amplitude 4.0 cm","Wavelength 8.0 cm, amplitude 2.0 cm","Wavelength 16 cm, amplitude 2.0 cm","Wavelength 4.0 cm, amplitude 8.0 cm"],answer:1},
+
+{question:"In a sound wave of frequency 200 Hz, the distance from the centre of one compression to the centre of the next rarefaction is 0.85 m. What is the speed of the sound wave?",options:["170 m/s","235 m/s","680 m/s","340 m/s"],answer:3},
+
+{question:"Red light of frequency 4.5 × 10¹⁴ Hz passes from air into glass. Which row correctly describes what happens to its speed, frequency and wavelength?",options:["Speed decreases, frequency decreases, wavelength unchanged.","Speed decreases, frequency unchanged, wavelength decreases.","Speed unchanged, frequency unchanged, wavelength decreases.","Speed decreases, frequency increases, wavelength decreases."],answer:1},
+
+{question:"A coin lies at the bottom of a swimming pool. Viewed from directly above, it appears to be 1.2 m below the surface. The refractive index of water is 4/3. What is the real depth of the pool?",options:["1.6 m","0.90 m","1.2 m","1.8 m"],answer:0},
+
+{question:"The critical angle for a certain glass is 42°. A ray of light inside the glass hits the glass–air boundary with an angle of incidence of 40°. What happens to the ray?",options:["It undergoes total internal reflection.","It passes straight into the air without changing direction.","It refracts into the air, bending away from the normal, with a weak reflected ray as well.","It refracts into the air, bending towards the normal."],answer:2},
+
+{question:"A converging lens forms a sharp real image of a lit candle on a screen. The top half of the lens is now covered with a piece of card. What happens to the image on the screen?",options:["Only the bottom half of the image is seen.","The whole image is still seen but it is dimmer.","Only the top half of the image is seen.","The image disappears completely."],answer:1},
+
+{question:"A camera with a fixed lens is focused on a distant tree. The photographer then wants a sharp image of a person standing close to the camera. How must the distance between the lens and the film be changed?",options:["It must stay the same, because the focal length is fixed.","It must be decreased.","It depends only on the diameter of the lens.","It must be increased."],answer:3},
+
+{question:"A bar is held near each end of a small compass needle in turn. It attracts both the north-seeking end and the south-seeking end of the needle. What can be concluded about the bar?",options:["It is unmagnetised but made of a magnetic material such as iron or steel.","It is a strong permanent magnet.","It has a north pole at one end and a south pole at the other.","It is made of a non-magnetic metal such as copper."],answer:0},
+
+{question:"A positively charged rod is held near, but not touching, an insulated metal sphere. Without moving the rod, the sphere is briefly touched with a finger, and the finger is removed. The rod is then taken away. What is the final charge on the sphere?",options:["Positive","Negative","Neutral","It cannot be predicted"],answer:1},
+
+{question:"A current of 250 mA flows through a lamp for 2.0 minutes. How much charge passes through the lamp?",options:["0.50 C","500 C","30 C","30 000 C"],answer:2},
+
+{question:"A wire has a resistance of 8.0 Ω. A second wire is made of the same material but is twice as long and has half the cross-sectional area. What is the resistance of the second wire?",options:["4.0 Ω","8.0 Ω","16 Ω","32 Ω"],answer:3},
+
+{question:"Three identical lamps X, Y and Z are connected to a battery of negligible internal resistance. X and Y are in parallel with each other, and this pair is in series with Z. The filament of lamp Y now breaks. What happens to the brightness of X and Z?",options:["X becomes brighter and Z becomes dimmer.","X is unchanged and Z becomes dimmer.","X is unchanged and Z is unchanged.","X becomes dimmer and Z becomes brighter."],answer:0},
+
+{question:"The graph of current I (y-axis) against potential difference V (x-axis) for a resistor is a straight line through the origin with a gradient of 0.25 A/V. What is the resistance of the resistor?",options:["0.25 Ω","1.0 Ω","4.0 Ω","2.5 Ω"],answer:2},
+
+{question:"A 3.0 Ω resistor and a 6.0 Ω resistor are connected in parallel. The total current entering the combination is 3.0 A. What is the current in the 6.0 Ω resistor?",options:["0.50 A","1.0 A","1.5 A","2.0 A"],answer:1},
+
+{question:"A student wrongly connects a voltmeter in series with a lamp and a 6.0 V battery. What is observed?",options:["The lamp glows brightly and the voltmeter reads 0 V.","The lamp does not light and the voltmeter reads 0 V.","The lamp glows at normal brightness and the voltmeter reads about 6.0 V.","The lamp does not light and the voltmeter reads about 6.0 V."],answer:3},
+
+{question:"A kettle has a metal case connected to the earth wire. Why is it dangerous if its fuse is fitted in the neutral wire instead of the live wire?",options:["The neutral wire carries a larger current than the live wire, so the fuse blows too easily.","The fuse would never blow, because the neutral wire carries no current.","After the fuse blows, the kettle's internal parts stay connected to the live wire and can still be dangerous.","The earth wire would then have to carry the whole current."],answer:2},
+
+{question:"The coil of a simple a.c. generator is rotated twice as fast, with everything else unchanged. What happens to the peak voltage and the frequency of the output?",options:["Both the peak voltage and the frequency double.","The peak voltage doubles but the frequency stays the same.","The frequency doubles but the peak voltage stays the same.","The peak voltage doubles and the frequency halves."],answer:0},
+
+{question:"The same electrical power is transmitted along the same cables, first at 11 kV and then at 110 kV. How does the power wasted as heat in the cables change?",options:["It falls to one thousandth.","It falls to one hundredth.","It falls to one tenth.","It is unchanged."],answer:1},
+
+{question:"A GM tube records a background count rate of 20 counts/min. A source placed 2 cm from the tube gives: no absorber 520 counts/min, thin paper 515 counts/min, 3 mm aluminium 512 counts/min, 2 cm lead 300 counts/min. Which radiation does the source emit?",options:["Alpha and gamma only","Beta and gamma only","Gamma only","Beta only"],answer:2},
+
+{question:"A factory monitors the thickness of aluminium foil as it is rolled, using a radioactive source on one side of the foil and a detector on the other. Which radiation is most suitable?",options:["Alpha, because it is the most strongly ionising.","Gamma, because it is the most penetrating.","Any of the three, because the foil is thin.","Beta, because the amount passing through changes noticeably with the thickness of the foil."],answer:3},
+
+{question:"A nucleus with nucleon number 226 and proton number 88 decays by emitting one alpha particle. How many neutrons does the new nucleus contain?",options:["136","134","138","140"],answer:0}
+];
+
 // Built-in topic bank. "Physics General" is this file's original question
 // set; imported topics (via the Import Questions screen) get added here at
 // runtime alongside it.
-const BUILT_IN_TOPICS = {"Physics General": questions, "Biology General": biologyQuestions};
+const BUILT_IN_TOPICS = {"Physics General": questions, "Physics Tricky": questionss, "Biology General": biologyQuestions};
