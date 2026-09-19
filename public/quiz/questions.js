@@ -121,7 +121,89 @@ const questions = [
 {question:"A circuit contains a 6 Ω resistor connected to a 12 V supply. How much electrical energy is transferred by the resistor in 10 s?",options:["20 J","120 J","240 J","720 J"],answer:2}
 ];
 
+const biologyQuestions = [
+{question:"Which structure controls the activities of a cell?",options:["cell membrane","cytoplasm","nucleus","ribosome"],answer:2},
+
+{question:"Which structure is present in a plant cell but not normally present in an animal cell?",options:["cell membrane","cytoplasm","nucleus","cellulose cell wall"],answer:3},
+
+{question:"What is the main function of mitochondria in cells?",options:["absorbing light energy","releasing energy through aerobic respiration","controlling movement of substances into the cell","producing antibodies"],answer:1},
+
+{question:"A cell has a cell wall, chloroplasts and a large permanent vacuole. What type of cell is it most likely to be?",options:["animal cell","plant cell","red blood cell","bacterial cell"],answer:1},
+
+{question:"Which process involves the net movement of water molecules through a partially permeable membrane?",options:["diffusion","osmosis","active transport","transpiration"],answer:1},
+
+{question:"A plant cell is placed in a concentrated sugar solution. What happens to the cell?",options:["Water enters the cell and it becomes turgid.","Water leaves the cell and the cell membrane pulls away from the cell wall.","Sugar leaves the cell by active transport.","The cell immediately bursts."],answer:1},
+
+{question:"Which statement about diffusion is correct?",options:["It requires energy from respiration.","Particles move from a low concentration to a high concentration.","Particles move down a concentration gradient.","It only occurs in living cells."],answer:2},
+
+{question:"Which process allows mineral ions to enter plant root hair cells when their concentration is higher inside the cell than in the soil?",options:["diffusion","osmosis","active transport","transpiration"],answer:2},
+
+{question:"Which substance is the main product of photosynthesis that is used by plants as an energy source?",options:["carbon dioxide","glucose","oxygen","water"],answer:1},
+
+{question:"Which combination is required for photosynthesis?",options:["oxygen, glucose and light","carbon dioxide, water and light","carbon dioxide, oxygen and chlorophyll","water, glucose and oxygen"],answer:1},
+
+{question:"A plant is kept in darkness for several days before a leaf is tested for starch. Why is the plant kept in darkness?",options:["To increase its rate of respiration","To remove stored starch from the leaves","To increase the amount of chlorophyll","To prevent water loss from the leaves"],answer:1},
+
+{question:"Which part of a leaf allows most carbon dioxide to enter the leaf?",options:["cuticle","stoma","xylem","phloem"],answer:1},
+
+{question:"Which tissue transports water and mineral ions from the roots towards the leaves?",options:["phloem","xylem","epidermis","mesophyll"],answer:1},
+
+{question:"Which tissue transports dissolved sugars around a plant?",options:["xylem","phloem","guard cells","root hair cells"],answer:1},
+
+{question:"Which condition would usually increase the rate of transpiration from a well-watered plant?",options:["high humidity","still air","low temperature","strong air movement"],answer:3},
+
+{question:"Which blood vessel carries blood away from the heart?",options:["vein","artery","capillary","venule"],answer:1},
+
+{question:"Which feature of arteries allows them to withstand high blood pressure?",options:["thin walls and valves","thick muscular and elastic walls","one-cell-thick walls","large numbers of red blood cells in their walls"],answer:1},
+
+{question:"What is the main function of red blood cells?",options:["destroying pathogens","producing antibodies","transporting oxygen","forming blood clots"],answer:2},
+
+{question:"Which component of blood is mainly responsible for clotting?",options:["red blood cells","white blood cells","platelets","plasma"],answer:2},
+
+{question:"Which organ removes urea from the blood?",options:["heart","kidney","lung","pancreas"],answer:1},
+
+{question:"Urea is produced when excess amino acids are broken down. In which organ does this mainly occur?",options:["kidney","liver","small intestine","pancreas"],answer:1},
+
+{question:"Which enzyme begins the digestion of starch?",options:["lipase","protease","amylase","pepsin"],answer:2},
+
+{question:"What is the main function of bile in digestion?",options:["digesting proteins into amino acids","emulsifying fats and helping neutralise stomach acid","converting starch directly into glucose","digesting vitamins into smaller molecules"],answer:1},
+
+{question:"Where does most absorption of digested food into the blood occur?",options:["stomach","large intestine","small intestine","oesophagus"],answer:2},
+
+{question:"Which adaptation of a villus increases the rate of absorption of digested nutrients?",options:["thick walls and a small surface area","thin walls and a large surface area","a layer of cellulose around the villus","absence of a blood supply"],answer:1},
+
+{question:"Which equation correctly represents aerobic respiration?",options:["glucose → lactic acid + energy","glucose + oxygen → carbon dioxide + water + energy","carbon dioxide + water → glucose + oxygen","glucose → ethanol + carbon dioxide + energy"],answer:1},
+
+{question:"A muscle cell does not receive enough oxygen during vigorous exercise. Which substance may accumulate in the muscle?",options:["ethanol","lactic acid","carbon dioxide only","glucose"],answer:1},
+
+{question:"What is the main function of the alveoli in the lungs?",options:["pumping blood around the body","filtering urea from the blood","allowing gas exchange between air and blood","producing mucus for digestion"],answer:2},
+
+{question:"Which feature of alveoli makes gas exchange rapid?",options:["thick walls and a small surface area","thin walls and a large surface area","thick muscular walls and valves","lack of blood vessels"],answer:1},
+
+{question:"Which hormone is mainly responsible for lowering blood glucose concentration?",options:["adrenaline","insulin","glucagon","oestrogen"],answer:1},
+
+{question:"What happens when blood glucose concentration becomes too low?",options:["The pancreas releases glucagon, causing stored glycogen to be converted to glucose.","The pancreas releases insulin, causing glucose to be stored as glycogen.","The liver removes more glucose from the blood.","The kidneys stop producing urine."],answer:0},
+
+{question:"Which structure is the site where sperm are produced in the male reproductive system?",options:["prostate gland","testis","vas deferens","urethra"],answer:1},
+
+{question:"Where does fertilisation normally occur in the human female reproductive system?",options:["uterus","ovary","oviduct","vagina"],answer:2},
+
+{question:"Which hormone causes ovulation during the menstrual cycle?",options:["FSH","LH","insulin","progesterone"],answer:1},
+
+{question:"Which statement correctly describes asexual reproduction?",options:["It requires the fusion of two gametes.","It produces offspring that are genetically very similar to the parent.","It always produces genetically different offspring.","It can only occur in animals."],answer:1},
+
+{question:"A heterozygous organism has which type of allele combination for a particular gene?",options:["two identical dominant alleles","two identical recessive alleles","two different alleles","no alleles"],answer:2},
+
+{question:"Two heterozygous tall pea plants are crossed. Tallness is dominant to shortness. What is the probability that their offspring will be short?",options:["0%","25%","50%","75%"],answer:1},
+
+{question:"Which process produces gametes with half the normal chromosome number?",options:["mitosis","meiosis","fertilisation","binary fission"],answer:1},
+
+{question:"A population of insects becomes resistant to an insecticide after many generations of exposure. Which explanation best describes this change?",options:["Individual insects deliberately developed resistance because they needed it.","The insecticide caused every insect to become resistant immediately.","Resistant insects survived and reproduced, increasing the frequency of resistance in the population.","The insects stopped reproducing when exposed to the insecticide."],answer:2},
+
+{question:"Which organisms are called decomposers in an ecosystem?",options:["green plants and algae","herbivores and carnivores","bacteria and fungi that break down dead material","predators that kill weak animals"],answer:2}
+];
+
 // Built-in topic bank. "Physics General" is this file's original question
 // set; imported topics (via the Import Questions screen) get added here at
 // runtime alongside it.
-const BUILT_IN_TOPICS = {"Physics General": questions};
+const BUILT_IN_TOPICS = {"Physics General": questions, "Biology General": biologyQuestions};
