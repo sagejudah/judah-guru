@@ -2,6 +2,21 @@ let players=[],scores={},attempts={},turns=[],turnIndex=0,quizQuestions=[],curre
 let roomCode=null,isSpectator=false,pollTimerId=null;
 const $=id=>document.getElementById(id);
 const LOCAL_KEY="quizStateV1";
+const TOPICS_KEY="quizCustomTopics";
+
+let customTopics={};
+try{customTopics=JSON.parse(localStorage.getItem(TOPICS_KEY)||"{}")}catch(e){customTopics={}}
+
+// Merges the built-in question bank (questions.js) with anything imported
+// on this device. Both solo and battle mode pick a pool from here by name.
+function allTopics(){return Object.assign({},BUILT_IN_TOPICS,customTopics)}
+
+function populateTopicSelect(sel){
+  const topics=allTopics();
+  const current=sel.value;
+  sel.innerHTML=Object.keys(topics).map(name=>`<option value="${escapeHtml(name)}">${escapeHtml(name)} (${topics[name].length})</option>`).join("");
+  if(topics[current])sel.value=current;
+}
 
 const __params=new URLSearchParams(location.search);
 const __spectateCode=(__params.get("spectate")||"").toUpperCase();
@@ -24,8 +39,6 @@ function buildTurns(){
   const order=shuffle(players);
   turns=[];
   for(let i=0;i<quizQuestions.length;i++) turns.push(order[i%order.length]);
-  // Shuffle the question order independently, while keeping the balanced player schedule.
-  quizQuestions=shuffle(questions);
 }
 
 async function startGame(){
@@ -41,7 +54,7 @@ async function startGame(){
   }
   timeLimit=Math.max(5,Math.min(600,Number($("timeLimit").value)||45));
   scores={}; attempts={}; players.forEach(p=>{scores[p]=0;attempts[p]=0});
-  quizQuestions=shuffle(questions);
+  quizQuestions=shuffle(allTopics()[$("soloTopicSelect").value]||questions);
   buildTurns();
   turnIndex=0;
   $("setup").classList.add("hidden");
@@ -242,6 +255,59 @@ function finishGame(){
 }
 
 function escapeHtml(v){const d=document.createElement("div");d.textContent=v;return d.innerHTML}
+
+// --- Import Questions ---
+// Lets someone paste an AI-formatted (or hand-formatted) JSON array of
+// questions and save it as a new topic, available alongside the built-in
+// bank in both solo and battle setup. Stored per-device in localStorage.
+
+const AI_FORMAT_PROMPT=`Format the following study questions as a JSON array for a quiz app. Each item must look exactly like this:
+{"question":"...","options":["A","B","C","D"],"answer":0}
+
+Rules:
+- "options" must have exactly 4 items.
+- "answer" is the index (0-3) of the correct option.
+- Output ONLY a valid JSON array — no extra text, no markdown code fences, no explanation.
+
+Here are my questions/notes to convert:
+[PASTE YOUR QUESTIONS OR NOTES HERE]`;
+
+function showImportScreen(){
+  $("landing").classList.add("hidden");
+  $("importQuestions").classList.remove("hidden");
+}
+function backFromImport(){
+  $("importQuestions").classList.add("hidden");
+  $("landing").classList.remove("hidden");
+}
+function copyAiPrompt(){
+  navigator.clipboard.writeText(AI_FORMAT_PROMPT).then(()=>{
+    const btn=$("copyAiPromptBtn"),prev=btn.textContent;
+    btn.textContent="Copied!";
+    setTimeout(()=>{btn.textContent=prev},1500);
+  }).catch(()=>{});
+}
+function saveImportedTopic(){
+  const name=($("importTopicName").value||"").trim();
+  if(!name){alert("Give this topic a name.");return}
+  let parsed;
+  try{parsed=JSON.parse($("importTextarea").value)}catch(e){alert("That's not valid JSON — check the format.");return}
+  if(!Array.isArray(parsed)||!parsed.length){alert("Expected a JSON array of questions.");return}
+  for(const q of parsed){
+    if(!q||typeof q.question!=="string"||!Array.isArray(q.options)||q.options.length!==4||typeof q.answer!=="number"||q.answer<0||q.answer>3){
+      alert("Each question needs: question (text), options (exactly 4), answer (0-3).");
+      return;
+    }
+  }
+  customTopics[name]=parsed;
+  try{localStorage.setItem(TOPICS_KEY,JSON.stringify(customTopics))}catch(e){}
+  populateTopicSelect($("soloTopicSelect"));
+  populateTopicSelect($("battleTopicSelect"));
+  $("importTopicName").value=""; $("importTextarea").value="";
+  alert(`Saved "${name}" with ${parsed.length} questions.`);
+  backFromImport();
+}
+
 
 // --- Mid-game controls (hamburger menu) ---
 
@@ -576,7 +642,8 @@ async function startBattle(){
     const timePerQ=useQTimer?Math.max(5,Math.min(600,Number($("battleTimePerQInput").value)||40)):null;
     const deadTimerMinutes=useDeadTimer?Math.max(1,Math.min(600,Number($("battleDeadTimerInput").value)||10)):null;
     const deadTimerSeconds=deadTimerMinutes?deadTimerMinutes*60:null;
-    const set=shuffle(questions).slice(0,Math.min(rounds,questions.length));
+    const pool=allTopics()[$("battleTopicSelect").value]||questions;
+    const set=shuffle(pool).slice(0,Math.min(rounds,pool.length));
     try{
       const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,useQuestionTimer:useQTimer,timePerQuestion:timePerQ,useDeadTimer,deadTimerSeconds})});
       if(!res.ok){alert("Couldn't create a battle — try again.");return}
@@ -756,6 +823,12 @@ if(__spectateCode){
 }else{
   $("participantCount").addEventListener("input",renderNameInputs);
   renderNameInputs();
+  populateTopicSelect($("soloTopicSelect"));
+  populateTopicSelect($("battleTopicSelect"));
+  $("landingImportBtn").onclick=showImportScreen;
+  $("backFromImportBtn").onclick=backFromImport;
+  $("copyAiPromptBtn").onclick=copyAiPrompt;
+  $("saveImportBtn").onclick=saveImportedTopic;
   $("startBtn").onclick=startGame;
   $("nextBtn").onclick=nextTurn;
   $("playAgain").onclick=()=>{
