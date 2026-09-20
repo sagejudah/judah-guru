@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     questions?: unknown[]; rounds?: number; hostName?: string;
     useQuestionTimer?: boolean; timePerQuestion?: number | null;
     useDeadTimer?: boolean; deadTimerSeconds?: number | null;
+    randomizeOrder?: boolean;
   };
   try {
     body = JSON.parse(text);
@@ -54,6 +55,7 @@ export async function POST(req: Request) {
     timePerQuestion,
     deadTimerSeconds,
     deadTimerEndsAt: deadTimerSeconds ? Date.now() + deadTimerSeconds * 1000 : null,
+    randomizeOrder: body.randomizeOrder !== false,
     createdAt: Date.now(),
   };
   await redis.hSet(key, '__meta', JSON.stringify(meta));
