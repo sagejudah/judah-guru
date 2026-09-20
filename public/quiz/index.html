@@ -62,6 +62,11 @@
         <input id="battleRoundsInput" type="number" min="1" max="40" value="10">
 
         <label class="toggleRow" style="margin-top:14px">
+          <input type="checkbox" id="battleRandomizeOrder" checked>
+          Randomize question order per team
+        </label>
+
+        <label class="toggleRow" style="margin-top:14px">
           <input type="checkbox" id="battleUseQTimer" checked>
           Timer per question (seconds)
         </label>
@@ -148,6 +153,19 @@
       Battle ends in <strong id="battleDeadTimer">0:00</strong>
     </div>
 
+    <button id="battleHamburgerBtn" class="hamburgerBtn" type="button" aria-label="Question menu">☰</button>
+    <div id="battleHamburgerPanel" class="hamburgerPanel hidden">
+      <div class="panelInner">
+        <h3>Questions</h3>
+        <div class="panelSection">
+          <div id="battleQuestionIndex"></div>
+        </div>
+        <button id="battleSubmitReviewBtn" class="secondaryBtn" style="width:100%;margin-bottom:10px">Submit &amp; Review</button>
+        <button id="battleEndTestBtn" class="dangerBtn">End Test</button>
+        <button id="closeBattleMenuBtn" class="secondaryBtn" style="width:100%;margin-top:10px">Close</button>
+      </div>
+    </div>
+
     <header class="topbar">
       <div>
         <div class="eyebrow">BATTLE MODE</div>
@@ -168,23 +186,44 @@
     </div>
 
     <article class="card" id="battleQuestionCard">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="questionNumber" id="battleQuestionNumber"></div>
+        <button id="battleBookmarkBtn" type="button" class="secondaryBtn">☆ Bookmark</button>
+      </div>
       <h2 id="battleQuestionText"></h2>
       <div id="battleImageWrap" class="imageWrap hidden">
         <img id="battleImage" alt="Question diagram">
       </div>
       <div id="battleOptions" class="options"></div>
       <div id="battleFeedback" class="feedback"></div>
-      <button id="battleNextBtn" class="primary" disabled>Choose an answer</button>
+      <div class="row" style="gap:10px;margin-top:16px">
+        <button id="battlePrevBtn" class="primary secondary" disabled style="flex:1">Previous</button>
+        <button id="battleNextBtn" class="primary" disabled style="flex:1">Choose an answer</button>
+      </div>
     </article>
 
     <div class="card" id="battleDoneCard" style="display:none">
       <div class="eyebrow" id="battleDoneEyebrow">YOU'RE DONE</div>
       <h2 id="battleDoneHeading">Waiting on the others&hellip;</h2>
+      <button id="battleReviewFromDoneBtn" class="primary secondary" style="margin-top:10px">Review Answers</button>
     </div>
 
     <div class="card">
       <div class="eyebrow">LEADERBOARD</div>
       <div id="battleLeaderboard"></div>
+    </div>
+  </section>
+
+  <section id="battleAdminView" class="screen hidden">
+    <div class="hero center">
+      <div class="eyebrow">ADMIN VIEW</div>
+      <h1>Room <span id="adminCodeText" style="color:var(--accent)"></span></h1>
+      <p>Read-only — you are not a contestant.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">LEADERBOARD</div>
+      <div id="adminLeaderboard"></div>
+      <button id="adminBackBtn" class="primary secondary" style="margin-top:16px">Back to Home</button>
     </div>
   </section>
   <section id="importQuestions" class="screen hidden">
