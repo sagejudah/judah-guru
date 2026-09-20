@@ -20,6 +20,10 @@ function populateTopicSelect(sel){
 
 const __params=new URLSearchParams(location.search);
 const __spectateCode=(__params.get("spectate")||"").toUpperCase();
+// Admin view is deliberately never a visible button — only reachable by
+// someone who's been given a judah.guru/quiz?admin=CODE link directly, so
+// students can't grant themselves admin from the landing screen.
+const __adminCode=(__params.get("admin")||"").toUpperCase();
 
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 
@@ -603,10 +607,20 @@ function renderSpectatorState(state){
 // are shared: every question gets the same number of seconds to answer,
 // and one overall "dead timer" — a single fixed end timestamp handed out
 // at room creation — ends the whole battle for every device at once.
+//
+// battleFrontier = the furthest question this device has genuinely reached
+// (this is what's pushed to the leaderboard and what the header counter
+// shows). battleIndex = whichever question is currently on screen — it can
+// sit anywhere from 0 up to battleFrontier while reviewing past answers.
+// battleAnswers[i] holds the resolved answer for question i once it's been
+// answered, timed out, or the battle ended while it was still open.
 
-let battleCode=null,battleName=null,battleQuestions=[],battleIndex=0,battleScore=0,battleAttempts=0,battleSelected=null,battlePollId=null;
+let battleCode=null,battleName=null,battleQuestions=[],battleIndex=0,battleFrontier=0,battleScore=0,battleAttempts=0,battlePollId=null;
+let battleAnswers={},battleBookmarks=new Set();
 let battleTimePerQ=40,battleQuestionEndsAt=null,battleQuestionTimerId=null;
 let battleDeadTimerEndsAt=null,battleDeadTimerId=null,battleDeadTimerExpired=false;
+let adminViewCode=null,adminPollId=null;
+const BATTLE_LOCAL_KEY="battleStateV1";
 
 function updateDeadTimerDefault(){
   if(!$("battleUseQTimer").checked)return;
@@ -626,11 +640,11 @@ async function startBattle(){
       const res=await fetch(`/api/battle/${code}`);
       if(!res.ok){alert("Room not found.");return}
       const data=await res.json();
-      battleQuestions=data.meta.questions;
+      battleQuestions=data.meta.randomizeOrder?shuffle(data.meta.questions):data.meta.questions;
       battleTimePerQ=data.meta.timePerQuestion;
       battleDeadTimerEndsAt=data.meta.deadTimerEndsAt;
       battleCode=code; battleName=name;
-      battleIndex=0; battleScore=0; battleAttempts=0;
+      resetBattleProgress();
       await pushBattleProgress();
       enterBattleScreen();
     }catch(e){alert("Couldn't join — check your connection.")}
@@ -639,22 +653,29 @@ async function startBattle(){
     const rounds=Math.max(1,Math.min(40,Number($("battleRoundsInput").value)||10));
     const useQTimer=$("battleUseQTimer").checked;
     const useDeadTimer=$("battleUseDeadTimer").checked;
+    const randomizeOrder=$("battleRandomizeOrder").checked;
     const timePerQ=useQTimer?Math.max(5,Math.min(600,Number($("battleTimePerQInput").value)||40)):null;
     const deadTimerMinutes=useDeadTimer?Math.max(1,Math.min(600,Number($("battleDeadTimerInput").value)||10)):null;
     const deadTimerSeconds=deadTimerMinutes?deadTimerMinutes*60:null;
     const pool=allTopics()[$("battleTopicSelect").value]||questions;
     const set=shuffle(pool).slice(0,Math.min(rounds,pool.length));
     try{
-      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,useQuestionTimer:useQTimer,timePerQuestion:timePerQ,useDeadTimer,deadTimerSeconds})});
+      const res=await fetch("/api/battle/create",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({questions:set,rounds:set.length,hostName:name,useQuestionTimer:useQTimer,timePerQuestion:timePerQ,useDeadTimer,deadTimerSeconds,randomizeOrder})});
       if(!res.ok){alert("Couldn't create a battle — try again.");return}
       const data=await res.json();
-      battleCode=data.code; battleName=name; battleQuestions=set;
+      battleCode=data.code; battleName=name;
+      battleQuestions=randomizeOrder?shuffle(set):set;
       battleTimePerQ=data.meta.timePerQuestion;
       battleDeadTimerEndsAt=data.meta.deadTimerEndsAt;
-      battleIndex=0; battleScore=0; battleAttempts=0;
+      resetBattleProgress();
       enterBattleScreen();
     }catch(e){alert("Couldn't create a battle — check your connection.")}
   }
+}
+
+function resetBattleProgress(){
+  battleIndex=0; battleFrontier=0; battleScore=0; battleAttempts=0;
+  battleAnswers={}; battleBookmarks=new Set(); battleDeadTimerExpired=false;
 }
 
 function enterBattleScreen(){
@@ -663,9 +684,9 @@ function enterBattleScreen(){
   $("battlePlayerName").textContent=battleName;
   $("battleCodeText").textContent=battleCode;
   $("battleQTotal").textContent=battleQuestions.length;
-  battleDeadTimerExpired=false;
   startDeadTimer();
   renderBattleQuestion();
+  saveBattleLocal();
   pollBattleLeaderboard();
   battlePollId=setInterval(pollBattleLeaderboard,2000);
 }
@@ -688,16 +709,25 @@ function tickDeadTimer(){
   if(remaining<=0)endBattleByDeadTimer();
 }
 
+// If the question currently "live" never got an answer, mark it resolved
+// as unanswered so it stays reviewable rather than stuck mid-air.
+function finalizeOpenQuestion(){
+  if(battleFrontier<battleQuestions.length && !battleAnswers[battleFrontier]){
+    battleAnswers[battleFrontier]={selected:null,correct:false};
+  }
+}
+
 function endBattleByDeadTimer(){
   if(battleDeadTimerExpired)return;
   battleDeadTimerExpired=true;
   clearInterval(battleDeadTimerId);
   clearInterval(battleQuestionTimerId);
-  $("battleQuestionCard").style.display="none";
+  finalizeOpenQuestion();
   $("battleDoneEyebrow").textContent="TIME'S UP";
-  $("battleDoneHeading").textContent="The battle has ended for everyone.";
-  $("battleDoneCard").style.display="block";
+  $("battleDoneHeading").textContent="The battle has ended for everyone. You can still review your answers below.";
   pushBattleProgress();
+  saveBattleLocal();
+  renderBattleQuestion();
 }
 
 function startQuestionTimer(){
@@ -718,87 +748,175 @@ function tickQuestionTimer(){
 }
 
 function battleQuestionTimeout(){
-  if(battleSelected!==null||battleDeadTimerExpired)return;
-  battleSelected=-1;
-  const q=battleQuestions[battleIndex];
-  const buttons=[...document.querySelectorAll("#battleOptions .option")];
-  buttons.forEach(b=>b.disabled=true);
-  buttons[q.answer].classList.add("correct");
+  if(battleAnswers[battleIndex]||battleDeadTimerExpired||battleIndex!==battleFrontier)return;
   battleAttempts++;
-  $("battleFeedback").textContent=`⏰ Time! Correct answer: ${q.options[q.answer]}`;
-  $("battleFeedback").className="feedback timeout";
+  battleAnswers[battleIndex]={selected:-1,correct:false};
   $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
-  $("battleNextBtn").disabled=false;
   pushBattleProgress();
+  saveBattleLocal();
+  renderBattleQuestion();
 }
 
 function renderBattleQuestion(){
-  if(battleDeadTimerExpired)return;
   if(battleIndex>=battleQuestions.length){
     clearInterval(battleQuestionTimerId);
     $("battleQuestionCard").style.display="none";
-    $("battleDoneEyebrow").textContent="YOU'RE DONE";
-    $("battleDoneHeading").textContent="Waiting on the others\u2026";
     $("battleDoneCard").style.display="block";
+    if(!battleDeadTimerExpired){
+      $("battleDoneEyebrow").textContent="YOU'RE DONE";
+      $("battleDoneHeading").textContent="Waiting on the others\u2026";
+    }
     return;
   }
   $("battleQuestionCard").style.display="";
   $("battleDoneCard").style.display="none";
   const q=battleQuestions[battleIndex];
-  battleSelected=null;
-  $("battleQNum").textContent=battleIndex+1;
+  const resolved=battleAnswers[battleIndex];
+  const isLive=!battleDeadTimerExpired&&battleIndex===battleFrontier&&!resolved;
+
+  $("battleQuestionNumber").textContent=`Question ${battleIndex+1}`;
+  $("battleQNum").textContent=Math.min(battleFrontier+1,battleQuestions.length);
   $("battleQuestionText").textContent=q.question;
   const wrap=$("battleImageWrap"),img=$("battleImage");
   if(q.image){img.src=q.image;wrap.classList.remove("hidden")}
   else{img.removeAttribute("src");wrap.classList.add("hidden")}
+
   const box=$("battleOptions"); box.innerHTML="";
   q.options.forEach((text,i)=>{
     const b=document.createElement("button");
     b.className="option";
     b.textContent=`${String.fromCharCode(65+i)}. ${text}`;
-    b.onclick=()=>answerBattle(i);
+    if(resolved){
+      b.disabled=true;
+      if(i===q.answer)b.classList.add("correct");
+      else if(resolved.selected!==null&&i===resolved.selected)b.classList.add("wrong");
+    }else if(isLive){
+      b.onclick=()=>answerBattle(i);
+    }else{
+      b.disabled=true;
+    }
     box.appendChild(b);
   });
-  $("battleFeedback").textContent=""; $("battleFeedback").className="feedback";
-  $("battleNextBtn").disabled=true;
-  $("battleNextBtn").textContent=battleIndex===battleQuestions.length-1?"Finish":"Next Question";
-  startQuestionTimer();
+
+  if(resolved){
+    if(resolved.selected===null){$("battleFeedback").textContent=`The battle ended before you answered. Correct answer: ${q.options[q.answer]}`;$("battleFeedback").className="feedback timeout"}
+    else if(resolved.selected===-1){$("battleFeedback").textContent=`⏰ Time! Correct answer: ${q.options[q.answer]}`;$("battleFeedback").className="feedback timeout"}
+    else if(resolved.correct){$("battleFeedback").textContent="✓ Correct! +1 point";$("battleFeedback").className="feedback good"}
+    else{$("battleFeedback").textContent=`✗ Not quite. Correct answer: ${q.options[q.answer]}`;$("battleFeedback").className="feedback bad"}
+  }else{
+    $("battleFeedback").textContent=""; $("battleFeedback").className="feedback";
+  }
+
+  $("battlePrevBtn").disabled=battleIndex<=0;
+  if(isLive){
+    $("battleNextBtn").disabled=true;
+    $("battleNextBtn").textContent="Choose an answer";
+    startQuestionTimer();
+  }else{
+    clearInterval(battleQuestionTimerId);
+    $("battleQTimer").textContent="\u2013";
+    $("battleNextBtn").disabled=false;
+    $("battleNextBtn").textContent=(battleIndex===battleFrontier&&battleIndex+1>=battleQuestions.length)?"Finish":"Next Question";
+  }
+
+  updateBookmarkBtn();
 }
 
 function answerBattle(index){
-  if(battleSelected!==null||battleDeadTimerExpired)return;
+  if(battleAnswers[battleIndex]||battleDeadTimerExpired||battleIndex!==battleFrontier)return;
   clearInterval(battleQuestionTimerId);
-  battleSelected=index;
   const q=battleQuestions[battleIndex];
-  const buttons=[...document.querySelectorAll("#battleOptions .option")];
-  buttons.forEach(b=>b.disabled=true);
   const correct=index===q.answer;
-  buttons[index].classList.add(correct?"correct":"wrong");
-  if(!correct)buttons[q.answer].classList.add("correct");
   battleAttempts++;
-  if(correct){battleScore++;$("battleFeedback").textContent="✓ Correct! +1 point";$("battleFeedback").className="feedback good"}
-  else{$("battleFeedback").textContent=`✗ Not quite. Correct answer: ${q.options[q.answer]}`;$("battleFeedback").className="feedback bad"}
+  if(correct)battleScore++;
+  battleAnswers[battleIndex]={selected:index,correct};
   $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
-  $("battleNextBtn").disabled=false;
   pushBattleProgress();
+  saveBattleLocal();
+  renderBattleQuestion();
 }
 
-function advanceBattleQuestion(){
-  clearInterval(battleQuestionTimerId);
-  battleIndex++;
-  if(battleIndex>=battleQuestions.length)pushBattleProgress();
+function battlePrevious(){
+  if(battleIndex<=0)return;
+  battleIndex--;
   renderBattleQuestion();
 }
 
 function battleNext(){
-  if(battleSelected===null||battleDeadTimerExpired)return;
-  advanceBattleQuestion();
+  if(battleIndex<battleFrontier){
+    battleIndex++;
+    renderBattleQuestion();
+    return;
+  }
+  if(!battleAnswers[battleIndex])return;
+  battleFrontier=Math.min(battleFrontier+1,battleQuestions.length);
+  battleIndex=battleFrontier;
+  if(battleIndex>=battleQuestions.length)pushBattleProgress();
+  saveBattleLocal();
+  renderBattleQuestion();
+}
+
+function updateBookmarkBtn(){
+  const bookmarked=battleBookmarks.has(battleIndex);
+  const btn=$("battleBookmarkBtn");
+  btn.textContent=bookmarked?"\u2605 Bookmarked":"\u2606 Bookmark";
+  btn.classList.toggle("bookmarked",bookmarked);
+}
+
+function toggleBattleBookmark(){
+  if(battleBookmarks.has(battleIndex))battleBookmarks.delete(battleIndex);
+  else battleBookmarks.add(battleIndex);
+  updateBookmarkBtn();
+  saveBattleLocal();
+}
+
+function renderBattleHamburgerIndex(){
+  const box=$("battleQuestionIndex"); box.innerHTML="";
+  const grid=document.createElement("div");
+  grid.className="qIndexGrid";
+  battleQuestions.forEach((q,i)=>{
+    const locked=i>battleFrontier;
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent=i+1;
+    b.className="qIndexBtn"+(i===battleIndex?" current":"")+(battleBookmarks.has(i)?" bookmarked":"")+(locked?" locked":"");
+    b.disabled=locked;
+    if(!locked)b.onclick=()=>{battleIndex=i;closeBattleMenu();renderBattleQuestion()};
+    grid.appendChild(b);
+  });
+  box.appendChild(grid);
+}
+
+function openBattleMenu(){
+  renderBattleHamburgerIndex();
+  $("battleHamburgerPanel").classList.remove("hidden");
+}
+function closeBattleMenu(){$("battleHamburgerPanel").classList.add("hidden")}
+
+function submitAndReviewBattle(){
+  closeBattleMenu();
+  battleIndex=0;
+  renderBattleQuestion();
+}
+
+function endTestForSelf(){
+  if(!confirm("End your test and return to the home screen?"))return;
+  closeBattleMenu();
+  finalizeOpenQuestion();
+  clearInterval(battleQuestionTimerId);
+  clearInterval(battleDeadTimerId);
+  clearInterval(battlePollId);
+  pushBattleProgress();
+  clearBattleLocal();
+  battleCode=null;
+  $("battle").classList.add("hidden");
+  $("landing").classList.remove("hidden");
 }
 
 async function pushBattleProgress(){
   if(!battleCode||!battleName)return;
   try{
-    await fetch(`/api/battle/${battleCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:battleName,score:battleScore,attempts:battleAttempts,currentIndex:battleIndex})});
+    await fetch(`/api/battle/${battleCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:battleName,score:battleScore,attempts:battleAttempts,currentIndex:battleFrontier})});
   }catch(e){}
 }
 
@@ -818,8 +936,98 @@ async function pollBattleLeaderboard(){
   }catch(e){}
 }
 
+// --- Battle persistence ---
+// Keeps a battle on screen across a refresh; only "End Test" clears it and
+// sends the device back to the landing screen.
+
+function saveBattleLocal(){
+  if(!battleCode)return;
+  try{
+    localStorage.setItem(BATTLE_LOCAL_KEY,JSON.stringify({
+      battleCode,battleName,battleQuestions,battleFrontier,battleIndex,battleScore,battleAttempts,
+      battleAnswers,battleBookmarks:[...battleBookmarks],battleTimePerQ,battleDeadTimerEndsAt,
+      battleQuestionEndsAt,battleDeadTimerExpired
+    }));
+  }catch(e){}
+}
+function clearBattleLocal(){try{localStorage.removeItem(BATTLE_LOCAL_KEY)}catch(e){}}
+
+function restoreBattleLocal(){
+  let data;
+  try{data=JSON.parse(localStorage.getItem(BATTLE_LOCAL_KEY)||"null")}catch(e){return false}
+  if(!data||!data.battleCode)return false;
+
+  battleCode=data.battleCode; battleName=data.battleName; battleQuestions=data.battleQuestions||[];
+  battleFrontier=data.battleFrontier||0; battleIndex=data.battleIndex||0;
+  battleScore=data.battleScore||0; battleAttempts=data.battleAttempts||0;
+  battleAnswers=data.battleAnswers||{};
+  battleBookmarks=new Set(data.battleBookmarks||[]);
+  battleTimePerQ=data.battleTimePerQ; battleDeadTimerEndsAt=data.battleDeadTimerEndsAt;
+  battleDeadTimerExpired=!!data.battleDeadTimerExpired;
+
+  $("landing").classList.add("hidden");
+  $("battle").classList.remove("hidden");
+  $("battlePlayerName").textContent=battleName;
+  $("battleCodeText").textContent=battleCode;
+  $("battleQTotal").textContent=battleQuestions.length;
+  $("battleScore").textContent=`${battleScore}/${battleAttempts}`;
+
+  startDeadTimer();
+  renderBattleQuestion();
+  // If a live per-question timer was mid-countdown, correct it to the real
+  // remaining time (renderBattleQuestion above already started a fresh
+  // full-length one) — this also fires the timeout immediately if the
+  // saved deadline had already passed while the tab was closed.
+  if(data.battleQuestionEndsAt&&battleIndex===battleFrontier&&!battleAnswers[battleIndex]&&!battleDeadTimerExpired){
+    battleQuestionEndsAt=data.battleQuestionEndsAt;
+    tickQuestionTimer();
+  }
+  pollBattleLeaderboard();
+  battlePollId=setInterval(pollBattleLeaderboard,2000);
+  return true;
+}
+
+// --- Admin view ---
+// Read-only room monitor: only ever GETs the room, never POSTs a player
+// entry, so the admin's name never appears in the leaderboard.
+
+async function viewAsAdmin(code){
+  if(!code)return;
+  adminViewCode=code.toUpperCase();
+  $("landing").classList.add("hidden");
+  $("battleAdminView").classList.remove("hidden");
+  $("adminCodeText").textContent=adminViewCode;
+  pollAdminView();
+  adminPollId=setInterval(pollAdminView,2000);
+}
+
+async function pollAdminView(){
+  if(!adminViewCode)return;
+  try{
+    const res=await fetch(`/api/battle/${adminViewCode}`,{cache:"no-store"});
+    if(!res.ok){$("adminLeaderboard").innerHTML='<p class="small">Room not found.</p>';return}
+    const data=await res.json();
+    const names=Object.keys(data.players||{});
+    const sorted=names.sort((a,b)=>(data.players[b].score||0)-(data.players[a].score||0));
+    const total=data.meta&&data.meta.questions?data.meta.questions.length:0;
+    $("adminLeaderboard").innerHTML=sorted.map((n,i)=>{
+      const p=data.players[n];
+      return `<div class="finalRow"><span>${i===0?"🏆 ":""}${escapeHtml(n)} <small>(${p.currentIndex}/${total})</small></span><strong>${p.score||0}/${p.attempts||0}</strong></div>`;
+    }).join("")||'<p class="small">No one has joined yet.</p>';
+  }catch(e){}
+}
+
+$("adminBackBtn").onclick=()=>{
+  clearInterval(adminPollId);
+  adminViewCode=null;
+  $("battleAdminView").classList.add("hidden");
+  $("landing").classList.remove("hidden");
+};
+
 if(__spectateCode){
   initSpectator(__spectateCode);
+}else if(__adminCode){
+  viewAsAdmin(__adminCode);
 }else{
   $("participantCount").addEventListener("input",renderNameInputs);
   renderNameInputs();
@@ -879,6 +1087,16 @@ if(__spectateCode){
   });
   $("battleGoBtn").onclick=startBattle;
   $("battleNextBtn").onclick=battleNext;
+  $("battlePrevBtn").onclick=battlePrevious;
+  $("battleBookmarkBtn").onclick=toggleBattleBookmark;
+  $("battleHamburgerBtn").onclick=openBattleMenu;
+  $("closeBattleMenuBtn").onclick=closeBattleMenu;
+  $("battleSubmitReviewBtn").onclick=submitAndReviewBattle;
+  $("battleEndTestBtn").onclick=endTestForSelf;
+  $("battleReviewFromDoneBtn").onclick=()=>{
+    battleIndex=Math.max(0,battleQuestions.length-1);
+    renderBattleQuestion();
+  };
   $("battleCopyBtn").onclick=()=>{
     if(!battleCode)return;
     navigator.clipboard.writeText(battleCode).then(()=>{
@@ -899,5 +1117,9 @@ if(__spectateCode){
     __lastScrollY=y;
   });
 
-  if(restoreLocal())$("landing").classList.add("hidden");
+  if(restoreBattleLocal()){
+    // battle session restored, landing already hidden inside restoreBattleLocal
+  }else if(restoreLocal()){
+    $("landing").classList.add("hidden");
+  }
 }
