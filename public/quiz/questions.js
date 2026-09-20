@@ -285,7 +285,89 @@ const questionss = [
 {question:"A nucleus with nucleon number 226 and proton number 88 decays by emitting one alpha particle. How many neutrons does the new nucleus contain?",options:["136","134","138","140"],answer:0}
 ];
 
+const questionsss = [
+{question:"A car travels the first half of a journey's distance at 20 m/s and the second half of the distance at 30 m/s. What is the average speed for the whole journey?",options:["24 m/s","25 m/s","50 m/s","10 m/s"],answer:0},
+
+{question:"A book rests on a horizontal table. The Earth pulls the book downwards with a force equal to its weight. Which force is the Newton's third law pair of this weight?",options:["The upward force of the table on the book","The downward force of the book on the table","The resultant force on the book","The upward gravitational pull of the book on the Earth"],answer:3},
+
+{question:"Atmospheric pressure is 100 kPa. Water has density 1000 kg/m3 and gravitational field strength is 10 N/kg. What is the total pressure on a diver at a depth of 10 m in a lake?",options:["100 kPa","200 kPa","110 kPa","10 kPa"],answer:1},
+
+{question:"A 2.0 kW electric kettle heats 1.5 kg of water from 20°C to 100°C. The specific heat capacity of water is 4200 J/kg°C. Assuming all the electrical energy is transferred to the water, how long does this take?",options:["126 s","504 s","252 s","252 000 s"],answer:2},
+
+{question:"A pupil claps and hears the echo from a distant wall 0.50 s later. The speed of sound in air is 340 m/s. How far away is the wall?",options:["42.5 m","85 m","170 m","680 m"],answer:1},
+
+{question:"A 12 V battery of negligible internal resistance is connected to a 4 Ω resistor in series with a parallel pair of resistors, 6 Ω and 3 Ω. What is the potential difference across the 3 Ω resistor?",options:["4 V","6 V","8 V","12 V"],answer:0},
+
+{question:"A step-up transformer has 100 turns on its primary coil and 1000 turns on its secondary coil. The primary is connected to a 6 V d.c. battery. After the switch has been closed for a long time, what does a voltmeter across the secondary coil read?",options:["60 V","6 V","0.6 V","0 V"],answer:3},
+
+{question:"A GM tube is placed 2 cm from a radioactive source. The background count rate is 20 counts/min. The readings are: no absorber 460 counts/min, thin paper 260 counts/min, 3 mm aluminium 20 counts/min, 5 cm lead 20 counts/min. Which radiations does the source emit?",options:["Alpha only","Alpha and beta only","Beta and gamma only","Alpha, beta and gamma"],answer:1},
+
+{question:"Nuclide P has 14 nucleons and 6 protons. Nuclide Q has 14 nucleons and 7 protons. Nuclide R has 12 nucleons and 6 protons. Nuclide S has 15 nucleons and 8 protons. Which pair are isotopes of the same element?",options:["P and Q","Q and R","P and R","R and S"],answer:2},
+
+{question:"A uniform metre rule is balanced horizontally on a pivot at the 30 cm mark. A 2.0 N weight hangs from the 0 cm mark. What is the weight of the rule?",options:["3.0 N","1.2 N","2.0 N","5.0 N"],answer:0},
+
+{question:"A body moves at a constant velocity of 6 m/s for 5 s and then decelerates uniformly to rest in the next 5 s. What is the total distance travelled?",options:["30 m","45 m","60 m","90 m"],answer:1},
+
+{question:"A ball is thrown vertically upwards from the ground at 20 m/s. Take g = 10 m/s2 and ignore air resistance. What total distance does the ball travel in the first 4.0 s?",options:["0 m","20 m","40 m","80 m"],answer:2},
+
+{question:"A skydiver falling at terminal velocity opens her parachute. Which statement describes her motion immediately afterwards?",options:["She accelerates downwards because her weight has increased.","She continues at the same speed because the forces are balanced.","She moves upwards because the air resistance is greater than her weight.","She decelerates because the air resistance is now greater than her weight."],answer:3},
+
+{question:"A 5 kg box slides at constant speed across a floor when pushed by a horizontal force of 20 N. The push is then increased to 30 N. Assuming the friction stays the same, what is the acceleration of the box?",options:["0 m/s2","4 m/s2","6 m/s2","2 m/s2"],answer:3},
+
+{question:"A 2.0 kg trolley moving at 3.0 m/s collides with a stationary 1.0 kg trolley and the two stick together. How much kinetic energy is transferred to other forms during the collision?",options:["0 J","3 J","6 J","9 J"],answer:1},
+
+{question:"Two identical springs each extend by 4 cm when a 10 N load is hung from one of them. The springs are now joined end to end and the same 10 N load is hung from the lower spring. What is the total extension?",options:["2 cm","4 cm","8 cm","16 cm"],answer:2},
+
+{question:"A person standing on both feet exerts a pressure of 15 000 Pa on the ground. She lifts one foot and stands on the other. Both feet have the same area. What is the new pressure on the ground?",options:["7 500 Pa","15 000 Pa","30 000 Pa","60 000 Pa"],answer:2},
+
+{question:"A block has a mass of 200 g and a volume of 250 cm3. The density of water is 1.0 g/cm3. What happens when the block is placed in water?",options:["It sinks to the bottom.","It floats with 20% of its volume below the surface.","It floats with half of its volume below the surface.","It floats with 80% of its volume below the surface."],answer:3},
+
+{question:"A motor lifts a 500 kg load through 12 m at constant speed in 20 s. The motor is 60% efficient. Take g = 10 N/kg. What is the input power to the motor?",options:["5 000 W","3 000 W","1 800 W","8 333 W"],answer:0},
+
+{question:"Ali and Bo have the same weight. Ali runs up a flight of stairs in 8 s and Bo walks up the same stairs in 16 s. Which statement is correct?",options:["Ali and Bo do the same work, but Ali develops twice the power.","Ali does twice as much work as Bo.","Ali and Bo do the same work and develop the same power.","Bo does the same work but develops twice the power."],answer:0},
+
+{question:"A motor is 80% efficient and wastes energy as thermal energy at a rate of 100 W. What is its useful power output?",options:["80 W","100 W","400 W","500 W"],answer:2},
+
+{question:"A steel washer has a circular hole in its centre. The washer is heated uniformly. What happens to the diameter of the hole?",options:["It decreases because the metal expands into the hole.","It stays the same because the hole is empty.","It first decreases and then increases.","It increases."],answer:3},
+
+{question:"A fixed mass of gas is heated in a rigid container from 27°C to 54°C. By approximately how much does the pressure of the gas increase?",options:["9%","27%","50%","100%"],answer:0},
+
+{question:"200 g of water at 80°C is mixed with 300 g of water at 20°C in an insulated container. What is the final temperature of the mixture?",options:["36°C","44°C","50°C","56°C"],answer:1},
+
+{question:"How much energy is needed to change 0.20 kg of ice at -10°C completely into water at 0°C? The specific heat capacity of ice is 2100 J/kg°C and the specific latent heat of fusion of ice is 340 000 J/kg.",options:["72 200 J","4 200 J","68 000 J","340 000 J"],answer:0},
+
+{question:"A ray of light strikes a flat air-glass boundary at 30° to the glass surface. The refractive index of the glass is 1.5. What is the angle of refraction?",options:["19°","35°","45°","60°"],answer:1},
+
+{question:"A ray of light strikes a plane mirror. The mirror is rotated through 10° while the incident ray stays fixed. Through what angle does the reflected ray turn?",options:["5°","10°","20°","40°"],answer:2},
+
+{question:"A wave has a wavelength of 0.40 m and a period of 0.050 s. What is the speed of the wave?",options:["0.020 m/s","0.45 m/s","8.0 m/s","20 m/s"],answer:2},
+
+{question:"The amplitude of a sound wave is doubled while its frequency is halved. What change is heard?",options:["It becomes louder and lower in pitch.","It becomes louder and higher in pitch.","It becomes quieter and lower in pitch.","It becomes quieter and higher in pitch."],answer:0},
+
+{question:"A lamp is rated 12 V, 24 W. It is connected to a 6 V supply. Assuming its resistance stays constant, what power does it dissipate?",options:["3 W","6 W","12 W","24 W"],answer:1},
+
+{question:"A 10 Ω resistor and a 1000 Ω resistor are connected in parallel. Which statement about their combined resistance is correct?",options:["It is 1010 Ω.","It is 505 Ω.","It is between 10 Ω and 1000 Ω.","It is less than 10 Ω."],answer:3},
+
+{question:"A 2.0 kW heater is switched on for 3.0 hours. Electricity costs P1.20 per kWh. What is the cost of using the heater?",options:["P7.20","P0.72","P3.60","P7 200"],answer:0},
+
+{question:"An electric kettle is rated 2.0 kW at 230 V. Which fuse is most suitable for the kettle?",options:["3 A","5 A","10 A","13 A"],answer:2},
+
+{question:"A negatively charged plastic rod is brought close to, but does not touch, a small uncharged metal sphere hanging on an insulating thread. What happens to the sphere?",options:["It is attracted because charges in the sphere are separated.","It is repelled because it gains electrons from the rod.","It is attracted because protons move from the rod to the sphere.","It is not affected because it is uncharged."],answer:0},
+
+{question:"A bar magnet is pushed into a coil connected to a sensitive galvanometer and is then held still inside the coil. What does the galvanometer show while the magnet is held still?",options:["A steady deflection","A large deflection in the opposite direction","An alternating deflection","No deflection"],answer:3},
+
+{question:"A straight wire carrying a current is placed in a uniform magnetic field. In which situation is the force on the wire zero?",options:["The current is at right angles to the field.","The current is parallel to the field.","The current is doubled.","The wire is held stationary."],answer:1},
+
+{question:"Which materials should be used for the core of an electromagnet and for a permanent magnet?",options:["Soft iron for the electromagnet core and steel for the permanent magnet","Steel for both","Steel for the electromagnet core and soft iron for the permanent magnet","Soft iron for both"],answer:0},
+
+{question:"Why is an alpha source more hazardous than a gamma source of similar activity if it is swallowed?",options:["Alpha radiation is more penetrating than gamma radiation.","Alpha radiation travels further through the body.","Alpha radiation is not absorbed by body tissue.","Alpha radiation is strongly ionising and all its energy is absorbed by nearby cells."],answer:3},
+
+{question:"In the alpha-particle scattering experiment, a very small fraction of the alpha particles were deflected through angles greater than 90°. What does this show?",options:["Most of the atom is empty space.","Electrons are heavier than alpha particles.","The atom has a small, dense, positively charged nucleus.","The nucleus is negatively charged."],answer:2},
+
+{question:"A neutral atom of a nuclide has nucleon number 27 and proton number 13. How many neutrons and electrons does it contain?",options:["13 neutrons and 14 electrons","14 neutrons and 13 electrons","14 neutrons and 14 electrons","27 neutrons and 13 electrons"],answer:1}
+];
+
 // Built-in topic bank. "Physics General" is this file's original question
 // set; imported topics (via the Import Questions screen) get added here at
 // runtime alongside it.
-const BUILT_IN_TOPICS = {"Physics General": questions, "Physics Tricky": questionss, "Biology General": biologyQuestions};
+const BUILT_IN_TOPICS = {"Physics General": questions, "Tricky Physics set1": questionss,  "Tricky Physics set2": questionsss, "Biology General": biologyQuestions};
