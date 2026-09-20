@@ -63,5 +63,12 @@ textarea{width:100%;padding:14px;border:2px solid var(--line);border-radius:10px
 .panelRow input{flex:1}
 .secondaryBtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
 .dangerBtn{background:var(--wrong);color:#fff;border:0;border-radius:10px;padding:12px;width:100%;font:inherit;font-weight:800;cursor:pointer}
+.row{display:flex}
+#battleBookmarkBtn.bookmarked{background:#fffbe6;border-color:#f2c94c;color:#8a6d00}
+.qIndexGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.qIndexBtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 0;font:inherit;font-size:13px;cursor:pointer}
+.qIndexBtn.current{border-color:var(--accent);font-weight:800}
+.qIndexBtn.locked{opacity:.35;cursor:not-allowed}
+.qIndexBtn.bookmarked{background:#fffbe6;border-color:#f2c94c}
 .spectatorMode #nextBtn,.spectatorMode #playAgain,.spectatorMode #hamburgerBtn{display:none!important}
 @media(max-width:650px){.topbar{align-items:flex-start}.scoreMini{min-width:84px}.topbar h1{font-size:28px}}
