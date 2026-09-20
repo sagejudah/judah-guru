@@ -916,7 +916,7 @@ function endTestForSelf(){
 async function pushBattleProgress(){
   if(!battleCode||!battleName)return;
   try{
-    await fetch(`/api/battle/${battleCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:battleName,score:battleScore,attempts:battleAttempts,currentIndex:battleFrontier})});
+    await fetch(`/api/battle/${battleCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:battleName,score:battleScore,attempts:battleAttempts,currentIndex:battleFrontier,answers:battleAnswers,bookmarks:[...battleBookmarks]})});
   }catch(e){}
 }
 
@@ -926,6 +926,9 @@ async function pollBattleLeaderboard(){
     const res=await fetch(`/api/battle/${battleCode}`,{cache:"no-store"});
     if(!res.ok)return;
     const data=await res.json();
+    // An admin may have changed the shared per-question timer — adopt it
+    // for whichever question comes next (never retroactively).
+    if(data.meta&&data.meta.timePerQuestion!==battleTimePerQ)battleTimePerQ=data.meta.timePerQuestion;
     const names=Object.keys(data.players||{});
     const sorted=names.sort((a,b)=>(data.players[b].score||0)-(data.players[a].score||0));
     $("battleLeaderboard").innerHTML=sorted.map((n,i)=>{
@@ -988,8 +991,14 @@ function restoreBattleLocal(){
 }
 
 // --- Admin view ---
-// Read-only room monitor: only ever GETs the room, never POSTs a player
-// entry, so the admin's name never appears in the leaderboard.
+// Password-gated (checked server-side, never in this file), read-only for
+// contestant identity — admin GETs the room like anyone can, but never
+// POSTs a player entry, so no name ever appears on the leaderboard. The
+// one write it can make is the global per-question time change, and that
+// POST carries the password again so the server re-checks it every time.
+
+const ADMIN_PW_KEY="quizAdminPw";
+let adminSelectedTeam=null,adminAnswerKeyData=null;
 
 async function viewAsAdmin(code){
   if(!code)return;
@@ -997,6 +1006,35 @@ async function viewAsAdmin(code){
   $("landing").classList.add("hidden");
   $("battleAdminView").classList.remove("hidden");
   $("adminCodeText").textContent=adminViewCode;
+
+  const savedPw=sessionStorage.getItem(ADMIN_PW_KEY);
+  if(savedPw&&await checkAdminPassword(savedPw)){
+    unlockAdminView();
+  }
+}
+
+async function checkAdminPassword(pw){
+  try{
+    const res=await fetch("/api/battle/admin-check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pw})});
+    if(!res.ok)return false;
+    const data=await res.json();
+    return !!data.ok;
+  }catch(e){return false}
+}
+
+async function submitAdminPassword(){
+  const pw=($("adminPasswordInput").value||"").trim();
+  if(!pw)return;
+  const ok=await checkAdminPassword(pw);
+  if(!ok){$("adminAuthError").classList.remove("hidden");return}
+  $("adminAuthError").classList.add("hidden");
+  try{sessionStorage.setItem(ADMIN_PW_KEY,pw)}catch(e){}
+  unlockAdminView();
+}
+
+function unlockAdminView(){
+  $("adminAuthGate").classList.add("hidden");
+  $("adminAuthedContent").classList.remove("hidden");
   pollAdminView();
   adminPollId=setInterval(pollAdminView,2000);
 }
@@ -1005,21 +1043,92 @@ async function pollAdminView(){
   if(!adminViewCode)return;
   try{
     const res=await fetch(`/api/battle/${adminViewCode}`,{cache:"no-store"});
-    if(!res.ok){$("adminLeaderboard").innerHTML='<p class="small">Room not found.</p>';return}
+    if(!res.ok){$("adminTeamList").innerHTML='<p class="small">Room not found.</p>';return}
     const data=await res.json();
-    const names=Object.keys(data.players||{});
-    const sorted=names.sort((a,b)=>(data.players[b].score||0)-(data.players[a].score||0));
-    const total=data.meta&&data.meta.questions?data.meta.questions.length:0;
-    $("adminLeaderboard").innerHTML=sorted.map((n,i)=>{
-      const p=data.players[n];
-      return `<div class="finalRow"><span>${i===0?"🏆 ":""}${escapeHtml(n)} <small>(${p.currentIndex}/${total})</small></span><strong>${p.score||0}/${p.attempts||0}</strong></div>`;
-    }).join("")||'<p class="small">No one has joined yet.</p>';
+    adminAnswerKeyData=data.meta;
+    renderAdminTeamList(data);
+    if(adminSelectedTeam)renderAdminTeamDetail(data);
+    if(!$("adminAnswerKey").classList.contains("hidden"))renderAdminAnswerKey();
   }catch(e){}
 }
 
+function renderAdminTeamList(data){
+  const names=Object.keys(data.players||{});
+  const sorted=names.sort((a,b)=>(data.players[b].score||0)-(data.players[a].score||0));
+  const total=data.meta&&data.meta.questions?data.meta.questions.length:0;
+  $("adminTeamList").innerHTML="";
+  if(!sorted.length){$("adminTeamList").innerHTML='<p class="small">No one has joined yet.</p>';return}
+  sorted.forEach((n,i)=>{
+    const p=data.players[n];
+    const row=document.createElement("div");
+    row.className="finalRow";
+    row.style.cursor="pointer";
+    if(n===adminSelectedTeam)row.style.borderColor="var(--accent)";
+    row.innerHTML=`<span>${i===0?"🏆 ":""}${escapeHtml(n)} <small>(${p.currentIndex}/${total})</small></span><strong>${p.score||0}/${p.attempts||0}</strong>`;
+    row.onclick=()=>{adminSelectedTeam=n;renderAdminTeamDetail(data)};
+    $("adminTeamList").appendChild(row);
+  });
+}
+
+function renderAdminTeamDetail(data){
+  const p=data.players[adminSelectedTeam];
+  if(!p){adminSelectedTeam=null;$("adminTeamDetail").classList.add("hidden");return}
+  $("adminTeamDetail").classList.remove("hidden");
+  $("adminDetailName").textContent=adminSelectedTeam;
+  const lastActive=p.updatedAt?new Date(p.updatedAt).toLocaleTimeString():"—";
+  const bookmarks=(p.bookmarks||[]).map(i=>i+1).join(", ")||"none";
+  $("adminDetailSummary").textContent=`Score ${p.score||0}/${p.attempts||0} \u00b7 last active ${lastActive} \u00b7 bookmarked: ${bookmarks}`;
+
+  const questions=(data.meta&&data.meta.questions)||[];
+  const answers=p.answers||{};
+  $("adminDetailAnswers").innerHTML=questions.map((q,i)=>{
+    const a=answers[i];
+    if(!a)return `<div class="finalRow"><span>Q${i+1}</span><small>not reached</small></div>`;
+    const status=a.selected===null?"skipped (battle ended)":a.selected===-1?"timed out":a.correct?"correct":"wrong";
+    return `<div class="finalRow"><span>Q${i+1}</span><small>${status}</small></div>`;
+  }).join("");
+}
+
+function renderAdminAnswerKey(){
+  if(!adminAnswerKeyData||!adminAnswerKeyData.questions)return;
+  $("adminAnswerKey").innerHTML=adminAnswerKeyData.questions.map((q,i)=>
+    `<div class="card" style="margin-bottom:10px"><strong>Q${i+1}. ${escapeHtml(q.question)}</strong><div style="margin-top:6px">${
+      q.options.map((o,j)=>`<div${j===q.answer?' style="color:var(--correct);font-weight:800"':''}>${j===q.answer?"✓ ":""}${escapeHtml(o)}</div>`).join("")
+    }</div></div>`
+  ).join("");
+}
+
+async function applyAdminTime(){
+  const pw=sessionStorage.getItem(ADMIN_PW_KEY);
+  if(!pw||!adminViewCode)return;
+  const raw=$("adminTimeInput").value;
+  const timePerQuestion=raw?Math.max(5,Math.min(600,Number(raw))):null;
+  try{
+    const res=await fetch(`/api/battle/${adminViewCode}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({adminPassword:pw,timePerQuestion})});
+    if(!res.ok){alert("Couldn't update — check the password is still valid.");return}
+    $("adminTimeStatus").classList.remove("hidden");
+    setTimeout(()=>$("adminTimeStatus").classList.add("hidden"),2000);
+  }catch(e){alert("Couldn't update — check your connection.")}
+}
+
+$("adminAuthBtn").onclick=submitAdminPassword;
+$("adminApplyTimeBtn").onclick=applyAdminTime;
+$("adminToggleKeyBtn").onclick=()=>{
+  const showing=!$("adminAnswerKey").classList.contains("hidden");
+  $("adminAnswerKey").classList.toggle("hidden",showing);
+  $("adminToggleKeyBtn").textContent=showing?"Show Questions & Answers":"Hide Questions & Answers";
+  if(!showing)renderAdminAnswerKey();
+};
+
 $("adminBackBtn").onclick=()=>{
   clearInterval(adminPollId);
-  adminViewCode=null;
+  adminViewCode=null; adminSelectedTeam=null; adminAnswerKeyData=null;
+  $("adminAuthGate").classList.remove("hidden");
+  $("adminAuthedContent").classList.add("hidden");
+  $("adminTeamDetail").classList.add("hidden");
+  $("adminAnswerKey").classList.add("hidden");
+  $("adminToggleKeyBtn").textContent="Show Questions & Answers";
+  $("adminPasswordInput").value="";
   $("battleAdminView").classList.add("hidden");
   $("landing").classList.remove("hidden");
 };
