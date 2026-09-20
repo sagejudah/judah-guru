@@ -220,10 +220,43 @@
       <h1>Room <span id="adminCodeText" style="color:var(--accent)"></span></h1>
       <p>Read-only — you are not a contestant.</p>
     </div>
-    <div class="card">
-      <div class="eyebrow">LEADERBOARD</div>
-      <div id="adminLeaderboard"></div>
-      <button id="adminBackBtn" class="primary secondary" style="margin-top:16px">Back to Home</button>
+
+    <div id="adminAuthGate" class="card">
+      <label>Admin password</label>
+      <input id="adminPasswordInput" type="password" placeholder="Password">
+      <button id="adminAuthBtn" class="primary" style="margin-top:12px">Enter</button>
+      <p id="adminAuthError" class="small hidden" style="color:var(--wrong);margin-top:8px">Wrong password.</p>
+    </div>
+
+    <div id="adminAuthedContent" class="hidden">
+      <div class="card">
+        <div class="eyebrow">TEAMS</div>
+        <div id="adminTeamList"></div>
+      </div>
+
+      <div id="adminTeamDetail" class="card hidden">
+        <div class="eyebrow">TEAM DETAIL</div>
+        <h2 id="adminDetailName"></h2>
+        <p id="adminDetailSummary" class="small"></p>
+        <div id="adminDetailAnswers"></div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">CHANGE TIME PER QUESTION (ALL TEAMS)</div>
+        <div class="row" style="gap:8px">
+          <input id="adminTimeInput" type="number" min="5" max="600" placeholder="Seconds, blank = no limit">
+          <button id="adminApplyTimeBtn" class="secondaryBtn">Apply to All</button>
+        </div>
+        <p id="adminTimeStatus" class="small hidden" style="margin-top:8px">Updated.</p>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">ANSWER KEY</div>
+        <button id="adminToggleKeyBtn" class="primary secondary">Show Questions &amp; Answers</button>
+        <div id="adminAnswerKey" class="hidden" style="margin-top:12px"></div>
+      </div>
+
+      <button id="adminBackBtn" class="primary secondary">Back to Home</button>
     </div>
   </section>
   <section id="importQuestions" class="screen hidden">
