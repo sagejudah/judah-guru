@@ -3,7 +3,21 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'judah.guru',
-  description: 'judah.guru — still under construction.',
+  description:
+    'judah.guru — still under construction, but with free study tools for BGCSE/JCE students: a live quiz battle app, a word game, and more.',
+  metadataBase: new URL('https://judah.guru'),
+  openGraph: {
+    title: 'judah.guru',
+    description: 'Free study tools for BGCSE/JCE students — quiz battles, games, and more.',
+    url: 'https://judah.guru',
+    siteName: 'judah.guru',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'judah.guru',
+    description: 'Free study tools for BGCSE/JCE students — quiz battles, games, and more.',
+  },
 };
 
 export const viewport: Viewport = {
