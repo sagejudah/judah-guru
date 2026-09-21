@@ -87,6 +87,42 @@ main {
   flex: 1;
 }
 
+.legal h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.legal h2 {
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal p {
+  color: var(--dim);
+  margin: 0 0 1rem;
+}
+
+.legal .legal-updated {
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin-bottom: 2rem;
+}
+
+.legal .legal-back {
+  margin-bottom: 2rem;
+}
+
+.legal .legal-back a {
+  color: var(--dim);
+  text-decoration: none;
+}
+
+.legal .legal-back a:hover {
+  color: var(--ink);
+}
+
 /* --- hero: the particle loop (heart / peace / face) --- */
 .hero-wrap {
   position: relative;
@@ -496,6 +532,12 @@ footer {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.78rem;
   letter-spacing: 0.02em;
+  color: var(--dim);
+}
+
+.legal-links {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
   color: var(--dim);
 }
 
