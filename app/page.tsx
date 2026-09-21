@@ -2,6 +2,7 @@ import HeroCanvas from '@/components/HeroCanvas';
 import VibeCard from '@/components/VibeCard';
 import RecommendCard from '@/components/RecommendCard';
 import Year from '@/components/Year';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -136,6 +137,11 @@ export default function Home() {
           </a>
           <Year />
         </div>
+        <p className="legal-links">
+          <Link href="/privacy" className="mail-link">Privacy</Link>
+          {' · '}
+          <Link href="/terms" className="mail-link">Terms</Link>
+        </p>
       </footer>
     </main>
   );
