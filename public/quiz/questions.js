@@ -1,373 +1,207 @@
 // QUESTION BANK
 // answer: 0=A, 1=B, 2=C, 3=D
-// Optional image: image: "/quiz/images/physics/resistor.svg"
 // Format: {question:"...",options:["A","B","C","D"],answer:0}
+// 100 mixed Physics/Chemistry/Biology questions, BGCSE Science Double Award (0569) syllabus
+// Excludes: half-life, circular motion, radioactive decay
 
 const questions = [
-{question:"A runner increases their speed from 4 m/s to 10 m/s in 3 s. What is the acceleration?",options:["2 m/s2","3 m/s2","6 m/s2","14 m/s2"],answer:0},
+{question:"A trolley's distance-time graph is a straight line from 0 m at 0 s to 12 m at 4 s, then a horizontal line from 4 s to 7 s, then a straight line back to 0 m at 11 s. What is the trolley's average speed over the whole 11 s journey, and what is its average velocity?",options:["Average speed 2.2 m/s, average velocity 2.2 m/s","Average speed 2.2 m/s, average velocity 0 m/s","Average speed 0 m/s, average velocity 0 m/s","Average speed 1.1 m/s, average velocity 1.1 m/s"],answer:1},
 
-{question:"A car travels at a constant speed around a circular track. Which statement is correct?",options:["There is no resultant force because the speed is constant.","There is a resultant force directed towards the centre of the circle.","The resultant force is directed in the direction of motion.","The acceleration is zero because the speed is constant."],answer:1},
+{question:"Cotton wool soaked in ammonia solution (NH3, Mr = 17) and cotton wool soaked in concentrated hydrochloric acid (HCl, Mr = 36.5) are placed at opposite ends of a glass tube. A white ring of ammonium chloride forms where the two gases meet. Where does the white ring form, and why?",options:["Closer to the hydrochloric acid end, because HCl has a larger Mr and diffuses more slowly.","Closer to the ammonia end, because NH3 has a smaller Mr and diffuses more slowly.","Exactly in the middle, because both gases travel at the same speed.","Closer to the hydrochloric acid end, because HCl is denser and sinks to meet the ammonia."],answer:0},
 
-{question:"A 5 kg object is lifted vertically through a height of 4 m. Take gravitational field strength as 10 N/kg. What is the increase in gravitational potential energy?",options:["20 J","50 J","200 J","400 J"],answer:3},
+{question:"Which organelle is correctly matched with its main function in an animal cell?",options:["Nucleus — controls the cell's activities and contains genetic material","Mitochondrion — stores genetic information for the cell","Ribosome — the site of respiration","Cell membrane — the site of protein synthesis"],answer:0},
 
-{question:"A student pushes a box with a force of 80 N for 5 m. The frictional force opposing the motion is 30 N. What is the useful work done in moving the box?",options:["150 J","250 J","400 J","550 J"],answer:1},
+{question:"A car starts from rest and accelerates uniformly at 2.5 m/s² for 8 s, then travels at constant velocity for a further 6 s. What total distance does the car cover?",options:["140 m","160 m","200 m","240 m"],answer:2},
 
-{question:"A moving object has its velocity doubled. What happens to its kinetic energy?",options:["It doubles.","It becomes four times as large.","It becomes half as large.","It remains unchanged."],answer:1},
+{question:"An ion has 10 electrons, 11 protons and 12 neutrons. What is the charge on the ion, and what is its mass number?",options:["+1 charge, mass number 21","+1 charge, mass number 23","-1 charge, mass number 23","+2 charge, mass number 23"],answer:1},
 
-{question:"A metal ball and a wooden ball have the same mass. They are dropped from the same height at the same time. Air resistance is negligible. Which statement is correct?",options:["The metal ball reaches the ground first because it is heavier.","The wooden ball reaches the ground first because it is lighter.","Both balls reach the ground at the same time.","The balls have different accelerations because their masses are different."],answer:2},
+{question:"Which statement correctly distinguishes osmosis from diffusion?",options:["Diffusion is the movement of water molecules only; osmosis is the movement of any particle.","Osmosis is a special case of diffusion involving the movement of water molecules through a selectively permeable membrane, down a water concentration gradient.","Diffusion requires a selectively permeable membrane; osmosis does not.","Osmosis and diffusion both require energy from respiration to occur."],answer:1},
 
-{question:"A liquid is heated from 20°C to 80°C. Which statement about the average kinetic energy of its particles is correct?",options:["It decreases.","It remains unchanged.","It increases.","It becomes zero at 80°C."],answer:2},
+{question:"A ball is thrown vertically upward with an initial speed of 25 m/s. Take g = 10 m/s² and ignore air resistance. What are its velocity and acceleration 1.5 s after being thrown, while still rising?",options:["10 m/s upward, 10 m/s² downward","10 m/s upward, 0 m/s²","15 m/s upward, 10 m/s² downward","25 m/s upward, 10 m/s² downward"],answer:0},
 
-{question:"A solid is heated until it melts. During the melting process, the temperature remains constant. What is the main reason for this?",options:["No energy is supplied to the solid.","The supplied energy increases the mass of the solid.","The supplied energy is used to overcome forces between particles.","The particles stop moving while the solid melts."],answer:2},
+{question:"Two atoms of chlorine, 35Cl and 37Cl, are isotopes of each other. Which statement is correct?",options:["They have different numbers of protons, so they have different chemical properties.","They have the same number of protons but different numbers of neutrons, and very similar chemical properties.","They have the same number of neutrons but different numbers of protons.","They are different elements, since they have different mass numbers."],answer:1},
 
-{question:"A student wants to investigate how the length of a pendulum affects its period. Which variable should be kept constant?",options:["The length of the pendulum","The period of the pendulum","The mass of the bob","The number of oscillations per second"],answer:2},
+{question:"A plant cell and an animal cell are both placed in a concentrated sugar solution. What happens to each cell, and why?",options:["Both cells swell and burst, because water moves into both by osmosis.","The plant cell becomes plasmolysed and the animal cell crenates (shrinks), because water moves out of both cells by osmosis.","The plant cell bursts, but the animal cell is protected by its cell wall.","Neither cell is affected, because sugar cannot cross the cell membrane."],answer:1},
 
-{question:"A ray of light passes from air into glass at an angle to the normal. Which quantity does not change when the light enters the glass?",options:["Speed","Wavelength","Frequency","Direction"],answer:2},
+{question:"A lorry carrying a heavy load has the load packed high up rather than low down in the trailer. How does this affect the stability of the lorry, and why?",options:["It increases stability, because the centre of mass is raised.","It decreases stability, because the centre of mass is raised, narrowing the angle before it tips.","It decreases stability, because the total weight of the lorry increases.","It has no effect on stability, because the mass of the load is unchanged."],answer:1},
 
-{question:"An object is placed exactly at the principal focus of a converging lens. Where is the image formed?",options:["At the principal focus","Between the lens and the focus","At 2F","At infinity"],answer:3},
+{question:"Lithium, sodium and potassium are all Group I metals. Which statement correctly describes the trend in their reactivity with water, and predicts the reactivity of rubidium (below potassium)?",options:["Reactivity decreases down the group, so rubidium is less reactive than potassium.","Reactivity increases down the group, so rubidium is more reactive than potassium.","Reactivity is the same for all Group I metals, so rubidium reacts the same as potassium.","Reactivity depends only on melting point, so rubidium's reactivity cannot be predicted."],answer:1},
 
-{question:"A sound wave travels through air. Which statement is correct?",options:["The air particles travel with the sound from the source to the listener.","The air particles vibrate parallel to the direction of wave travel.","The air particles vibrate perpendicular to the direction of wave travel.","The sound wave can travel through a vacuum."],answer:1},
+{question:"Which word equation correctly represents photosynthesis?",options:["Carbon dioxide + water → glucose + oxygen (light energy, chlorophyll)","Glucose + oxygen → carbon dioxide + water + energy","Carbon dioxide + oxygen → glucose + water","Glucose → carbon dioxide + water (light energy)"],answer:0},
 
-{question:"A 12 V supply is connected to two identical 6 Ω resistors in series. What is the current in the circuit?",options:["0.5 A","1.0 A","2.0 A","4.0 A"],answer:1},
+{question:"A spring obeys Hooke's law up to a load of 6.0 N, producing an extension of 12 cm. A load of 9.0 N is then applied, taking the spring beyond its limit of proportionality, and the extension becomes 21 cm. What can be concluded?",options:["The extension is still proportional to the load, since 21 cm is more than 12 cm.","The extension is no longer proportional to the load, since 9.0 N would give 18 cm if proportionality still held.","The spring has reached its maximum possible extension.","The spring constant has increased beyond the limit of proportionality."],answer:1},
 
-{question:"Two identical resistors are connected in parallel across a 12 V battery. What is the potential difference across each resistor?",options:["3 V","6 V","12 V","24 V"],answer:2},
+{question:"Chlorine gas is bubbled into a solution of potassium bromide. What is observed, and why?",options:["No reaction occurs, because chlorine is less reactive than bromine.","The solution turns orange/brown, because chlorine displaces bromine as chlorine is more reactive.","The solution turns colourless, because bromine displaces chlorine.","A white precipitate forms, because an insoluble salt is produced."],answer:1},
 
-{question:"A radioactive isotope has a half-life of 4 hours. A sample initially contains 80 000 radioactive nuclei. How many radioactive nuclei remain after 12 hours?",options:["40 000","20 000","10 000","5 000"],answer:2},
+{question:"What is the main function of the guard cells surrounding a stoma in a leaf?",options:["To carry out most of the leaf's photosynthesis, since they contain the most chloroplasts.","To control the opening and closing of the stoma, regulating gas exchange and water loss.","To transport water and minerals from the roots to the leaf.","To store starch produced during photosynthesis."],answer:1},
 
-{question:"A bus accelerates uniformly from 5 m/s to 17 m/s in 4 s. What distance does it travel during this time?",options:["22 m","44 m","48 m","68 m"],answer:1},
+{question:"A 1200 kg car travelling on a level road experiences a driving force of 3000 N and a total resistive force of 1400 N. What is the car's acceleration?",options:["1.33 m/s²","2.50 m/s²","3.67 m/s²","0.83 m/s²"],answer:0},
 
-{question:"A stone is thrown vertically upwards. At the instant it reaches its highest point, which statement is correct?",options:["Its acceleration is zero and its velocity is zero.","Its acceleration is downward and its velocity is zero.","Its acceleration is upward and its velocity is zero.","Its acceleration is downward and its velocity is upward."],answer:1},
+{question:"In the formation of magnesium oxide, MgO, from magnesium and oxygen atoms, how many electrons are transferred from each magnesium atom to each oxygen atom?",options:["1","2","3","4"],answer:1},
 
-{question:"A force of 12 N acts on a 3 kg object. What is the acceleration of the object if this is the resultant force?",options:["0.25 m/s2","4 m/s2","9 m/s2","36 m/s2"],answer:1},
+{question:"A graph of the rate of photosynthesis against light intensity rises steeply at first, then levels off to a plateau even as light intensity continues to increase. What is the best explanation for the plateau?",options:["The plant has stopped photosynthesising completely.","Light intensity is no longer the limiting factor; another factor, such as carbon dioxide concentration or temperature, is now limiting the rate.","The plant is now respiring faster than it is photosynthesising.","Chlorophyll is destroyed once light intensity becomes too high."],answer:1},
 
-{question:"A 60 kg person stands on a weighing scale in a lift. The scale reading becomes greater than 60 kg. What is happening to the lift?",options:["It is moving upwards at constant speed.","It is moving downwards at constant speed.","It is accelerating upwards.","It is accelerating downwards."],answer:2},
+{question:"A uniform plank of weight 40 N and length 6.0 m is pivoted at its centre. A 60 N weight is hung 1.5 m from the pivot on the left. Where must a 45 N weight be hung on the right for the plank to balance?",options:["1.0 m","1.5 m","2.0 m","3.0 m"],answer:2},
 
-{question:"A student holds a book stationary above a table. Which statement about the forces acting on the book is correct?",options:["The gravitational force is greater than the upward force from the student's hand.","The upward force from the student's hand is greater than the gravitational force.","The gravitational force and the upward force from the student's hand are equal.","There are no forces acting because the book is stationary."],answer:2},
+{question:"A molecule of carbon dioxide, CO2, has the structure O=C=O. How many shared pairs of electrons are there in total in one molecule of CO2?",options:["2","3","4","8"],answer:2},
 
-{question:"A ball rolls down a slope and speeds up. Which energy change occurs mainly as the ball moves down the slope?",options:["Kinetic energy changes into gravitational potential energy.","Gravitational potential energy changes into kinetic energy.","Thermal energy changes into gravitational potential energy.","Kinetic energy changes into chemical energy."],answer:1},
+{question:"A plant grown in a nitrate-deficient solution shows poor growth and small leaves, while a plant grown in a magnesium-deficient solution shows yellowing between the leaf veins. Why do these two deficiencies cause different symptoms?",options:["Nitrates are needed for protein synthesis (affecting growth), while magnesium is needed for chlorophyll synthesis (affecting leaf colour).","Nitrates are needed for chlorophyll synthesis, while magnesium is needed for protein synthesis.","Both nitrates and magnesium are needed only for chlorophyll synthesis, so the symptoms should be identical.","Neither nitrates nor magnesium affect plant growth or colour directly."],answer:0},
 
-{question:"A metal block is heated but its temperature does not increase while it is changing state. What happens to the energy supplied?",options:["It is completely lost to the surroundings.","It increases the mass of the block.","It is used to change the arrangement and separation of particles.","It decreases the kinetic energy of the particles."],answer:2},
+{question:"An object of mass 2.0 kg falls freely from rest through a height of 5.0 m. Take g = 10 N/kg and ignore air resistance. What is its kinetic energy just before it lands?",options:["20 J","50 J","100 J","200 J"],answer:2},
 
-{question:"Three identical containers contain equal masses of water. Container P has a small exposed surface, Q has a medium exposed surface and R has a large exposed surface. All are at the same temperature and placed in identical conditions. Which water evaporates fastest?",options:["P","Q","R","All evaporate at the same rate"],answer:2},
+{question:"Substance X has a high melting point and conducts electricity only when molten or dissolved in water. Substance Y has a low melting point and does not conduct electricity in any state. What are X and Y most likely to be?",options:["X is covalent, Y is ionic.","X is ionic, Y is covalent.","Both X and Y are ionic.","Both X and Y are covalent."],answer:1},
 
-{question:"A shiny silver surface and a dull black surface are both at the same temperature. Which surface is the better emitter of infrared radiation?",options:["The shiny silver surface","The dull black surface","Both emit at exactly the same rate","Neither emits infrared radiation"],answer:1},
+{question:"A food sample is tested with Biuret solution, and the solution turns purple/lilac. What does this indicate about the food sample?",options:["It contains starch.","It contains a reducing sugar.","It contains protein.","It contains fat."],answer:2},
 
-{question:"A ray of light passes from water into air. The angle of incidence is increased beyond the critical angle. What happens?",options:["The ray is refracted towards the normal.","The ray is refracted away from the normal.","The ray is totally internally reflected.","The ray passes straight through without changing direction."],answer:2},
+{question:"A motor raises a 50 N load through a height of 4.0 m. The motor actually uses 400 J of energy to do this. What is the efficiency of the motor?",options:["25%","50%","75%","200%"],answer:1},
 
-{question:"An object is placed between F and 2F of a converging lens. Which image is formed?",options:["Real, inverted and magnified","Real, upright and diminished","Virtual, upright and diminished","Virtual, inverted and magnified"],answer:0},
+{question:"Which of the following is an example of an endothermic process?",options:["Combustion of methane gas","Respiration in muscle cells","Photosynthesis in green plants","The reaction of magnesium with dilute acid"],answer:2},
 
-{question:"A wave has a frequency of 250 Hz and a wavelength of 1.2 m. What is its speed?",options:["208 m/s","251 m/s","300 m/s","301.2 m/s"],answer:2},
+{question:"An enzyme solution is cooled to 2°C and mixed with its substrate, with very little reaction occurring. The same enzyme is then heated to 95°C and mixed with fresh substrate, and again very little reaction occurs. What is the correct explanation for the lack of reaction in each case?",options:["In both cases the enzyme has been permanently denatured by the temperature change.","At 2°C the enzyme is inactive but not denatured; at 95°C the enzyme has been permanently denatured.","At 2°C the enzyme is denatured; at 95°C the enzyme works faster than ever, so little substrate remains.","Temperature has no effect on enzyme activity; the lack of reaction must be due to the substrate."],answer:1},
 
-{question:"A 4 Ω resistor carries a current of 3 A. What is the electrical power dissipated by the resistor?",options:["12 W","24 W","36 W","48 W"],answer:2},
+{question:"A pump lifts 300 kg of water through a height of 6.0 m in 50 s. Take g = 10 N/kg. What is the power output of the pump?",options:["60 W","360 W","900 W","1800 W"],answer:1},
 
-{question:"A transformer has 500 turns on its primary coil and 2000 turns on its secondary coil. The primary voltage is 12 V. What is the secondary voltage?",options:["3 V","24 V","48 V","120 V"],answer:2},
+{question:"Marble chips react with excess dilute hydrochloric acid, and the volume of carbon dioxide gas produced is measured over time. In experiment A, large marble chips are used; in experiment B, the same mass of powdered marble is used, at the same temperature and acid concentration. Which statement correctly compares the two experiments?",options:["Experiment A produces more gas overall, because large chips react more completely.","Experiment B reaches its final volume of gas faster, but both experiments produce the same final volume.","Experiment B produces less gas overall, because powdered marble reacts incompletely.","Both experiments reach their final volume at the same time, since the mass of marble is the same."],answer:1},
 
-{question:"A car travels at 20 m/s for 15 s and then stops. What distance does it travel during the first 15 s?",options:["1.3 m","35 m","300 m","600 m"],answer:2},
+{question:"Bile is produced by the liver and released into the small intestine. Which statement correctly describes its role in digestion?",options:["Bile is an enzyme that chemically digests fats into fatty acids and glycerol.","Bile emulsifies fats into smaller droplets, increasing the surface area for enzyme action, but is not itself an enzyme.","Bile neutralises the alkaline contents leaving the stomach, making them acidic.","Bile is produced by the pancreas and digests proteins in the small intestine."],answer:1},
 
-{question:"A cyclist moving at 8 m/s accelerates uniformly at 2 m/s2 for 5 s. What is the cyclist's final speed?",options:["10 m/s","16 m/s","18 m/s","40 m/s"],answer:2},
+{question:"A thermostat uses a bimetallic strip made of brass and iron, with brass expanding more than iron for the same temperature rise. In the device, the strip bends towards the iron side when heated and breaks electrical contact. If the strip is now cooled below room temperature instead, what happens?",options:["It bends further towards the iron side.","It bends towards the brass side.","It stays straight, since contraction affects both metals equally.","It bends towards the iron side only if the iron is cooled more than the brass."],answer:1},
 
-{question:"A 10 N force acts on an object at an angle of 60° to the direction in which the object moves. The object moves 4 m. How much work is done by the force?",options:["20 J","40 J","80 J","120 J"],answer:1},
+{question:"Which statement correctly distinguishes an enzyme from an inorganic catalyst such as manganese(IV) oxide?",options:["An enzyme is permanently used up in the reaction it catalyses, unlike an inorganic catalyst.","An enzyme works effectively over a wide range of temperatures, unlike an inorganic catalyst.","An enzyme is usually specific to one reaction, whereas an inorganic catalyst is often less specific.","An enzyme increases the activation energy of a reaction, whereas an inorganic catalyst decreases it."],answer:2},
 
-{question:"A metal ball and a plastic ball have the same volume but different masses. Both are completely submerged in the same liquid. Which statement about the upthrust on the balls is correct?",options:["The metal ball experiences greater upthrust because it has greater mass.","The plastic ball experiences greater upthrust because it has smaller mass.","Both balls experience the same upthrust.","Neither ball experiences upthrust because both are completely submerged."],answer:2},
+{question:"The inner wall of the small intestine is covered in finger-like villi, and each villus cell has microvilli on its surface. What is the main advantage of this structure for absorption?",options:["It greatly increases the surface area available for the absorption of digested food.","It increases the length of the small intestine, giving food more time to be digested.","It allows the small intestine to produce more digestive enzymes.","It prevents undigested food from entering the bloodstream."],answer:0},
 
-{question:"A sharp knife cuts more easily than a blunt knife when the same force is applied. Which quantity is responsible for this difference?",options:["The sharp knife has a smaller area of contact, producing greater pressure.","The sharp knife has a larger area of contact, producing greater pressure.","The sharp knife has a greater mass, producing greater pressure.","The sharp knife has a smaller mass, producing greater pressure."],answer:0},
+{question:"Two liquid-in-glass thermometers have identical bulbs and identical liquids, but thermometer X has a narrower bore than thermometer Y. Which statement correctly compares their sensitivity?",options:["X is more sensitive than Y, because a given expansion produces a longer column in a narrow bore.","Y is more sensitive than X, because a wider bore allows the liquid to expand more.","X and Y have the same sensitivity, because sensitivity depends only on the liquid used.","X has a smaller range than Y, and range and sensitivity always increase together."],answer:0},
 
-{question:"A liquid is heated in a closed container. Which statement best explains why its pressure increases?",options:["The particles become larger and occupy more space.","The particles move faster and collide with the container walls more frequently and with greater force.","The number of particles increases as the temperature increases.","The particles stop attracting one another."],answer:1},
+{question:"In the reaction Zn + Cu²⁺ → Zn²⁺ + Cu, which species is reduced, and why?",options:["Zn, because it loses electrons.","Cu²⁺, because it gains electrons.","Zn²⁺, because it is formed from Zn.","Cu, because it is formed as a solid."],answer:1},
 
-{question:"A substance changes directly from a solid to a gas without becoming a liquid. What is this process called?",options:["Condensation","Evaporation","Sublimation","Freezing"],answer:2},
+{question:"Which statement correctly compares the energy released by aerobic and anaerobic respiration from the same amount of glucose?",options:["Anaerobic respiration releases more energy, because it occurs faster.","Aerobic respiration releases more energy, because glucose is broken down completely in the presence of oxygen.","Both processes release exactly the same amount of energy from the same amount of glucose.","Anaerobic respiration releases more energy, because no oxygen is needed to start the reaction."],answer:1},
 
-{question:"A student places equal masses of hot water into identical cups. Cup A is covered with a lid and Cup B is left uncovered. Which cup loses heat more slowly, and why?",options:["A, because the lid reduces evaporation.","A, because the lid increases convection.","B, because evaporation is faster from an uncovered surface.","B, because the lid increases radiation."],answer:0},
+{question:"A pure solid is heated until it completely melts, and the temperature is recorded at regular time intervals throughout. On the resulting temperature-time graph, what is happening to the energy supplied while the temperature remains constant at the melting point?",options:["No energy is being supplied during this time.","The energy is increasing the kinetic energy of the particles.","The energy is overcoming the forces of attraction between particles, without increasing their average kinetic energy.","The energy is being used to increase the temperature of the surroundings only."],answer:2},
 
-{question:"A ray of light travels from glass into air. Compared with its speed in glass, what happens to its speed and wavelength in air?",options:["Both decrease.","Speed increases and wavelength increases.","Speed increases and wavelength decreases.","Speed decreases and wavelength increases."],answer:1},
+{question:"Molten sodium chloride is electrolysed using inert electrodes, producing sodium at the cathode and chlorine at the anode. If concentrated aqueous sodium chloride is electrolysed instead using the same electrodes, what is produced at the cathode?",options:["Sodium metal, since sodium ions are still present","Hydrogen gas, since hydrogen ions are preferentially discharged over sodium ions in solution","Chlorine gas, since the aqueous solution favours a different product at the cathode","Oxygen gas, since water is oxidised at the cathode"],answer:1},
 
-{question:"An object is placed beyond 2F from a converging lens. The image formed is:",options:["real, inverted and smaller than the object","real, upright and larger than the object","virtual, upright and smaller than the object","virtual, inverted and larger than the object"],answer:0},
+{question:"During vigorous exercise, a person's muscle cells do not receive enough oxygen to meet their energy demands. What happens as a result, and how does this differ from anaerobic respiration in yeast?",options:["The muscle cells produce ethanol and carbon dioxide, the same as in yeast.","The muscle cells produce lactic acid, whereas yeast produces ethanol and carbon dioxide.","The muscle cells stop respiring entirely until oxygen becomes available again.","The muscle cells switch to photosynthesis to generate additional energy."],answer:1},
 
-{question:"Two waves have the same speed. Wave P has a frequency of 100 Hz and wave Q has a frequency of 200 Hz. Which statement is correct?",options:["P has twice the wavelength of Q.","Q has twice the wavelength of P.","Both waves have the same wavelength.","P has a smaller wavelength than Q."],answer:0},
+{question:"Rods of copper, glass and wood, all of the same size, have one end placed in boiling water with wax disks fixed along their length. Which observation correctly shows that copper is the best conductor of heat?",options:["The wax on the copper rod melts first and over the greatest distance from the hot end.","The wax on the copper rod melts last, because copper absorbs heat rather than conducting it.","The wax melts at the same rate on all three rods, since they were heated for the same time.","The wax on the wood rod melts first, because wood has a lower melting point."],answer:0},
 
-{question:"A student connects three identical bulbs in parallel to a battery. One bulb is removed. What happens to the other two bulbs?",options:["They both go out.","They become dimmer because the total resistance increases.","They remain approximately at the same brightness.","They both become permanently damaged."],answer:2},
+{question:"In an electroplating experiment, an iron spoon is coated with copper using a copper(II) sulfate solution. For the iron spoon to be coated with copper, which electrode should it be, and what should the other electrode be made of?",options:["The spoon is the anode; the other electrode is made of copper.","The spoon is the cathode; the other electrode is made of copper.","The spoon is the cathode; the other electrode is made of iron.","The spoon is the anode; the other electrode is made of carbon."],answer:1},
 
-{question:"A 24 V heater has a power rating of 120 W. What current does it draw when operating normally?",options:["0.2 A","5 A","24 A","2880 A"],answer:1},
+{question:"Which combination of environmental conditions would produce the HIGHEST rate of transpiration from a leafy plant?",options:["Low temperature, high humidity, still air","High temperature, low humidity, windy conditions","High temperature, high humidity, still air","Low temperature, low humidity, still air"],answer:1},
 
-{question:"A radioactive nucleus emits an alpha-particle. What happens to its proton number and nucleon number?",options:["Proton number decreases by 2 and nucleon number decreases by 4.","Proton number decreases by 4 and nucleon number decreases by 2.","Proton number increases by 2 and nucleon number decreases by 4.","Proton number decreases by 2 and nucleon number remains unchanged."],answer:0},
+{question:"During the day, land heats up faster than the sea. Which statement correctly explains the resulting sea breeze felt at the coast?",options:["Cool air rises over the sea and sinks over the land, creating a breeze blowing from land to sea.","Warm air rises over the land, and cooler air from the sea moves in to replace it, creating a breeze blowing from sea to land.","The sea breeze is caused by radiation from the sun travelling directly onto the coastline.","Air pressure is higher over the land than over the sea during the day, so air is pushed out to sea."],answer:1},
 
-{question:"A train increases its velocity from 12 m/s to 30 m/s in 6 s. What is its acceleration?",options:["3 m/s2","5 m/s2","7 m/s2","42 m/s2"],answer:0},
+{question:"Hydrochloric acid and ethanoic acid are both prepared as 1.0 mol/dm³ solutions. Which statement correctly compares their pH values?",options:["Both solutions have exactly the same pH, since their concentrations are equal.","The ethanoic acid has a lower pH than the hydrochloric acid, since it is a weaker acid.","The hydrochloric acid has a lower pH than the ethanoic acid, since it ionises more fully.","The ethanoic acid has no measurable pH, since it is a weak acid."],answer:2},
 
-{question:"A car is travelling at constant velocity on a straight road. Which statement is correct?",options:["There is a resultant force in the direction of motion.","There is a resultant force opposite to the direction of motion.","The resultant force on the car is zero.","The acceleration of the car is increasing."],answer:2},
+{question:"Which statement correctly describes translocation in a flowering plant?",options:["The movement of water and dissolved minerals from the roots to the leaves, through the xylem.","The movement of organic substances such as sucrose, from where they are made to where they are needed or stored, through the phloem.","The movement of water vapour out of the leaves through the stomata.","The movement of oxygen from the leaves to the roots through the xylem."],answer:1},
 
-{question:"A 2 kg object is acted on by a resultant force of 10 N. What is the change in velocity of the object after 4 s?",options:["5 m/s","10 m/s","20 m/s","40 m/s"],answer:2},
+{question:"A teapot is available with either a dull black surface or a shiny silver surface. Which teapot keeps tea hot for longer, and why?",options:["The dull black teapot, because black surfaces are poor emitters of thermal radiation.","The shiny silver teapot, because shiny surfaces are poor emitters of thermal radiation.","The dull black teapot, because black surfaces absorb more radiation from the room.","The shiny silver teapot, because shiny surfaces absorb more radiation and release it slowly."],answer:1},
 
-{question:"A skydiver falls through air and eventually reaches terminal velocity. Which statement correctly describes the forces at this point?",options:["Weight is greater than air resistance.","Air resistance is greater than weight.","Weight is equal to air resistance.","There are no forces acting on the skydiver."],answer:2},
+{question:"A student wants to prepare a sample of lead(II) sulfate, which is insoluble, starting from lead(II) nitrate and dilute sulfuric acid. Which method is correct, and why is it safer than heating the reactants directly?",options:["Mix the two solutions, filter off the precipitate, wash and dry it; no heating of lead compounds is required.","Heat solid lead(II) nitrate strongly with sulfuric acid to drive off water as steam.","Add excess lead(II) nitrate to the acid and heat to evaporate all the water, leaving the salt behind.","Electrolyse a mixture of the two solutions to deposit the salt at the cathode."],answer:0},
 
-{question:"A ball is thrown vertically upwards. Ignoring air resistance, what happens to its kinetic energy as it rises?",options:["It increases continuously.","It decreases continuously until the ball reaches its highest point.","It remains constant because the mass is constant.","It becomes negative at the highest point."],answer:1},
+{question:"Which chamber of the human heart has the thickest muscular wall, and why?",options:["The right atrium, because it receives blood returning from the whole body.","The left ventricle, because it must pump blood at high pressure all the way around the body.","The right ventricle, because it pumps blood to the lungs, which requires the most force.","The left atrium, because it receives oxygenated blood from the lungs."],answer:1},
 
-{question:"A 500 N force acts on an object and does 2000 J of work. How far does the object move in the direction of the force?",options:["0.25 m","4 m","2500 m","10000 m"],answer:1},
+{question:"Water waves in a ripple tank have a wavelength of 2.5 cm and a frequency of 8 Hz. What is the speed of the waves?",options:["3.2 cm/s","10 cm/s","20 cm/s","40 cm/s"],answer:2},
 
-{question:"A machine has an efficiency of 80%. If 500 J of energy is supplied to the machine, how much useful energy does it produce?",options:["100 J","400 J","500 J","625 J"],answer:1},
+{question:"Aqueous sodium hydroxide is added dropwise to two unknown solutions. Solution P gives a dirty green precipitate that does not change colour in air. Solution Q gives a red-brown precipitate. What ions are present in P and Q?",options:["P contains Fe²⁺ ions; Q contains Fe³⁺ ions.","P contains Fe³⁺ ions; Q contains Fe²⁺ ions.","P contains Cu²⁺ ions; Q contains Fe²⁺ ions.","P and Q both contain Fe²⁺ ions."],answer:0},
 
-{question:"A large dam has water stored at a considerable height above a hydroelectric turbine. Which energy conversion occurs mainly as the water passes through the turbine?",options:["Kinetic energy to gravitational potential energy","Gravitational potential energy to kinetic energy and then electrical energy","Chemical energy to kinetic energy and then thermal energy","Electrical energy to gravitational potential energy"],answer:1},
+{question:"Which statement correctly compares the structure of an artery with that of a vein?",options:["Arteries have thinner walls than veins, because they carry blood at lower pressure.","Arteries have valves along their length, whereas veins do not.","Arteries have thick, muscular, elastic walls and no valves (except near the heart), whereas veins have thinner walls and valves to prevent backflow.","Arteries and veins have identical wall structures, differing only in the direction of blood flow."],answer:2},
 
-{question:"Two objects have the same temperature but different masses. Which statement is necessarily true?",options:["They contain the same amount of thermal energy.","Their particles have the same average kinetic energy.","The heavier object has particles moving faster.","The lighter object must have a higher temperature."],answer:1},
+{question:"In which type of wave do the particles of the medium vibrate parallel to the direction in which the wave travels?",options:["Transverse waves only","Longitudinal waves only","Both transverse and longitudinal waves","Neither transverse nor longitudinal waves"],answer:1},
 
-{question:"A block of ice is heated at a constant rate. During the time when the ice is melting, what happens to its temperature?",options:["It increases steadily.","It decreases steadily.","It remains approximately constant.","It immediately reaches 100°C."],answer:2},
+{question:"What is the mass of 0.25 mol of oxygen gas, O2? (Ar of O = 16)",options:["4.0 g","6.0 g","8.0 g","16 g"],answer:2},
 
-{question:"Which method of heat transfer involves the bulk movement of a fluid?",options:["Conduction","Convection","Radiation","Absorption"],answer:1},
+{question:"Which blood component is correctly matched with its main function?",options:["Red blood cells — produce antibodies to fight infection","White blood cells — transport oxygen using haemoglobin","Platelets — help blood to clot at a wound","Plasma — carries only red blood cells and nothing else"],answer:2},
 
-{question:"A student observes that a metal can becomes hot when placed in boiling water. Which process transfers thermal energy through the metal can itself?",options:["Conduction","Convection","Evaporation","Radiation only"],answer:0},
+{question:"A fish appears to be 90 cm below the surface of a pond when viewed from directly above. The refractive index of water is 4/3. What is the actual (real) depth of the fish?",options:["67.5 cm","90 cm","120 cm","160 cm"],answer:2},
 
-{question:"A light ray strikes a plane mirror at an angle of 40° to the normal. What is the angle between the incident ray and the reflected ray?",options:["40°","50°","80°","100°"],answer:2},
+{question:"What is the volume, at room temperature and pressure, occupied by 0.015 mol of carbon dioxide gas? (Molar gas volume = 24 dm³/mol)",options:["0.12 dm³","0.36 dm³","1.6 dm³","3.6 dm³"],answer:1},
 
-{question:"An object is placed between a converging lens and its principal focus. Which statement is correct?",options:["The image is real, inverted and smaller.","The image is real, inverted and larger.","The image is virtual, upright and larger.","The image is virtual, inverted and smaller."],answer:2},
+{question:"A diet high in saturated fat is linked to coronary heart disease. What is the mechanism by which this occurs?",options:["Fatty deposits accumulate on the inner walls of the coronary arteries, narrowing them and restricting blood flow to the heart muscle.","Saturated fat directly weakens the heart muscle, causing it to stop contracting.","Saturated fat lowers blood pressure so much that the heart cannot pump blood effectively.","Saturated fat destroys red blood cells, reducing the oxygen-carrying capacity of the blood."],answer:0},
 
-{question:"A circuit contains a 6 Ω resistor connected to a 12 V supply. How much electrical energy is transferred by the resistor in 10 s?",options:["20 J","120 J","240 J","720 J"],answer:2}
+{question:"In an optical fibre, light travelling inside the glass core repeatedly strikes the core-cladding boundary at an angle greater than the critical angle. Why does the light remain inside the core?",options:["The light is refracted back into the core each time.","The light undergoes total internal reflection at the boundary.","The cladding absorbs the light and re-emits it into the core.","The light's frequency decreases until it can no longer escape."],answer:1},
+
+{question:"A compound contains 2.4 g of carbon, 0.4 g of hydrogen and 3.2 g of oxygen. (Ar: C=12, H=1, O=16). What is the empirical formula of the compound?",options:["CHO","CH2O","C2H4O2","CH4O"],answer:1},
+
+{question:"When the body becomes too hot, which combination of responses helps to cool it down?",options:["Vasoconstriction of skin blood vessels and increased sweating","Vasodilation of skin blood vessels and increased sweating","Vasodilation of skin blood vessels and shivering","Vasoconstriction of skin blood vessels and shivering"],answer:1},
+
+{question:"An object is placed between F and 2F in front of a converging lens. Where is the resulting real image formed, and what is its size relative to the object?",options:["Between F and 2F, same size as the object","Beyond 2F, magnified","Between the lens and F, diminished","At 2F, the same size as the object"],answer:1},
+
+{question:"Zinc metal is added to a solution of copper(II) sulfate. What is observed, and why?",options:["No reaction occurs, because zinc is less reactive than copper.","The blue colour fades and a reddish-brown solid forms, because zinc displaces copper from the solution.","The solution turns green, because zinc sulfate is a green compound.","Hydrogen gas is produced, because zinc reacts with the water in the solution."],answer:1},
+
+{question:"Which statement correctly describes the function of the ureter?",options:["It carries blood into the kidney for filtration.","It carries urine from the kidney to the bladder.","It carries urine from the bladder out of the body.","It filters waste products directly from the blood."],answer:1},
+
+{question:"Which of the following lists three components of the electromagnetic spectrum in order of INCREASING frequency?",options:["Gamma rays, ultraviolet, infrared","Infrared, ultraviolet, gamma rays","Ultraviolet, infrared, gamma rays","Infrared, gamma rays, ultraviolet"],answer:1},
+
+{question:"Aluminium is high in the reactivity series, above carbon. Which method is used to extract aluminium from its ore, and why can't carbon reduction be used instead?",options:["Reduction by carbon, because aluminium oxide is easily reduced at high temperatures.","Electrolysis of molten aluminium oxide, because carbon is not reactive enough to displace aluminium from its ore.","Heating the ore alone, because aluminium oxide decomposes on heating to release the metal.","Reduction by hydrogen gas, because aluminium reacts with carbon to form aluminium carbide."],answer:1},
+
+{question:"A person accidentally touches a hot object and quickly withdraws their hand, before consciously feeling pain. What is the correct order of structures involved in this reflex action?",options:["Receptor → relay neurone → sensory neurone → motor neurone → effector","Receptor → sensory neurone → relay neurone → motor neurone → effector","Effector → motor neurone → relay neurone → sensory neurone → receptor","Receptor → motor neurone → relay neurone → sensory neurone → effector"],answer:1},
+
+{question:"A person standing 170 m from a cliff claps their hands and hears the echo 1.0 s later. What is the speed of sound in air?",options:["170 m/s","340 m/s","85 m/s","680 m/s"],answer:1},
+
+{question:"Which row correctly matches the alloy with its main constituent metals?",options:["Brass: copper and tin","Bronze: copper and zinc","Stainless steel: iron, chromium and nickel","Solder: iron and lead"],answer:2},
+
+{question:"Which statement correctly describes the function of a motor neurone?",options:["It carries nerve impulses from a receptor to the central nervous system.","It carries nerve impulses from the central nervous system to an effector, such as a muscle or gland.","It connects two sensory neurones within the spinal cord.","It detects stimuli directly, without needing a receptor."],answer:1},
+
+{question:"A permanent magnet's north pole is brought close to one end of an unmagnetised iron bar, without touching it. What polarity is induced at the near end of the iron bar, and what is the resulting force between the magnet and the bar?",options:["North pole induced; the bar is repelled.","South pole induced; the bar is attracted.","North pole induced; the bar is attracted.","South pole induced; the bar is repelled."],answer:1},
+
+{question:"A gas is bubbled through damp blue litmus paper, which first turns red and then rapidly turns white. What is the gas, and what does this test show?",options:["Carbon dioxide; the gas is acidic and turns limewater milky.","Chlorine; the gas is acidic and also bleaches the litmus paper.","Ammonia; the gas is alkaline and turns litmus blue.","Hydrogen; the gas pops with a lighted splint."],answer:1},
+
+{question:"A person's blood glucose concentration rises after a meal. Which hormone is released to lower it, and what effect does it have?",options:["Glucagon, which converts glycogen in the liver into glucose.","Insulin, which causes the liver and muscle cells to take up glucose and convert it into glycogen.","Insulin, which converts glycogen into glucose to raise blood sugar further.","Adrenaline, which lowers blood glucose by increasing heart rate."],answer:1},
+
+{question:"A polythene rod is rubbed with a dry cloth. The rod becomes negatively charged. Which statement correctly explains this, and what charge does the cloth gain?",options:["Electrons move from the cloth to the rod; the cloth becomes positively charged.","Electrons move from the rod to the cloth; the cloth becomes positively charged.","Protons move from the cloth to the rod; the cloth becomes negatively charged.","Electrons move from the cloth to the rod; the cloth becomes negatively charged."],answer:0},
+
+{question:"Graphite conducts electricity, but diamond does not. What is the correct reason for this difference?",options:["Graphite is denser than diamond, allowing electrons to pass through more easily.","In graphite, each carbon atom is bonded to only three others, leaving a free (delocalised) electron that can move and carry charge; in diamond, every outer electron is used in four bonds.","Diamond is harder than graphite, which prevents electron movement.","Graphite has metallic bonds, whereas diamond has purely covalent bonds."],answer:1},
+
+{question:"Which statement correctly compares the nervous system and the hormonal (endocrine) system as methods of coordination?",options:["The nervous system produces a fast, short-lived response; the hormonal system produces a slower, longer-lasting response.","The nervous system produces a slow, long-lasting response; the hormonal system produces a fast, short-lived response.","Both systems produce responses of exactly the same speed and duration.","The nervous system uses chemical messengers in the blood; the hormonal system uses electrical impulses."],answer:0},
+
+{question:"A mobile phone battery is charged with a current of 1.5 A for 40 minutes. How much charge flows into the battery?",options:["60 C","3600 C","2400 C","90 C"],answer:1},
+
+{question:"A sample of hard water is boiled, and some of its hardness is removed. What does this show about the type of hardness present, and what substance causes it?",options:["Permanent hardness, caused by dissolved calcium sulfate, which decomposes on boiling.","Temporary hardness, caused by dissolved calcium hydrogencarbonate, which decomposes on boiling to form insoluble calcium carbonate.","Temporary hardness, caused by dissolved calcium sulfate, which precipitates on boiling.","Permanent hardness, caused by dissolved calcium hydrogencarbonate, which is unaffected by boiling."],answer:1},
+
+{question:"Which statement correctly describes an effect of regularly drinking too much alcohol?",options:["Alcohol acts as a stimulant, speeding up reaction times.","Alcohol is a depressant that slows down reaction times and can damage the liver with regular heavy use.","Alcohol has no effect on the liver, only on the brain.","Alcohol improves self-control and decision-making in social situations."],answer:1},
+
+{question:"A battery with negligible internal resistance is connected in a circuit with a single resistor. Which statement correctly distinguishes the e.m.f. of the battery from the potential difference across the resistor?",options:["The e.m.f. is the energy transferred per unit charge by the source; the p.d. is the energy transferred per unit charge by the resistor; with no internal resistance, the two are equal.","The e.m.f. is always greater than the p.d. across the resistor, regardless of internal resistance.","The e.m.f. only exists while current flows, whereas the p.d. exists even with no current.","The e.m.f. is measured in amperes, while the p.d. is measured in volts."],answer:0},
+
+{question:"A car engine undergoes incomplete combustion due to insufficient oxygen. Which toxic gas is produced as a result, and why is it dangerous to breathe?",options:["Carbon dioxide, because it is directly poisonous to red blood cells.","Carbon monoxide, because it binds to haemoglobin and reduces the blood's ability to carry oxygen.","Sulfur dioxide, because it forms acid rain inside the lungs.","Nitrogen, because it displaces oxygen in the lungs."],answer:1},
+
+{question:"Which statement correctly compares asexual and sexual reproduction in terms of genetic variation among offspring?",options:["Asexual reproduction produces offspring that are genetically identical to the parent; sexual reproduction produces offspring that are genetically varied.","Sexual reproduction produces offspring that are genetically identical to the parents.","Asexual reproduction always produces more genetic variation than sexual reproduction.","Both methods always produce genetically identical offspring."],answer:0},
+
+{question:"A wire of resistance 5.0 Ω is replaced with a wire of the same material and the same cross-sectional area, but three times the length. What is the resistance of the new wire?",options:["1.7 Ω","5.0 Ω","15 Ω","45 Ω"],answer:2},
+
+{question:"Bromine water is added separately to a sample of hexane and a sample of hexene, both colourless liquids. What is observed, and what does this show?",options:["Both samples turn the bromine water colourless, since both are hydrocarbons.","The hexane turns the bromine water colourless; the hexene does not, showing hexane is unsaturated.","The hexene turns the bromine water colourless; the hexane does not, showing hexene is unsaturated.","Neither sample reacts with bromine water, since hydrocarbons are unreactive."],answer:2},
+
+{question:"Which statement correctly describes the functions of the anther and the stigma in a flower?",options:["The anther receives pollen grains; the stigma produces pollen grains.","The anther produces pollen grains; the stigma receives pollen grains during pollination.","Both the anther and the stigma produce pollen grains.","The anther and stigma are both parts of the female reproductive organs."],answer:1},
+
+{question:"The graph of current against voltage for a filament lamp curves, with the current increasing less and less steeply as the voltage increases. What does this indicate about the lamp's resistance?",options:["The resistance decreases as the current increases, because the filament cools down.","The resistance stays constant, since the graph is a smooth curve through the origin.","The resistance increases as the current increases, because the filament gets hotter.","The resistance is zero, since the lamp is a non-ohmic conductor."],answer:2},
+
+{question:"Alkanols have the general formula CnH2n+1OH. What is the molecular formula of the alkanol with 4 carbon atoms?",options:["C3H7OH","C4H9OH","C4H11OH","C5H11OH"],answer:1},
+
+{question:"Which statement correctly defines cross-pollination?",options:["The transfer of pollen from the anther of a flower to the stigma of the same flower.","The transfer of pollen from the anther of one flower to the stigma of a different flower on a different plant of the same species.","The transfer of pollen from the stigma to the anther of the same flower.","The fusion of a male and female gamete inside the ovule."],answer:1},
+
+{question:"Two lamps, X and Y, are connected in parallel with each other, and this combination is connected in series with lamp Z and a battery of negligible internal resistance. Lamp X is now removed from its socket, breaking that branch. What happens to lamps Y and Z?",options:["Y becomes brighter and Z becomes dimmer.","Y becomes dimmer and Z becomes brighter.","Both Y and Z are unaffected, since X was only one of two parallel branches.","Both Y and Z go out completely, since removing X breaks the circuit."],answer:0},
+
+{question:"Ethanoic acid reacts with ethanol in the presence of an acid catalyst to form an ester and water. What is the correct name of the ester formed?",options:["Ethyl ethanoate","Ethanoyl ethanoate","Methyl ethanoate","Ethanoic ethanol"],answer:0},
+
+{question:"A seed has a light weight and a papery wing-like structure attached to it. Which method of seed dispersal does this adaptation suggest, and why is dispersal important?",options:["Animal dispersal, because the wing attracts animals to eat the seed.","Wind dispersal, because the light weight and wing allow the seed to be carried by air currents away from the parent plant, reducing competition.","Water dispersal, because the wing allows the seed to float on water.","Self-dispersal, because the wing helps the seed pop away from the pod explosively."],answer:1},
+
+{question:"An electrician wires a lamp so that the switch is placed in the neutral wire instead of the live wire. When the switch is off, the lamp does not light. Why is this arrangement still dangerous?",options:["The neutral wire carries a higher voltage than the live wire when the switch is off.","The lamp and its live wire remain connected to the supply even when the switch is off, so the lamp stays live and could shock someone during repairs.","The earth wire becomes disconnected whenever the switch is in the neutral wire.","The fuse will not blow if a fault develops, because the switch isolates the neutral wire."],answer:1},
+
+{question:"Poly(ethene), commonly called polythene, is a synthetic polymer used to make plastic bags. What is the monomer used to make poly(ethene), and what type of polymerisation occurs?",options:["Ethanol; condensation polymerisation","Ethene; addition polymerisation","Ethane; addition polymerisation","Ethanoic acid; condensation polymerisation"],answer:1},
+
+{question:"Which combination of conditions is required for a viable seed to germinate successfully?",options:["Water, oxygen, and a suitable temperature; light is not essential for germination to begin.","Light, water, and a suitable temperature; oxygen is not required.","Light, oxygen, and darkness at the same time.","Only water is required; temperature and oxygen do not affect germination."],answer:0},
+
+{question:"A bar magnet is pushed into a coil of wire connected to a sensitive ammeter, inducing a current. Which single change would produce the LARGEST increase in the induced e.m.f.?",options:["Pushing the magnet in more slowly","Using a coil with fewer turns","Pushing a stronger magnet into the coil at the same speed","Leaving the magnet stationary just inside the coil"],answer:2},
+
+{question:"Yeast is mixed with a sugar solution to produce ethanol by fermentation. Which conditions are required for this process to occur efficiently?",options:["Warm temperature, and oxygen must be present throughout.","Warm temperature, and the absence of oxygen.","Cold temperature, and the absence of oxygen.","Boiling temperature, to kill competing microorganisms, with oxygen present."],answer:1},
+
+{question:"In a typical 28-day menstrual cycle, around which day does ovulation usually occur?",options:["Day 1, at the start of menstruation","Around day 14, roughly midway through the cycle","Day 28, at the very end of the cycle","Ovulation occurs continuously throughout the cycle"],answer:1},
+
+{question:"A step-up transformer has 200 turns on its primary coil and 1000 turns on its secondary coil. The primary coil is connected to a 12 V a.c. supply, and the transformer is 100% efficient. If the secondary current is 0.6 A, what is the primary current?",options:["0.12 A","0.6 A","3.0 A","5.0 A"],answer:2},
+
+{question:"Which statement correctly explains why recycling glass bottles is beneficial, rather than making all new bottles from raw materials?",options:["Recycling conserves raw materials and reduces the energy needed compared with extracting and processing new materials.","Recycling converts glass into a biodegradable material that breaks down naturally.","Recycling removes the need for any energy input at all in bottle production.","Recycling is beneficial only because it creates employment, not because it saves resources."],answer:0},
+
+{question:"In a food chain, only a small percentage of energy is transferred from one trophic level to the next. What happens to most of the energy that is not transferred?",options:["It is destroyed and ceases to exist.","It is lost to the environment as heat through respiration, or lost in materials such as faeces and urine.","It is stored permanently within the organism's body for later use.","It is transferred directly to the decomposers at the next level."],answer:1},
+
+{question:"An electric kettle is rated at 2.3 kW and is used for 15 minutes. Electricity costs 90 thebe per kWh. What is the cost of using the kettle?",options:["34.5 thebe","51.8 thebe","90 thebe","207 thebe"],answer:1}
 ];
-
-const biologyQuestions = [
-{question:"Which structure controls the activities of a cell?",options:["cell membrane","cytoplasm","nucleus","ribosome"],answer:2},
-
-{question:"Which structure is present in a plant cell but not normally present in an animal cell?",options:["cell membrane","cytoplasm","nucleus","cellulose cell wall"],answer:3},
-
-{question:"What is the main function of mitochondria in cells?",options:["absorbing light energy","releasing energy through aerobic respiration","controlling movement of substances into the cell","producing antibodies"],answer:1},
-
-{question:"A cell has a cell wall, chloroplasts and a large permanent vacuole. What type of cell is it most likely to be?",options:["animal cell","plant cell","red blood cell","bacterial cell"],answer:1},
-
-{question:"Which process involves the net movement of water molecules through a partially permeable membrane?",options:["diffusion","osmosis","active transport","transpiration"],answer:1},
-
-{question:"A plant cell is placed in a concentrated sugar solution. What happens to the cell?",options:["Water enters the cell and it becomes turgid.","Water leaves the cell and the cell membrane pulls away from the cell wall.","Sugar leaves the cell by active transport.","The cell immediately bursts."],answer:1},
-
-{question:"Which statement about diffusion is correct?",options:["It requires energy from respiration.","Particles move from a low concentration to a high concentration.","Particles move down a concentration gradient.","It only occurs in living cells."],answer:2},
-
-{question:"Which process allows mineral ions to enter plant root hair cells when their concentration is higher inside the cell than in the soil?",options:["diffusion","osmosis","active transport","transpiration"],answer:2},
-
-{question:"Which substance is the main product of photosynthesis that is used by plants as an energy source?",options:["carbon dioxide","glucose","oxygen","water"],answer:1},
-
-{question:"Which combination is required for photosynthesis?",options:["oxygen, glucose and light","carbon dioxide, water and light","carbon dioxide, oxygen and chlorophyll","water, glucose and oxygen"],answer:1},
-
-{question:"A plant is kept in darkness for several days before a leaf is tested for starch. Why is the plant kept in darkness?",options:["To increase its rate of respiration","To remove stored starch from the leaves","To increase the amount of chlorophyll","To prevent water loss from the leaves"],answer:1},
-
-{question:"Which part of a leaf allows most carbon dioxide to enter the leaf?",options:["cuticle","stoma","xylem","phloem"],answer:1},
-
-{question:"Which tissue transports water and mineral ions from the roots towards the leaves?",options:["phloem","xylem","epidermis","mesophyll"],answer:1},
-
-{question:"Which tissue transports dissolved sugars around a plant?",options:["xylem","phloem","guard cells","root hair cells"],answer:1},
-
-{question:"Which condition would usually increase the rate of transpiration from a well-watered plant?",options:["high humidity","still air","low temperature","strong air movement"],answer:3},
-
-{question:"Which blood vessel carries blood away from the heart?",options:["vein","artery","capillary","venule"],answer:1},
-
-{question:"Which feature of arteries allows them to withstand high blood pressure?",options:["thin walls and valves","thick muscular and elastic walls","one-cell-thick walls","large numbers of red blood cells in their walls"],answer:1},
-
-{question:"What is the main function of red blood cells?",options:["destroying pathogens","producing antibodies","transporting oxygen","forming blood clots"],answer:2},
-
-{question:"Which component of blood is mainly responsible for clotting?",options:["red blood cells","white blood cells","platelets","plasma"],answer:2},
-
-{question:"Which organ removes urea from the blood?",options:["heart","kidney","lung","pancreas"],answer:1},
-
-{question:"Urea is produced when excess amino acids are broken down. In which organ does this mainly occur?",options:["kidney","liver","small intestine","pancreas"],answer:1},
-
-{question:"Which enzyme begins the digestion of starch?",options:["lipase","protease","amylase","pepsin"],answer:2},
-
-{question:"What is the main function of bile in digestion?",options:["digesting proteins into amino acids","emulsifying fats and helping neutralise stomach acid","converting starch directly into glucose","digesting vitamins into smaller molecules"],answer:1},
-
-{question:"Where does most absorption of digested food into the blood occur?",options:["stomach","large intestine","small intestine","oesophagus"],answer:2},
-
-{question:"Which adaptation of a villus increases the rate of absorption of digested nutrients?",options:["thick walls and a small surface area","thin walls and a large surface area","a layer of cellulose around the villus","absence of a blood supply"],answer:1},
-
-{question:"Which equation correctly represents aerobic respiration?",options:["glucose → lactic acid + energy","glucose + oxygen → carbon dioxide + water + energy","carbon dioxide + water → glucose + oxygen","glucose → ethanol + carbon dioxide + energy"],answer:1},
-
-{question:"A muscle cell does not receive enough oxygen during vigorous exercise. Which substance may accumulate in the muscle?",options:["ethanol","lactic acid","carbon dioxide only","glucose"],answer:1},
-
-{question:"What is the main function of the alveoli in the lungs?",options:["pumping blood around the body","filtering urea from the blood","allowing gas exchange between air and blood","producing mucus for digestion"],answer:2},
-
-{question:"Which feature of alveoli makes gas exchange rapid?",options:["thick walls and a small surface area","thin walls and a large surface area","thick muscular walls and valves","lack of blood vessels"],answer:1},
-
-{question:"Which hormone is mainly responsible for lowering blood glucose concentration?",options:["adrenaline","insulin","glucagon","oestrogen"],answer:1},
-
-{question:"What happens when blood glucose concentration becomes too low?",options:["The pancreas releases glucagon, causing stored glycogen to be converted to glucose.","The pancreas releases insulin, causing glucose to be stored as glycogen.","The liver removes more glucose from the blood.","The kidneys stop producing urine."],answer:0},
-
-{question:"Which structure is the site where sperm are produced in the male reproductive system?",options:["prostate gland","testis","vas deferens","urethra"],answer:1},
-
-{question:"Where does fertilisation normally occur in the human female reproductive system?",options:["uterus","ovary","oviduct","vagina"],answer:2},
-
-{question:"Which hormone causes ovulation during the menstrual cycle?",options:["FSH","LH","insulin","progesterone"],answer:1},
-
-{question:"Which statement correctly describes asexual reproduction?",options:["It requires the fusion of two gametes.","It produces offspring that are genetically very similar to the parent.","It always produces genetically different offspring.","It can only occur in animals."],answer:1},
-
-{question:"A heterozygous organism has which type of allele combination for a particular gene?",options:["two identical dominant alleles","two identical recessive alleles","two different alleles","no alleles"],answer:2},
-
-{question:"Two heterozygous tall pea plants are crossed. Tallness is dominant to shortness. What is the probability that their offspring will be short?",options:["0%","25%","50%","75%"],answer:1},
-
-{question:"Which process produces gametes with half the normal chromosome number?",options:["mitosis","meiosis","fertilisation","binary fission"],answer:1},
-
-{question:"A population of insects becomes resistant to an insecticide after many generations of exposure. Which explanation best describes this change?",options:["Individual insects deliberately developed resistance because they needed it.","The insecticide caused every insect to become resistant immediately.","Resistant insects survived and reproduced, increasing the frequency of resistance in the population.","The insects stopped reproducing when exposed to the insecticide."],answer:2},
-
-{question:"Which organisms are called decomposers in an ecosystem?",options:["green plants and algae","herbivores and carnivores","bacteria and fungi that break down dead material","predators that kill weak animals"],answer:2}
-];
-
-const questionss = [
-{question:"A micrometer screw gauge reads +0.03 mm when its jaws are closed. When it is used to measure the diameter of a wire it reads 1.27 mm. What is the true diameter of the wire?",options:["1.30 mm","1.27 mm","1.24 mm","1.03 mm"],answer:2},
-
-{question:"A pendulum bob takes 0.75 s to swing from its extreme left position to its extreme right position. What is the frequency of the pendulum?",options:["1.3 Hz","0.67 Hz","0.75 Hz","1.5 Hz"],answer:1},
-
-{question:"A ball is thrown vertically upwards. Take g = 10 m/s² and ignore air resistance. At the instant the ball is at its highest point, which statement is correct?",options:["Its velocity is zero and its acceleration is zero, because the forces on it are balanced.","Its velocity is zero and its acceleration is 10 m/s² upwards.","Its velocity is 10 m/s downwards and its acceleration is zero.","Its velocity is zero and its acceleration is 10 m/s² downwards."],answer:3},
-
-{question:"A car travelling at 20 m/s has a driver reaction time of 0.80 s before the brakes are applied. The brakes then give a constant deceleration of 5.0 m/s². What is the total stopping distance from the moment the driver sees the hazard?",options:["56 m","40 m","80 m","96 m"],answer:0},
-
-{question:"A stone is dropped from rest and falls freely. Take g = 10 m/s² and ignore air resistance. How far does it fall during the first second and during the second second of its fall?",options:["5 m and 10 m","5 m and 15 m","5 m and 20 m","10 m and 10 m"],answer:1},
-
-{question:"An astronaut has a mass of 60 kg on Earth (g = 10 N/kg). On the Moon, g = 1.6 N/kg. Which statement is correct on the Moon?",options:["Mass 9.6 kg, weight 96 N; she needs 9.6 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 96 N; she needs 9.6 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 96 N; she needs 60 N to accelerate horizontally at 1 m/s² on a smooth surface.","Mass 60 kg, weight 600 N; she needs 60 N to accelerate horizontally at 1 m/s² on a smooth surface."],answer:2},
-
-{question:"A uniform beam of weight 60 N and length 4.0 m rests on two supports, one at each end. A 60 N load sits on the beam 1.0 m from the left-hand end. What upward force does the right-hand support exert?",options:["30 N","60 N","75 N","45 N"],answer:3},
-
-{question:"A spring has an unstretched length of 10.0 cm. A load of 4.0 N makes its length 14.0 cm. The limit of proportionality is not exceeded. What load makes the length of the spring 16.0 cm?",options:["6.0 N","4.6 N","6.4 N","8.0 N"],answer:0},
-
-{question:"Two trolleys of mass 2.0 kg and 3.0 kg touch each other on a smooth horizontal table. A horizontal force of 10 N pushes the 2.0 kg trolley, which pushes the 3.0 kg trolley. What force does the 2.0 kg trolley exert on the 3.0 kg trolley?",options:["4 N","5 N","6 N","10 N"],answer:2},
-
-{question:"A 500 g ball is dropped from a height of 2.0 m and bounces back up to 1.2 m. Take g = 10 N/kg. How much mechanical energy does the ball lose in the bounce?",options:["6.0 J","4.0 J","10 J","4 000 J"],answer:1},
-
-{question:"A car travelling at 15 m/s is brought to rest in 20 m by a constant braking force. The same car, with the same braking force, is now travelling at 30 m/s. What is its stopping distance?",options:["40 m","60 m","120 m","80 m"],answer:3},
-
-{question:"A 0.50 kg pendulum bob is released from rest at a point 20 cm above its lowest position. Take g = 10 N/kg and ignore air resistance. What is the speed of the bob at its lowest point?",options:["2.0 m/s","1.4 m/s","4.0 m/s","20 m/s"],answer:0},
-
-{question:"The distance–time graph of a cyclist is a straight line from 0 m at 0 s to 40 m at 10 s, then a horizontal line until 20 s, then a straight line back to 0 m at 30 s. What is the cyclist's average speed for the whole 30 s?",options:["0 m/s","1.3 m/s","2.7 m/s","4.0 m/s"],answer:2},
-
-{question:"A liquid-in-glass thermometer is quickly moved from cold water into hot water. The liquid level in the stem first falls slightly and then rises. Why does it fall at first?",options:["The glass bulb warms and expands before the liquid does, so the volume of the bulb increases.","The liquid contracts when it first meets the hot water.","The air in the stem is compressed by the hot water.","The glass bulb contracts when it is heated."],answer:0},
-
-{question:"A bimetallic strip is made of brass joined to iron. Brass expands more than iron for the same temperature rise. The strip is heated evenly. What happens?",options:["It stays straight but becomes longer.","It bends with the brass on the inside of the curve.","It bends with the brass on the outside of the curve.","It bends only if the iron is heated more than the brass."],answer:2},
-
-{question:"Steam at 100 °C causes a more severe burn than the same mass of boiling water at 100 °C. Why?",options:["Steam is at a higher temperature than boiling water.","Steam releases extra energy when it condenses on the skin.","Steam particles have a greater average kinetic energy than water particles at 100 °C.","Steam is a much better conductor of thermal energy than water."],answer:1},
-
-{question:"A metal spoon and a wooden spoon have been in the same room overnight. The metal spoon feels much colder to touch. What is the reason?",options:["The metal spoon is at a lower temperature than the wooden spoon.","Cold flows from the metal into the hand faster than from the wood.","The wooden spoon radiates more energy to the hand than the metal spoon does.","The metal spoon conducts thermal energy away from the hand faster."],answer:3},
-
-{question:"Which statement correctly describes how a vacuum flask keeps a hot drink hot?",options:["The vacuum stops conduction and convection; the silvered surfaces reduce radiation.","The vacuum stops radiation; the silvered surfaces stop conduction.","The vacuum stops convection only; the silvered surfaces stop conduction.","The vacuum reduces radiation and convection; the silvered surfaces prevent conduction."],answer:0},
-
-{question:"A radio station broadcasts at a frequency of 100 MHz. The speed of electromagnetic waves is 3.0 × 10⁸ m/s. What is the wavelength of the radio waves?",options:["0.33 m","3.0 × 10⁶ m","30 m","3.0 m"],answer:3},
-
-{question:"A displacement–distance graph of a wave has crests at 0 cm, 8.0 cm and 16 cm. The vertical distance from a crest to the next trough is 4.0 cm. What are the wavelength and the amplitude of the wave?",options:["Wavelength 8.0 cm, amplitude 4.0 cm","Wavelength 8.0 cm, amplitude 2.0 cm","Wavelength 16 cm, amplitude 2.0 cm","Wavelength 4.0 cm, amplitude 8.0 cm"],answer:1},
-
-{question:"In a sound wave of frequency 200 Hz, the distance from the centre of one compression to the centre of the next rarefaction is 0.85 m. What is the speed of the sound wave?",options:["170 m/s","235 m/s","680 m/s","340 m/s"],answer:3},
-
-{question:"Red light of frequency 4.5 × 10¹⁴ Hz passes from air into glass. Which row correctly describes what happens to its speed, frequency and wavelength?",options:["Speed decreases, frequency decreases, wavelength unchanged.","Speed decreases, frequency unchanged, wavelength decreases.","Speed unchanged, frequency unchanged, wavelength decreases.","Speed decreases, frequency increases, wavelength decreases."],answer:1},
-
-{question:"A coin lies at the bottom of a swimming pool. Viewed from directly above, it appears to be 1.2 m below the surface. The refractive index of water is 4/3. What is the real depth of the pool?",options:["1.6 m","0.90 m","1.2 m","1.8 m"],answer:0},
-
-{question:"The critical angle for a certain glass is 42°. A ray of light inside the glass hits the glass–air boundary with an angle of incidence of 40°. What happens to the ray?",options:["It undergoes total internal reflection.","It passes straight into the air without changing direction.","It refracts into the air, bending away from the normal, with a weak reflected ray as well.","It refracts into the air, bending towards the normal."],answer:2},
-
-{question:"A converging lens forms a sharp real image of a lit candle on a screen. The top half of the lens is now covered with a piece of card. What happens to the image on the screen?",options:["Only the bottom half of the image is seen.","The whole image is still seen but it is dimmer.","Only the top half of the image is seen.","The image disappears completely."],answer:1},
-
-{question:"A camera with a fixed lens is focused on a distant tree. The photographer then wants a sharp image of a person standing close to the camera. How must the distance between the lens and the film be changed?",options:["It must stay the same, because the focal length is fixed.","It must be decreased.","It depends only on the diameter of the lens.","It must be increased."],answer:3},
-
-{question:"A bar is held near each end of a small compass needle in turn. It attracts both the north-seeking end and the south-seeking end of the needle. What can be concluded about the bar?",options:["It is unmagnetised but made of a magnetic material such as iron or steel.","It is a strong permanent magnet.","It has a north pole at one end and a south pole at the other.","It is made of a non-magnetic metal such as copper."],answer:0},
-
-{question:"A positively charged rod is held near, but not touching, an insulated metal sphere. Without moving the rod, the sphere is briefly touched with a finger, and the finger is removed. The rod is then taken away. What is the final charge on the sphere?",options:["Positive","Negative","Neutral","It cannot be predicted"],answer:1},
-
-{question:"A current of 250 mA flows through a lamp for 2.0 minutes. How much charge passes through the lamp?",options:["0.50 C","500 C","30 C","30 000 C"],answer:2},
-
-{question:"A wire has a resistance of 8.0 Ω. A second wire is made of the same material but is twice as long and has half the cross-sectional area. What is the resistance of the second wire?",options:["4.0 Ω","8.0 Ω","16 Ω","32 Ω"],answer:3},
-
-{question:"Three identical lamps X, Y and Z are connected to a battery of negligible internal resistance. X and Y are in parallel with each other, and this pair is in series with Z. The filament of lamp Y now breaks. What happens to the brightness of X and Z?",options:["X becomes brighter and Z becomes dimmer.","X is unchanged and Z becomes dimmer.","X is unchanged and Z is unchanged.","X becomes dimmer and Z becomes brighter."],answer:0},
-
-{question:"The graph of current I (y-axis) against potential difference V (x-axis) for a resistor is a straight line through the origin with a gradient of 0.25 A/V. What is the resistance of the resistor?",options:["0.25 Ω","1.0 Ω","4.0 Ω","2.5 Ω"],answer:2},
-
-{question:"A 3.0 Ω resistor and a 6.0 Ω resistor are connected in parallel. The total current entering the combination is 3.0 A. What is the current in the 6.0 Ω resistor?",options:["0.50 A","1.0 A","1.5 A","2.0 A"],answer:1},
-
-{question:"A student wrongly connects a voltmeter in series with a lamp and a 6.0 V battery. What is observed?",options:["The lamp glows brightly and the voltmeter reads 0 V.","The lamp does not light and the voltmeter reads 0 V.","The lamp glows at normal brightness and the voltmeter reads about 6.0 V.","The lamp does not light and the voltmeter reads about 6.0 V."],answer:3},
-
-{question:"A kettle has a metal case connected to the earth wire. Why is it dangerous if its fuse is fitted in the neutral wire instead of the live wire?",options:["The neutral wire carries a larger current than the live wire, so the fuse blows too easily.","The fuse would never blow, because the neutral wire carries no current.","After the fuse blows, the kettle's internal parts stay connected to the live wire and can still be dangerous.","The earth wire would then have to carry the whole current."],answer:2},
-
-{question:"The coil of a simple a.c. generator is rotated twice as fast, with everything else unchanged. What happens to the peak voltage and the frequency of the output?",options:["Both the peak voltage and the frequency double.","The peak voltage doubles but the frequency stays the same.","The frequency doubles but the peak voltage stays the same.","The peak voltage doubles and the frequency halves."],answer:0},
-
-{question:"The same electrical power is transmitted along the same cables, first at 11 kV and then at 110 kV. How does the power wasted as heat in the cables change?",options:["It falls to one thousandth.","It falls to one hundredth.","It falls to one tenth.","It is unchanged."],answer:1},
-
-{question:"A GM tube records a background count rate of 20 counts/min. A source placed 2 cm from the tube gives: no absorber 520 counts/min, thin paper 515 counts/min, 3 mm aluminium 512 counts/min, 2 cm lead 300 counts/min. Which radiation does the source emit?",options:["Alpha and gamma only","Beta and gamma only","Gamma only","Beta only"],answer:2},
-
-{question:"A factory monitors the thickness of aluminium foil as it is rolled, using a radioactive source on one side of the foil and a detector on the other. Which radiation is most suitable?",options:["Alpha, because it is the most strongly ionising.","Gamma, because it is the most penetrating.","Any of the three, because the foil is thin.","Beta, because the amount passing through changes noticeably with the thickness of the foil."],answer:3},
-
-{question:"A nucleus with nucleon number 226 and proton number 88 decays by emitting one alpha particle. How many neutrons does the new nucleus contain?",options:["136","134","138","140"],answer:0}
-];
-
-const questionsss = [
-{question:"A car travels the first half of a journey's distance at 20 m/s and the second half of the distance at 30 m/s. What is the average speed for the whole journey?",options:["24 m/s","25 m/s","50 m/s","10 m/s"],answer:0},
-
-{question:"A book rests on a horizontal table. The Earth pulls the book downwards with a force equal to its weight. Which force is the Newton's third law pair of this weight?",options:["The upward force of the table on the book","The downward force of the book on the table","The resultant force on the book","The upward gravitational pull of the book on the Earth"],answer:3},
-
-{question:"Atmospheric pressure is 100 kPa. Water has density 1000 kg/m3 and gravitational field strength is 10 N/kg. What is the total pressure on a diver at a depth of 10 m in a lake?",options:["100 kPa","200 kPa","110 kPa","10 kPa"],answer:1},
-
-{question:"A 2.0 kW electric kettle heats 1.5 kg of water from 20°C to 100°C. The specific heat capacity of water is 4200 J/kg°C. Assuming all the electrical energy is transferred to the water, how long does this take?",options:["126 s","504 s","252 s","252 000 s"],answer:2},
-
-{question:"A pupil claps and hears the echo from a distant wall 0.50 s later. The speed of sound in air is 340 m/s. How far away is the wall?",options:["42.5 m","85 m","170 m","680 m"],answer:1},
-
-{question:"A 12 V battery of negligible internal resistance is connected to a 4 Ω resistor in series with a parallel pair of resistors, 6 Ω and 3 Ω. What is the potential difference across the 3 Ω resistor?",options:["4 V","6 V","8 V","12 V"],answer:0},
-
-{question:"A step-up transformer has 100 turns on its primary coil and 1000 turns on its secondary coil. The primary is connected to a 6 V d.c. battery. After the switch has been closed for a long time, what does a voltmeter across the secondary coil read?",options:["60 V","6 V","0.6 V","0 V"],answer:3},
-
-{question:"A GM tube is placed 2 cm from a radioactive source. The background count rate is 20 counts/min. The readings are: no absorber 460 counts/min, thin paper 260 counts/min, 3 mm aluminium 20 counts/min, 5 cm lead 20 counts/min. Which radiations does the source emit?",options:["Alpha only","Alpha and beta only","Beta and gamma only","Alpha, beta and gamma"],answer:1},
-
-{question:"Nuclide P has 14 nucleons and 6 protons. Nuclide Q has 14 nucleons and 7 protons. Nuclide R has 12 nucleons and 6 protons. Nuclide S has 15 nucleons and 8 protons. Which pair are isotopes of the same element?",options:["P and Q","Q and R","P and R","R and S"],answer:2},
-
-{question:"A uniform metre rule is balanced horizontally on a pivot at the 30 cm mark. A 2.0 N weight hangs from the 0 cm mark. What is the weight of the rule?",options:["3.0 N","1.2 N","2.0 N","5.0 N"],answer:0},
-
-{question:"A body moves at a constant velocity of 6 m/s for 5 s and then decelerates uniformly to rest in the next 5 s. What is the total distance travelled?",options:["30 m","45 m","60 m","90 m"],answer:1},
-
-{question:"A ball is thrown vertically upwards from the ground at 20 m/s. Take g = 10 m/s2 and ignore air resistance. What total distance does the ball travel in the first 4.0 s?",options:["0 m","20 m","40 m","80 m"],answer:2},
-
-{question:"A skydiver falling at terminal velocity opens her parachute. Which statement describes her motion immediately afterwards?",options:["She accelerates downwards because her weight has increased.","She continues at the same speed because the forces are balanced.","She moves upwards because the air resistance is greater than her weight.","She decelerates because the air resistance is now greater than her weight."],answer:3},
-
-{question:"A 5 kg box slides at constant speed across a floor when pushed by a horizontal force of 20 N. The push is then increased to 30 N. Assuming the friction stays the same, what is the acceleration of the box?",options:["0 m/s2","4 m/s2","6 m/s2","2 m/s2"],answer:3},
-
-{question:"A 2.0 kg trolley moving at 3.0 m/s collides with a stationary 1.0 kg trolley and the two stick together. How much kinetic energy is transferred to other forms during the collision?",options:["0 J","3 J","6 J","9 J"],answer:1},
-
-{question:"Two identical springs each extend by 4 cm when a 10 N load is hung from one of them. The springs are now joined end to end and the same 10 N load is hung from the lower spring. What is the total extension?",options:["2 cm","4 cm","8 cm","16 cm"],answer:2},
-
-{question:"A person standing on both feet exerts a pressure of 15 000 Pa on the ground. She lifts one foot and stands on the other. Both feet have the same area. What is the new pressure on the ground?",options:["7 500 Pa","15 000 Pa","30 000 Pa","60 000 Pa"],answer:2},
-
-{question:"A block has a mass of 200 g and a volume of 250 cm3. The density of water is 1.0 g/cm3. What happens when the block is placed in water?",options:["It sinks to the bottom.","It floats with 20% of its volume below the surface.","It floats with half of its volume below the surface.","It floats with 80% of its volume below the surface."],answer:3},
-
-{question:"A motor lifts a 500 kg load through 12 m at constant speed in 20 s. The motor is 60% efficient. Take g = 10 N/kg. What is the input power to the motor?",options:["5 000 W","3 000 W","1 800 W","8 333 W"],answer:0},
-
-{question:"Ali and Bo have the same weight. Ali runs up a flight of stairs in 8 s and Bo walks up the same stairs in 16 s. Which statement is correct?",options:["Ali and Bo do the same work, but Ali develops twice the power.","Ali does twice as much work as Bo.","Ali and Bo do the same work and develop the same power.","Bo does the same work but develops twice the power."],answer:0},
-
-{question:"A motor is 80% efficient and wastes energy as thermal energy at a rate of 100 W. What is its useful power output?",options:["80 W","100 W","400 W","500 W"],answer:2},
-
-{question:"A steel washer has a circular hole in its centre. The washer is heated uniformly. What happens to the diameter of the hole?",options:["It decreases because the metal expands into the hole.","It stays the same because the hole is empty.","It first decreases and then increases.","It increases."],answer:3},
-
-{question:"A fixed mass of gas is heated in a rigid container from 27°C to 54°C. By approximately how much does the pressure of the gas increase?",options:["9%","27%","50%","100%"],answer:0},
-
-{question:"200 g of water at 80°C is mixed with 300 g of water at 20°C in an insulated container. What is the final temperature of the mixture?",options:["36°C","44°C","50°C","56°C"],answer:1},
-
-{question:"How much energy is needed to change 0.20 kg of ice at -10°C completely into water at 0°C? The specific heat capacity of ice is 2100 J/kg°C and the specific latent heat of fusion of ice is 340 000 J/kg.",options:["72 200 J","4 200 J","68 000 J","340 000 J"],answer:0},
-
-{question:"A ray of light strikes a flat air-glass boundary at 30° to the glass surface. The refractive index of the glass is 1.5. What is the angle of refraction?",options:["19°","35°","45°","60°"],answer:1},
-
-{question:"A ray of light strikes a plane mirror. The mirror is rotated through 10° while the incident ray stays fixed. Through what angle does the reflected ray turn?",options:["5°","10°","20°","40°"],answer:2},
-
-{question:"A wave has a wavelength of 0.40 m and a period of 0.050 s. What is the speed of the wave?",options:["0.020 m/s","0.45 m/s","8.0 m/s","20 m/s"],answer:2},
-
-{question:"The amplitude of a sound wave is doubled while its frequency is halved. What change is heard?",options:["It becomes louder and lower in pitch.","It becomes louder and higher in pitch.","It becomes quieter and lower in pitch.","It becomes quieter and higher in pitch."],answer:0},
-
-{question:"A lamp is rated 12 V, 24 W. It is connected to a 6 V supply. Assuming its resistance stays constant, what power does it dissipate?",options:["3 W","6 W","12 W","24 W"],answer:1},
-
-{question:"A 10 Ω resistor and a 1000 Ω resistor are connected in parallel. Which statement about their combined resistance is correct?",options:["It is 1010 Ω.","It is 505 Ω.","It is between 10 Ω and 1000 Ω.","It is less than 10 Ω."],answer:3},
-
-{question:"A 2.0 kW heater is switched on for 3.0 hours. Electricity costs P1.20 per kWh. What is the cost of using the heater?",options:["P7.20","P0.72","P3.60","P7 200"],answer:0},
-
-{question:"An electric kettle is rated 2.0 kW at 230 V. Which fuse is most suitable for the kettle?",options:["3 A","5 A","10 A","13 A"],answer:2},
-
-{question:"A negatively charged plastic rod is brought close to, but does not touch, a small uncharged metal sphere hanging on an insulating thread. What happens to the sphere?",options:["It is attracted because charges in the sphere are separated.","It is repelled because it gains electrons from the rod.","It is attracted because protons move from the rod to the sphere.","It is not affected because it is uncharged."],answer:0},
-
-{question:"A bar magnet is pushed into a coil connected to a sensitive galvanometer and is then held still inside the coil. What does the galvanometer show while the magnet is held still?",options:["A steady deflection","A large deflection in the opposite direction","An alternating deflection","No deflection"],answer:3},
-
-{question:"A straight wire carrying a current is placed in a uniform magnetic field. In which situation is the force on the wire zero?",options:["The current is at right angles to the field.","The current is parallel to the field.","The current is doubled.","The wire is held stationary."],answer:1},
-
-{question:"Which materials should be used for the core of an electromagnet and for a permanent magnet?",options:["Soft iron for the electromagnet core and steel for the permanent magnet","Steel for both","Steel for the electromagnet core and soft iron for the permanent magnet","Soft iron for both"],answer:0},
-
-{question:"Why is an alpha source more hazardous than a gamma source of similar activity if it is swallowed?",options:["Alpha radiation is more penetrating than gamma radiation.","Alpha radiation travels further through the body.","Alpha radiation is not absorbed by body tissue.","Alpha radiation is strongly ionising and all its energy is absorbed by nearby cells."],answer:3},
-
-{question:"In the alpha-particle scattering experiment, a very small fraction of the alpha particles were deflected through angles greater than 90°. What does this show?",options:["Most of the atom is empty space.","Electrons are heavier than alpha particles.","The atom has a small, dense, positively charged nucleus.","The nucleus is negatively charged."],answer:2},
-
-{question:"A neutral atom of a nuclide has nucleon number 27 and proton number 13. How many neutrons and electrons does it contain?",options:["13 neutrons and 14 electrons","14 neutrons and 13 electrons","14 neutrons and 14 electrons","27 neutrons and 13 electrons"],answer:1}
-];
-
-// Built-in topic bank. "Physics General" is this file's original question
-// set; imported topics (via the Import Questions screen) get added here at
-// runtime alongside it.
-const BUILT_IN_TOPICS = {"Physics General": questions, "Tricky Physics set1": questionss,  "Tricky Physics set2": questionsss, "Biology General": biologyQuestions};
