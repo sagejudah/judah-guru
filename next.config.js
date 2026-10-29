@@ -9,6 +9,8 @@ const nextConfig = {
       { source: '/30seconds/', destination: '/30seconds/index.html' },
       { source: '/quiz', destination: '/quiz/index.html' },
       { source: '/quiz/', destination: '/quiz/index.html' },
+      { source: '/projects/safepocket', destination: '/projects/safepocket/index.html' },
+      { source: '/projects/safepocket/', destination: '/projects/safepocket/index.html' },
     ];
   },
   async headers() {
