@@ -21,7 +21,7 @@ const nextConfig = {
       "img-src 'self' data: https:",
       "font-src 'self' data:",
       "frame-src https://open.spotify.com",
-      "connect-src 'self'",
+      "connect-src 'self' https://script.google.com https://script.googleusercontent.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self'",

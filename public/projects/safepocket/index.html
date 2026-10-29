@@ -44,8 +44,8 @@ body{min-height:100vh;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",
         <input id="pass" type="password" placeholder="Password" class="h-12 w-full rounded-lg bg-white px-4 pr-12 text-[#07131f] outline-none">
         <button type="button" id="eye" class="absolute right-3 top-3 text-xl">👁</button>
       </div>
-      <button class="h-12 rounded-lg bg-gradient-to-b from-[#f4cf6c] to-[#e1ae3c] font-extrabold uppercase text-[#07131f] shadow-lg transition hover:brightness-110">Log in</button>
-      <p class="text-center text-xs text-white/50">Demo: any username and password works.</p>
+      <button id="go" class="h-12 rounded-lg bg-gradient-to-b from-[#f4cf6c] to-[#e1ae3c] font-extrabold uppercase text-[#07131f] shadow-lg transition hover:brightness-110">Log in</button>
+      <p id="err" class="text-center text-sm text-red-300"></p><p id="hint" class="text-center text-xs text-white/50">Demo: any username and password works.</p>
     </form>
   </div>
   <p class="text-sm uppercase tracking-widest text-white/60">Your financial safety net.</p>
@@ -67,13 +67,20 @@ body{min-height:100vh;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",
 
 <script>
 const $=id=>document.getElementById(id), GOAL=200, STEP=20;
-const S={tab:'me',me:'Pocket-100',removed:{},votes:{'Pocket-102':['Pocket-103']},nudged:{},
+const S={group:'Circle Alpha',tab:'me',me:'Pocket-100',removed:{},votes:{'Pocket-102':['Pocket-103']},nudged:{},
  hist:[{d:'06/07/2023',ok:1},{d:'10/13/2023',ok:0}],
  m:[{id:'Pocket-100',paid:100,due:0},{id:'Pocket-101',paid:140,due:0},{id:'Pocket-102',paid:60,due:40},{id:'Pocket-103',paid:180,due:0},{id:'Pocket-104',paid:90,due:0}]};
 const get=id=>S.m.find(x=>x.id===id), me=()=>get(S.me);
 const active=()=>S.m.filter(x=>!S.removed[x.id]);
-const need=t=>Math.floor((active().length-1)/2)+1;
+const need=t=>LIVE&&S.need&&S.need[t]?S.need[t]:Math.floor((active().length-1)/2)+1;
 const today=()=>new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+const API='';  // paste the Apps Script web app URL here to connect the Google Sheet
+const LIVE=!!API;
+async function call(o){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(o)});return r.json()}
+function apply(r){S.me=r.me;S.group=r.group;S.m=r.members.map(x=>({id:x.id,paid:x.paid,due:x.due}));S.removed={};S.votes={};S.need={};
+ r.members.forEach(x=>{if(x.removed)S.removed[x.id]=1;S.votes[x.id]=x.votes;S.need[x.id]=x.need});S.hist=r.history}
+async function act(a,t){try{const r=await call({...S.cred,action:a,target:t});if(!r.ok)return toast(r.error||'Something went wrong');apply(r);render()}catch(e){toast('Could not reach the server')}}
+async function refresh(){await act('login');toast('Up to date')}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.remove('hidden-screen');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add('hidden-screen'),2600)}
 function bar(m){const a=Math.min(m.paid/GOAL*100,100),b=Math.min(m.due/GOAL*100,100-a);
  return `<div class="flex h-2.5 w-full overflow-hidden rounded-full bg-[#07131f]/70"><div style="width:${a}%" class="bg-sky-400"></div><div style="width:${b}%" class="bg-red-500"></div></div>`}
@@ -100,7 +107,7 @@ function viewMe(){const m=me(),done=m.paid>=GOAL,due=m.due>0;
   ${pocket(done?{paid:0,due:0}:m)}<p class="mt-4 text-[10px] uppercase text-white/80 sm:text-xs">Available borrowing limit</p><p class="text-2xl font-extrabold sm:text-4xl">P${done?'400':'200'}.00</p></div>
   <div class="text-center"><p class="text-xs uppercase text-white/50 sm:text-sm">Next tier:</p><h3 class="mb-3 text-2xl font-extrabold uppercase text-white/60 sm:text-3xl">${done?'Expert':'Advanced'}</h3>
   ${pocket(m,true)}<p class="mt-4 text-[10px] uppercase text-white/50 sm:text-xs">Available borrowing limit</p><p class="text-2xl font-extrabold text-white/40 sm:text-4xl">P${done?'800':'400'}.00</p></div></div>
- <div class="mt-4 flex flex-wrap justify-center gap-2"><button class="btn bg-sky-500/20" onclick="pay()">Pay P${STEP}</button><button class="btn" onclick="miss()">Demo: miss a payment</button></div>
+ ${LIVE?'<div class="mt-4 flex flex-col items-center gap-2"><button class="btn" onclick="refresh()">Refresh</button><p class="text-xs text-white/50">Payments are recorded by Safe Pocket and show up here.</p></div>':`<div class="mt-4 flex flex-wrap justify-center gap-2"><button class="btn bg-sky-500/20" onclick="pay()">Pay P${STEP}</button><button class="btn" onclick="miss()">Demo: miss a payment</button></div>`}
  </section><aside class="card p-4"><h3 class="silver mb-4 text-center text-xl font-extrabold uppercase leading-tight">Payment history pocket</h3>
  <div class="grid max-h-[520px] grid-cols-2 gap-4 overflow-auto lg:grid-cols-1">${hist}</div></aside></div>`}
 
@@ -111,35 +118,42 @@ function viewGroup(){const a=active(),cur=a.filter(x=>!x.due).length,col=a.reduc
   <span class="rounded-full px-2 py-0.5 text-[10px] uppercase ${r?'bg-white/10':m.due?'bg-red-500/20 text-red-300':'bg-sky-400/20 text-sky-300'}">${r?'Removed':m.due?'Due P'+m.due:'Current'}</span></div>
   <div class="mt-1.5">${bar(m)}</div><p class="mt-1 text-[11px] text-white/60">P${m.paid} / P${GOAL} interest</p></div>
   ${(!r&&!isMe)?`<div class="flex flex-wrap items-center gap-2">
-   ${m.due?`<button class="btn" onclick="nudge('${m.id}')">${S.nudged[m.id]?'Nudged ✓':'Nudge'}</button><button class="btn" onclick="cover('${m.id}')">Cover P${m.due}</button>`:''}
+   ${m.due?`<button class="btn" onclick="nudge('${m.id}')">${S.nudged[m.id]?'Nudged ✓':'Nudge'}</button>${LIVE?'':`<button class="btn" onclick="cover('${m.id}')">Cover P${m.due}</button>`}`:''}
    ${m.due?`<button class="btn ${voted?'bg-red-500/30':'border-red-400/50 text-red-300'}" onclick="vote('${m.id}')">${voted?'Withdraw vote':'Vote out'} (${v.length}/${n})</button>`:''}
   </div>`:''}</div>`}).join('');
- return `<section class="card mb-5 p-5"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="text-xs uppercase tracking-widest text-white/60">Your group</p><h2 class="silver text-3xl font-extrabold uppercase">Circle Alpha</h2></div>
+ return `<section class="card mb-5 p-5"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="text-xs uppercase tracking-widest text-white/60">Your group</p><h2 class="silver text-3xl font-extrabold uppercase">${S.group}</h2></div>
  <span class="rounded-full px-3 py-1 text-xs font-bold uppercase ${ok?'bg-sky-400/20 text-sky-300':'bg-red-500/20 text-red-300'}">${ok?'Group healthy':'Group at risk'}</span></div>
  <div class="mt-4 grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
  ${[['Members',a.length],['Paying on time',pct+'%'],['Interest collected','P'+col],['Currently due','P'+due]].map(x=>`<div class="rounded-xl bg-[#07131f]/60 p-3"><p class="text-[10px] uppercase text-white/60">${x[0]}</p><p class="text-xl font-extrabold">${x[1]}</p></div>`).join('')}</div>
  <div class="mt-4"><p class="mb-1 text-xs uppercase text-white/60">Group progress</p><div class="flex h-3 w-full overflow-hidden rounded-full bg-[#07131f]/70"><div style="width:${Math.min(col/(a.length*GOAL)*100,100)}%" class="bg-sky-400"></div><div style="width:${due/(a.length*GOAL)*100}%" class="bg-red-500"></div></div></div></section>
  <div class="grid gap-3">${rows}</div>
- <p class="mt-4 text-center text-xs text-white/50">A member is removed when a majority of the other members vote them out. Demo members vote on their own: <a href="#" class="underline" onclick="simVote();return false">simulate another vote</a></p>`}
+ <p class="mt-4 text-center text-xs text-white/50">A member is removed when a majority of the other members vote them out. ${LIVE?'':'Demo: <a href="#" class="underline" onclick="simVote();return false">simulate another vote</a>'}</p>`}
 
 function render(){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('bg-sky-500/30',t.dataset.tab===S.tab));$('view').innerHTML=S.tab==='me'?viewMe():viewGroup()}
 function pay(){const m=me();if(m.paid>=GOAL)return toast('Tier complete 🎉');let a=STEP;
  if(m.due>0){const c=Math.min(a,m.due);m.due-=c;m.paid+=c}else m.paid=Math.min(m.paid+a,GOAL);
  S.hist.push({d:today(),ok:1});toast(m.paid>=GOAL?'Advanced tier unlocked! New limit: P400':'Payment received');render()}
 function miss(){const m=me();m.due+=STEP;S.hist.push({d:today(),ok:0});toast('Payment missed. Your pocket glows red until it is paid.');render()}
-function nudge(id){S.nudged[id]=1;toast('Friendly reminder sent to '+id);render()}
+function nudge(id){if(LIVE){act('nudge',id).then(()=>toast('Friendly reminder sent to '+id));return}S.nudged[id]=1;toast('Friendly reminder sent to '+id);render()}
 function cover(id){const m=get(id);m.paid+=m.due;m.due=0;S.votes[id]=[];toast('You covered '+id+'’s payment');render()}
 function check(id){const v=S.votes[id]||[];if(v.length>=need(id)){S.removed[id]=1;S.votes[id]=[];toast(id+' was voted out of the group')}}
-function vote(id){const v=S.votes[id]=S.votes[id]||[],i=v.indexOf(S.me);i>-1?v.splice(i,1):v.push(S.me);check(id);render()}
+function vote(id){if(LIVE){act('vote',id);return}const v=S.votes[id]=S.votes[id]||[],i=v.indexOf(S.me);i>-1?v.splice(i,1):v.push(S.me);check(id);render()}
 function simVote(){const t=active().find(x=>x.due>0&&x.id!==S.me);if(!t)return toast('No one is due right now');
  const o=active().find(x=>x.id!==t.id&&x.id!==S.me&&!(S.votes[t.id]||[]).includes(x.id));if(!o)return toast('Everyone else already voted');
  (S.votes[t.id]=S.votes[t.id]||[]).push(o.id);toast(o.id+' voted against '+t.id);check(t.id);render()}
 
 $('eye').onclick=()=>{const p=$('pass');p.type=p.type==='password'?'text':'password'};
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.tab=t.dataset.tab;render()});
-$('form').onsubmit=e=>{e.preventDefault();$('alias').textContent=S.me;
- $('login').classList.add('hidden-screen');$('app').classList.remove('hidden-screen');window.scrollTo(0,0);render()};
-$('out').onclick=()=>{$('app').classList.add('hidden-screen');$('login').classList.remove('hidden-screen');$('pass').value=''};
+if(LIVE)$('hint').remove();
+$('form').onsubmit=async e=>{e.preventDefault();
+ if(LIVE){const b=$('go');b.disabled=true;$('err').textContent='';
+  try{const c={u:$('user').value.trim(),p:$('pass').value};const r=await call({...c,action:'login'});
+   if(!r.ok){$('err').textContent=r.error||'Login failed';b.disabled=false;return}
+   S.cred=c;apply(r)}catch(x){$('err').textContent='Could not reach the server';b.disabled=false;return}
+  b.disabled=false}
+ $('alias').textContent=S.me;
+ $('login').classList.add('hidden-screen');$('app').classList.remove('hidden-screen');window.scrollTo(0,0);S.tab='me';render()};
+$('out').onclick=()=>{$('app').classList.add('hidden-screen');$('login').classList.remove('hidden-screen');$('pass').value='';S.cred=null};
 </script>
 </body>
 </html>
