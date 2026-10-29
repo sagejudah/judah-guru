@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Bricolage_Grotesque, Source_Serif_4 } from 'next/font/google';
 
 const display = Bricolage_Grotesque({
@@ -265,6 +266,11 @@ export default function Proposal() {
             Tutors mark attendance from their phones, you see who has paid, and
             parents stay informed without chasing anyone.
           </p>
+          <p>
+            <Link className="fa-demo" href="/projects/fergieAcademy/managementapp/demo">
+              Try the live admin demo
+            </Link>
+          </p>
         </header>
 
         <section>
@@ -495,6 +501,7 @@ const css = `
 .fa-lead{font-size:1.25rem; line-height:1.55}
 .fa-muted{color:var(--muted)}
 .fa-root a{color:var(--accent)}
+.fa-demo{display:inline-block;background:var(--accent);color:#fff!important;text-decoration:none;padding:.6rem 1.2rem;border-radius:999px;font-family:var(--fa-display),system-ui,sans-serif;font-weight:600;font-size:1rem}
 .fa-ph{background:var(--mark); padding:0 .25em; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone}
 
 .fa-loop{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:1.4rem}
